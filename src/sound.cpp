@@ -5,6 +5,11 @@
 Sound::Sound(std::string srcFilename, unsigned nOrder, bool b3D){
 	amp = 1.0;
 	srcFile = new std::fstream(srcFilename, std::fstream::in);
+
+	// Discard header
+	char temp[44];
+	srcFile->read((char*)temp, 44);
+
 	BFormat = new CBFormat();
 	BEncoder = new CAmbisonicEncoderDist();
 	bool ok = BFormat->Configure(nOrder, true, BLOCK_SIZE);
