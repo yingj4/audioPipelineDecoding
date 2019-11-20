@@ -31,29 +31,41 @@ ABAudio::~ABAudio(){
 }
 
 void ABAudio::loadSource(){
-	// Now test 1 sound sample
+	// Add a bunch of sources
 	Sound* inSound;
 	PolarPoint position;
-/*	inSound = new Sound("speech00.wav", NORDER, true);
-	position.fAzimuth = -1;
-	position.fElevation = 1;
-	position.fDistance = 2;
-	inSound->setSrcPos(position);
-	soundSrcs->push_back(inSound);*/
 
-	inSound = new Sound("speech01.wav", NORDER, true);
-	position.fAzimuth = 1;
-	position.fElevation = 1;
-	position.fDistance = 1;
-	inSound->setSrcPos(position);
-	soundSrcs->push_back(inSound);
+    for (unsigned i = 0; i < NUM_SRCS; i++) {
+        //inSound = new Sound("speech00.wav", NORDER, true);
+        //position.fAzimuth = -1 * i;
+        //position.fElevation = 1 * i;
+        //position.fDistance = 2 * i;
+        //inSound->setSrcPos(position);
+        //soundSrcs->push_back(inSound);
 
-/*	inSound = new Sound("speech02.wav", NORDER, true);
-	position.fAzimuth = -0.1;
-	position.fElevation = 3.14/2;
-	position.fDistance = 1;
-	inSound->setSrcPos(position);
-	soundSrcs->push_back(inSound);*/
+        //inSound = new Sound("speech01.wav", NORDER, true);
+        //position.fAzimuth = 1 * i;
+        //position.fElevation = 1 * i;
+        //position.fDistance = 1 * i;
+        //inSound->setSrcPos(position);
+        //soundSrcs->push_back(inSound);
+
+#if 1
+        inSound = new Sound("speech02.wav", NORDER, true);
+        position.fAzimuth = -0.1 * i;
+        position.fElevation = 3.14/2 * i;
+        position.fDistance = 1 * i;
+        inSound->setSrcPos(position);
+        soundSrcs->push_back(inSound);
+#else
+        inSound = new Sound("paarchana.wav", NORDER, true);
+        position.fAzimuth = -0.1 * i;
+        position.fElevation = 3.14/2 * i;
+        position.fDistance = 1 * i;
+        inSound->setSrcPos(position);
+        soundSrcs->push_back(inSound);
+#endif
+    }
 }
 
 short f2s(float input){

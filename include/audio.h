@@ -1,7 +1,7 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
-#include<sound.h>
+#include <sound.h>
 #include <vector>
 #include <string>
 

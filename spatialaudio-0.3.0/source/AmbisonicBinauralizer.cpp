@@ -219,7 +219,7 @@ void CAmbisonicBinauralizer::Process(CBFormat* pBFSrc,
 
     /* TODO: This bool flag should be either an automatic or user option depending on CPU. It should be 'true' if
     CPU load needs to be limited */
-    bool bLowCPU = true;
+    bool bLowCPU = false;
     if(bLowCPU){
         // Perform the convolutions for the left ear and generate the right ear from a modified accumulation of these channels
         niEar = 0;

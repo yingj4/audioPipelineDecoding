@@ -9,6 +9,7 @@
 #define BLOCK_SIZE 1024
 #define NORDER 3
 #define NUM_CHANNELS (OrderToComponents(NORDER, true))
+#define NUM_SRCS 64
 
 //namespace audioPipe{
 	class Sound{
