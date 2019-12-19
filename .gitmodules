@@ -1,0 +1,3 @@
+[submodule "libspatialaudio"]
+	path = libspatialaudio
+	url = https://github.com/ILLIXR/libspatialaudio.git
