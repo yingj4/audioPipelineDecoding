@@ -61,6 +61,6 @@ The input and output are hardcoded to be 48000 sample rate, 16-bit PCM wav file.
 
 Also if you want to hear the output sound, limit the process sample blocks so that the output is not longer than input! Otherwise, garbage sound samples would be generated.
 
-# Sound sample license
+# License
 
-Sound samples under `./sample/` are obtained under Creative Commons 0 license.
+This code is available under the University of Illinois/NCSA Open Source License. The sound samples provided in ./sample/ are available under the Creative Commons 0 license
