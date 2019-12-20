@@ -14,3 +14,6 @@ all: $(Objects)
 
 audio: $(CFiles)
 	$(CC) $(CFLAGS) $(CFiles)
+
+clean:
+	rm -rf audio

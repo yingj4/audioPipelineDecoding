@@ -11,20 +11,19 @@
 #define NUM_CHANNELS (OrderToComponents(NORDER, true))
 #define NUM_SRCS 64
 
-//namespace audioPipe{
+namespace ILLIXR_AUDIO{
 	class Sound{
 	public:
 		Sound();
+		~Sound();
+
 		Sound(std::string srcFile, unsigned nOrder, bool b3D);
 		// set sound src position
 		void setSrcPos(PolarPoint& pos);
 		// set sound amplitude scale
 		void setSrcAmp(float ampScale);
-	
-		// read sound samples in ambisonics format
-		CBFormat* readInBFormat();
-	
-		~Sound();
+		// read sound samples from mono 16bit WAV file and encode into ambisonics format
+		CBFormat* readInBFormat();		
 	private:
 		// corresponding sound src file
 		std::fstream* srcFile;
@@ -39,6 +38,5 @@
 		// amplitude scale to avoid clipping
 		float amp;
 	};
-//}
-
+}
 #endif
