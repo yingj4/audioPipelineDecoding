@@ -1,7 +1,7 @@
 
 # Audio pipeline
 
-The audio pipeline is responsible for producing spatialized audio for XR experience.
+Part of [ILLIXR](https://github.com/ILLIXR/ILLIXR), the Illinios Extended Reality Benchmark Suite. The audio pipeline is responsible for both recording and playing back spatialized audio for XR.
 
 # Components
 
