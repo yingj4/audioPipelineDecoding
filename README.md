@@ -1,5 +1,5 @@
 
-# Audio pipeline
+# Audio Pipeline
 
 Part of [ILLIXR](https://github.com/ILLIXR/ILLIXR), the Illinios Extended Reality Benchmark Suite. The audio pipeline is responsible for both recording and playing back spatialized audio for XR.
 
