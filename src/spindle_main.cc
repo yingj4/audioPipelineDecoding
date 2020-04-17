@@ -5,6 +5,16 @@
 
 using namespace ILLIXR;
 
+const size_t TIME_SAFETY_FACTOR = 100;
+
+template< class Rep, class Period >
+static void t_reliable_sleep(const std::chrono::duration<Rep, Period>& sleep_duration) {
+	auto start = std::chrono::high_resolution_clock::now();
+	while (std::chrono::high_resolution_clock::now() - start < sleep_duration) {
+		std::this_thread::sleep_for(sleep_duration / TIME_SAFETY_FACTOR);
+	}
+}
+
 class audio_comp : threadloop {
 public:
 	audio_comp(phonebook* pb)
@@ -27,7 +37,8 @@ protected:
 			audio.updateRotation(Orientation{
 				euler_rot[0], euler_rot[1], euler_rot[2]});
 			audio.processBlock();
-			reliable_sleep_until(now += std::chrono::milliseconds {43});
+			now += std::chrono::milliseconds {43};
+			t_reliable_sleep(now - std::chrono::system_clock::now());
 		}
 	}
 
