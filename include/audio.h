@@ -21,6 +21,9 @@ namespace ILLIXR_AUDIO{
 		void processBlock();
 		// Load sound source files (predefined)
 		void loadSource();
+
+		void updateRotation(Orientation orientation);
+
 	private:
 		ProcessType processType;
 		// a list of sound sources in this audio
@@ -43,7 +46,6 @@ namespace ILLIXR_AUDIO{
 		// Write out a block of samples to the output file
 		void writeFile(float** resultSample);
 
-		void updateRotation();
 		void updateZoom();
 	};
 }

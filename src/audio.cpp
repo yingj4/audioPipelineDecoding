@@ -106,11 +106,10 @@ void ILLIXR_AUDIO::ABAudio::readNEncode(CBFormat& sumBF){
 }
 
 // Simple rotation
-void ILLIXR_AUDIO::ABAudio::updateRotation(){
+void ILLIXR_AUDIO::ABAudio::updateRotation(Orientation orientation = Orientation{0,0,0}){
 	static int frame = 0;
 	frame++;
-	Orientation head(0,0,1.0*frame/1500*3.14*2);
-	rotator->SetOrientation(head);
+	rotator->SetOrientation(orientation);
 	rotator->Refresh();
 }
 // Simple zoom
