@@ -28,7 +28,8 @@ int main(int argc, char const *argv[])
     ABAudio::ProcessType procdecode(ABAudio::ProcessType::DECODE);
     ABAudio encoder("", procencode);
     ABAudio decoder("", procdecode);
-    //audio.loadSource();
+    encoder.loadSource();
+    decoder.loadSource();
     std::ofstream outputFile;
     outputFile.open("audio_timing_solo.txt");
     std::chrono::time_point<std::chrono::system_clock> blockStart, blockFinish;
