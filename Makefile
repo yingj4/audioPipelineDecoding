@@ -10,8 +10,7 @@ CFiles=$(wildcard $(SRCDIR)*.cpp)
 Objects=$(patsubst %.c,%.o,$(wildcard $(CFiles)))
 
 all: $(Objects)
-	$(CC) $(CFLAGS) src/spindle_main.cc -shared -o libaudio.so -fpic -L/opt/spatialaudio/lib -lspatialaudio -lstdc++ -lm -I$(HEADERDIR) -I/opt/spatialaudio/include/
-#$(CC) $(CFLAGS) $(Objects) -o audio -lspatialaudio -lstdc++ -lm -I$(HEADERDIR) -I/opt/spatialaudio/include/
+	$(CC) $(CFLAGS) $(Objects) -o audio -lspatialaudio -lstdc++ -lm -I$(HEADERDIR)
 
 audio: $(CFiles)
 	$(CC) $(CFLAGS) $(CFiles)
