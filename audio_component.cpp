@@ -50,7 +50,7 @@ public:
 			sync += std::chrono::microseconds(num_epoch*((int)(AUDIO_EPOCH*1000000))); 
 
 			blockStart = std::chrono::high_resolution_clock::now();
-			auto most_recent_pose = _m_pose->get_latest_ro();
+			auto volatile most_recent_pose = _m_pose->get_latest_ro();
 			blockPose = std::chrono::high_resolution_clock::now();
 			encoder->processBlock();
 			decoder->processBlock();
