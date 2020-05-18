@@ -5,6 +5,8 @@ CXX=clang++
 CFLAGS=-Wall -fPIC
 CXXFLAGS=-std=c++2a -Wall -fPIC
 HEADERDIR=./include
+LIBS.dbg=-I./libspatialaudio/build/dbg/include -L./libspatialaudio/build/dbg/lib
+LIBS.opt=-I./libspatialaudio/build/opt/include -L./libspatialaudio/build/opt/lib
 
 DBG_FLAGS=-g
 OPT_FLAGS=-O3
@@ -18,17 +20,11 @@ OPT_SO_NAME=plugin.opt.so
 
 all: $(DBG_SO_NAME)
 
+$(DBG_SO_NAME): audio_component.cpp $(CFiles) libspatialaudio/build/dbg
+	$(CXX) $(CXXFLAGS) $(DBG_FLAGS) audio_component.cpp $(CFiles) -shared -o $(DBG_SO_NAME) -I$(HEADERDIR) $(LIBS.dbg) -lpthread -pthread -lspatialaudio
 
-
-$(DBG_SO_NAME): dbg_so solo
-
-$(OPT_SO_NAME): opt_so solo
-
-dbg_so: audio_component.cpp $(CFiles)
-	$(CXX) $(CXXFLAGS) $(DBG_FLAGS) $^ -shared -o $(DBG_SO_NAME) -I$(HEADERDIR)  -lpthread -pthread -lspatialaudio
-
-opt_so: audio_component.cpp $(CFiles)
-	$(CXX) $(CXXFLAGS) $(OPT_FLAGS) $^ -shared -o $(OPT_SO_NAME) -I$(HEADERDIR)  -lpthread -pthread -lspatialaudio
+$(OPT_SO_NAME): audio_component.cpp $(CFiles) libspatialaudio/build/opt
+	$(CXX) $(CXXFLAGS) $(OPT_FLAGS) audio_component.cpp $(CFiles) -shared -o $(OPT_SO_NAME) -I$(HEADERDIR) $(LIBS.opt) -lpthread -pthread -lspatialaudio
 
 
 solo: $(Objects)
@@ -37,5 +33,22 @@ solo: $(Objects)
 audio: $(CFiles)
 	$(CC) $(CFLAGS) $(CFiles)
 
+libspatialaudio/build/dbg:
+	cd libspatialaudio && \
+	cmake CMakeLists.txt && \
+	cmake -DCMAKE_INSTALL_PREFIX=build/dbg && \
+	make && make install 
+
+libspatialaudio/build/opt:
+	cd libspatialaudio && \
+	cmake CMakeLists.txt && \
+	cmake -DCMAKE_INSTALL_PREFIX=build/opt -DCMAKE_BUILD_TYPE=Release && \
+	make && make install 
+
+.PHONY: clean
 clean:
-	rm -f audio *.o *.so
+	rm -rf audio *.o *.so
+
+.PHONY: deepclean
+deepclean: clean
+	rm -rf libspatialaudio/build
