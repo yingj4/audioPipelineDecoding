@@ -6,23 +6,30 @@ CFLAGS=-Wall -fPIC
 CXXFLAGS=-std=c++2a -Wall -fPIC
 HEADERDIR=./include
 
+DBG_FLAGS=-g
+OPT_FLAGS=-O3
+
 CFiles=$(wildcard $(SRCDIR)*.cpp)
 Objects=$(patsubst %.c,%.o,$(wildcard $(CFiles)))
 
+DBG_SO_NAME=plugin.dbg.so
+OPT_SO_NAME=plugin.opt.so
 .PHONY: all clean
 
-all: debug
+all: $(DBG_SO_NAME)
 
-debug: CXXFLAGS+=-g
-debug: CFLAGS+=-g
-debug: libaudio.so solo
 
-release: CXXFLAGS+=-O3 
-release: CFLAGS+=-O3
-release: libaudio.so solo
 
-libaudio.so: audio_component.cpp $(CFiles)
-	$(CXX) $(CXXFLAGS) $^ -shared -o libaudio.so -I$(HEADERDIR) -lpthread -pthread -lspatialaudio
+$(DBG_SO_NAME): dbg_so solo
+
+$(OPT_SO_NAME): opt_so solo
+
+dbg_so: audio_component.cpp $(CFiles)
+	$(CXX) $(CXXFLAGS) $(DBG_FLAGS) $^ -shared -o $(DBG_SO_NAME) -I$(HEADERDIR)  -lpthread -pthread -lspatialaudio
+
+opt_so: audio_component.cpp $(CFiles)
+	$(CXX) $(CXXFLAGS) $(OPT_FLAGS) $^ -shared -o $(OPT_SO_NAME) -I$(HEADERDIR)  -lpthread -pthread -lspatialaudio
+
 
 solo: $(Objects)
 	$(CC) $(CFLAGS) $(Objects) -o audio -lspatialaudio -lstdc++ -lm -I$(HEADERDIR)
@@ -31,4 +38,4 @@ audio: $(CFiles)
 	$(CC) $(CFLAGS) $(CFiles)
 
 clean:
-	rm -f *.o *.so
+	rm -f audio *.o *.so

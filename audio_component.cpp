@@ -3,11 +3,11 @@
 #include <fstream>
 #include <thread>
 
-#include "common/threadloop.hh"
-#include "common/switchboard.hh"
-#include "common/data_format.hh"
-#include "common/phonebook.hh"
-#include "common/logger.hh"
+#include "common/threadloop.hpp"
+#include "common/switchboard.hpp"
+#include "common/data_format.hpp"
+#include "common/phonebook.hpp"
+#include "common/logger.hpp"
 
 #include <audio.h>
 
@@ -20,7 +20,7 @@ class audio_component : public threadloop
 public:
 	audio_component(phonebook *pb)
 		: sb{pb->lookup_impl<switchboard>()},
-		_m_pose{sb->subscribe_latest<pose_type>("fast_pose")}
+		_m_pose{sb->subscribe_latest<pose_type>("slow_pose")}
 	{
 		ILLIXR_AUDIO::ABAudio::ProcessType processDecode(ILLIXR_AUDIO::ABAudio::ProcessType::DECODE);	
 		decoder = new ILLIXR_AUDIO::ABAudio("", processDecode);
