@@ -27,11 +27,11 @@ $(OPT_SO_NAME): audio_component.cpp $(CFiles) libspatialaudio/build/opt
 	$(CXX) $(CXXFLAGS) $(OPT_FLAGS) audio_component.cpp $(CFiles) -shared -o $(OPT_SO_NAME) -I$(HEADERDIR) $(LIBS.opt) -lpthread -pthread -lspatialaudio
 
 
-solo: $(Objects)
-	$(CC) $(CFLAGS) $(Objects) -o audio -lspatialaudio -lstdc++ -lm -I$(HEADERDIR)
+solo_opt: $(Objects) libspatialaudio/build/opt 
+	$(CC) $(CFLAGS) $(OPT_FLAGS) $(Objects) -o audio -lspatialaudio -lstdc++ -lm -I$(HEADERDIR)
 
-audio: $(CFiles)
-	$(CC) $(CFLAGS) $(CFiles)
+solo_dbg: $(Objects) libspatialaudio/build/dbg
+	$(CC) $(CFLAGS) $(DBG_FLAGS) $(Objects) -o audio -lspatialaudio -lstdc++ -lm -I$(HEADERDIR)
 
 libspatialaudio/build/dbg:
 	cd libspatialaudio && \
