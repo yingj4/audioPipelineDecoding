@@ -21,21 +21,29 @@ Encapsulate preset processing steps of sound source reading, encoding, rotating,
 
 # Installation
 
-Install libspatialaudio
+This version simplifies the build process to automate building of both libspatialaudio and audio pipeline itself. If you have a old version of this module and updating to the new version doesn't build correctly, you may need to purge the old module and clone this new version again.
 
-    cmake CMakeLists.txt
-    cmake -DCMAKE_INSTALL_PREFIX=/path-to-installation-directory
-    make && make install
+Build debug:
 
-Add libspatialaudio in library path
+```sh
+make
+```
 
-    export CPATH=$INCLUDE_PATH:/path-to-installation-directory/include
-    export LIBRARY_PATH=$LIBRARY_PATH:/path-to-installation-directory/lib
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path-to-installation-directory/lib
+or
 
-Make audio pipeline files
-    
-    make
+```sh
+make solo.dbg
+```
+
+Build release:
+
+```sh
+make solo.opt
+```
+
+**If you are switching between builds, please do `make deepclean`**
+
+Also note that release build (-O3) would show great performance improvement over debug build.
 
 # Usage
 

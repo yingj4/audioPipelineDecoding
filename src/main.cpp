@@ -1,7 +1,5 @@
 #include <audio.h>
 #include <iostream>
-#include <chrono>
-#include <fstream>
 
 int main(int argc, char const *argv[])
 {
@@ -22,23 +20,11 @@ int main(int argc, char const *argv[])
         else
             procType = ABAudio::ProcessType::DECODE;
     }
-
-
-    ABAudio::ProcessType procencode(ABAudio::ProcessType::ENCODE);
-    ABAudio::ProcessType procdecode(ABAudio::ProcessType::DECODE);
-    ABAudio encoder("", procencode);
-    ABAudio decoder("", procdecode);
-    encoder.loadSource();
-    decoder.loadSource();
-    std::ofstream outputFile;
-    outputFile.open("audio_timing_solo.txt");
-    std::chrono::time_point<std::chrono::system_clock> blockStart, blockFinish;
-    for (int i = 0; i < 7200; ++i){
-        blockStart = std::chrono::high_resolution_clock::now();
-        encoder.processBlock();
-        decoder.processBlock();
-        blockFinish = std::chrono::high_resolution_clock::now();
-        outputFile << std::chrono::duration_cast<std::chrono::milliseconds>(blockFinish - blockStart).count() << std::endl;
+    
+    ABAudio audio("output.wav", procType);
+    audio.loadSource();
+    for (int i = 0; i < numBlocks; ++i){
+        audio.processBlock();
     }
     return 0;
 }

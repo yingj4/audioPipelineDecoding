@@ -4,7 +4,7 @@ CC=clang
 CXX=clang++
 LD=clang++
 CFLAGS=-Wall -fPIC -I./include
-CXXFLAGS=-std=c++2a -Wall -fPIC -I./include
+CXXFLAGS=-std=c++17 -Wall -fPIC -I./include
 LD_LIBS=-lpthread -pthread
 LD_LIBS=-lpthread -pthread
 DBG_FLAGS=-g -I./libspatialaudio/build/Debug/include
@@ -25,7 +25,7 @@ solo.opt: CFLAGS += $(OPT_FLAGS)
 solo.opt: CXXFLAGS += $(OPT_FLAGS)
 solo.opt: LIBSPATIALAUDIO_BUILD_TYPE=Release
 solo.opt: $(OBJFILES) main.o libspatialaudio/build/Release/lib/libspatialaudio.a
-	$(LD) $(OPT_FLAGS) $^ -shared -o $@ $(LD_LIBS)
+	$(LD) $(OPT_FLAGS) $^ -o $@ $(LD_LIBS)
 
 %.o: src/%.cpp libspatialaudio/build
 	$(CXX) $(CXXFLAGS) $< -c -o $@
