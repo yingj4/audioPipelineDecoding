@@ -1,3 +1,6 @@
 *.wav
+*.o
 *.so
 audio
+solo.dbg
+solo.opt

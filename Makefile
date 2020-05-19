@@ -10,44 +10,42 @@ LD_LIBS=-lpthread -pthread
 DBG_FLAGS=-g -I./libspatialaudio/build/Debug/include
 OPT_FLAGS=-O3 -I./libspatialaudio/build/Release/include
 
-SRCFILES=$(wildcard $(SRCDIR)*.cpp) $(wildcard $(SRCDIR)*.c) $(wildcard *.cpp) $(wildcard *.c)
+SRCFILES=audio.cpp sound.cpp
 OBJFILES=$(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(SRCFILES)))
 
 DBG_SO_NAME=plugin.dbg.so
 OPT_SO_NAME=plugin.opt.so
 
-.PHONY: all clean deepclean
-
-all: $(DBG_SO_NAME)
+.PHONY: clean deepclean
 
 $(DBG_SO_NAME): CFLAGS += $(DBG_FLAGS)
 $(DBG_SO_NAME): CXXFLAGS += $(DBG_FLAGS)
 $(DBG_SO_NAME): LIBSPATIALAUDIO_BUILD_TYPE=Debug
-$(DBG_SO_NAME): $(OBJFILES) libspatialaudio/build/Debug/lib/libspatialaudio.a
+$(DBG_SO_NAME): $(OBJFILES) audio_component.o libspatialaudio/build/Debug/lib/libspatialaudio.a
 	$(LD) $(DBG_FLAGS) $^ -shared -o $@ $(LD_LIBS)
 
 $(OPT_SO_NAME): CFLAGS += $(OPT_FLAGS)
 $(OPT_SO_NAME): CXXFLAGS += $(OPT_FLAGS)
 $(OPT_SO_NAME): LIBSPATIALAUDIO_BUILD_TYPE=Release
-$(OPT_SO_NAME): $(OBJFILES) libspatialaudio/build/Release/lib/libspatialaudio.a
+$(OPT_SO_NAME): $(OBJFILES) audio_component.o libspatialaudio/build/Release/lib/libspatialaudio.a
 	$(LD) $(OPT_FLAGS) $^ -shared -o $@ $(LD_LIBS)
 
 solo.dbg: CFLAGS += $(DBG_FLAGS)
 solo.dbg: CXXFLAGS += $(DBG_FLAGS)
 solo.dbg: LIBSPATIALAUDIO_BUILD_TYPE=Debug
-solo.dbg: $(OBJFILES) libspatialaudio/build/Debug/lib/libspatialaudio.a
+solo.dbg: $(OBJFILES) main.o libspatialaudio/build/Debug/lib/libspatialaudio.a
 	$(LD) $(DBG_FLAGS) $^ -o $@ $(LD_LIBS)
 
 solo.opt: CFLAGS += $(OPT_FLAGS)
 solo.opt: CXXFLAGS += $(OPT_FLAGS)
 solo.opt: LIBSPATIALAUDIO_BUILD_TYPE=Release
-solo.opt: $(OBJFILES) libspatialaudio/build/Release/lib/libspatialaudio.a
+solo.opt: $(OBJFILES) main.o libspatialaudio/build/Release/lib/libspatialaudio.a
 	$(LD) $(OPT_FLAGS) $^ -shared -o $@ $(LD_LIBS)
 
-%.o: %.cpp libspatialaudio/build
+%.o: src/%.cpp libspatialaudio/build
 	$(CXX) $(CXXFLAGS) $< -c -o $@
 
-%.o: %.c libspatialaudio/build
+%.o: src/%.c libspatialaudio/build
 	$(CC) $(CFLAGS) $< -c -o $@
 
 libspatialaudio/build/Debug/lib/libspatialaudio.a: libspatialaudio/build
@@ -61,15 +59,8 @@ libspatialaudio/build:
 	$(MAKE) -C libspatialaudio/build
 	$(MAKE) -C libspatialaudio/build install
 
-
-# libspatialaudio/build/opt:
-# 	cd libspatialaudio && \
-# 	cmake CMakeLists.txt && \
-# 	cmake -DCMAKE_INSTALL_PREFIX=build/opt -DCMAKE_BUILD_TYPE=Release && \
-# 	make && make install
-
 clean:
-	rm -rf audio *.o src/*.o *.so solo.dbg solo.opt
+	rm -rf audio *.o *.so solo.dbg solo.opt
 
 deepclean: clean
 	rm -rf libspatialaudio/build
