@@ -13,22 +13,7 @@ OPT_FLAGS=-O3 -I./libspatialaudio/build/Release/include
 SRCFILES=audio.cpp sound.cpp
 OBJFILES=$(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(SRCFILES)))
 
-DBG_SO_NAME=plugin.dbg.so
-OPT_SO_NAME=plugin.opt.so
-
 .PHONY: clean deepclean
-
-$(DBG_SO_NAME): CFLAGS += $(DBG_FLAGS)
-$(DBG_SO_NAME): CXXFLAGS += $(DBG_FLAGS)
-$(DBG_SO_NAME): LIBSPATIALAUDIO_BUILD_TYPE=Debug
-$(DBG_SO_NAME): $(OBJFILES) audio_component.o libspatialaudio/build/Debug/lib/libspatialaudio.a
-	$(LD) $(DBG_FLAGS) $^ -shared -o $@ $(LD_LIBS)
-
-$(OPT_SO_NAME): CFLAGS += $(OPT_FLAGS)
-$(OPT_SO_NAME): CXXFLAGS += $(OPT_FLAGS)
-$(OPT_SO_NAME): LIBSPATIALAUDIO_BUILD_TYPE=Release
-$(OPT_SO_NAME): $(OBJFILES) audio_component.o libspatialaudio/build/Release/lib/libspatialaudio.a
-	$(LD) $(OPT_FLAGS) $^ -shared -o $@ $(LD_LIBS)
 
 solo.dbg: CFLAGS += $(DBG_FLAGS)
 solo.dbg: CXXFLAGS += $(DBG_FLAGS)
