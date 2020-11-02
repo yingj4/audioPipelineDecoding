@@ -1535,8 +1535,11 @@ bool CAmbisonicBinauralizer::Configure(unsigned nOrder,
     unsigned niTap = 0;
 
     HRTF *p_hrtf = getHRTF(nSampleRate, HRTFPath);
-    if (p_hrtf == nullptr)
+    // printf("Done with getHRTF\n");
+    if (p_hrtf == nullptr){
+        // printf("p_hrtf is NULL\n");
         return false;
+    }
 
     tailLength = m_nTaps = p_hrtf->getHRTFLen();
     m_nBlockSize = nBlockSize;
@@ -2131,13 +2134,13 @@ void rotatorSet_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotat
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(1, rotator, 1, rotator);
 
-    printf("rotatorSet starts\n");
+    // printf("rotatorSet starts\n");
     static int frame = 0;
 	frame++;
 	Orientation head(0, 0, 1.0*frame/1500*3.14*2);
 	rotator->SetOrientation(head);
 	rotator->Refresh();
-    printf("rotatorSet ends\n");
+    // printf("rotatorSet ends\n");
 
     __hpvm__return(1, bytes_rotator);
 }
@@ -2147,12 +2150,12 @@ void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(2, rotator, sumBF, 1, sumBF);
 
-    printf("psychoFilter starts\n");
+    // printf("psychoFilter starts\n");
     if (rotator->m_bOpt) {
         rotator->ShelfFilterOrder(sumBF, nSample);
     }
     else {}
-    printf("psychoFilter ends\n");
+    // printf("psychoFilter ends\n");
 
     __hpvm__return(2, bytes_rotator, bytes_sumBF);
 }
@@ -2162,11 +2165,12 @@ void rotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(1, rotator, 1, rotator);
 
-    printf("rotateOrder1 starts\n");
+    // printf("rotateOrder1 starts\n");
+    // printf("%u\n", rotator->m_nOrder);
     if (rotator->m_nOrder >= 1) {
         rotator->ProcessOrder1_3D(sumBF, nSample);
     }
-    printf("rotateOrder1 ends\n");
+    // printf("rotateOrder1 ends\n");
 
     __hpvm__return(2, bytes_rotator, bytes_sumBF);
 }
@@ -2176,11 +2180,11 @@ void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(1, rotator, 1, rotator);
 
-    printf("rotateOrder2 starts\n");
+    // printf("rotateOrder2 starts\n");
     if (rotator->m_nOrder >= 2) {
         rotator->ProcessOrder2_3D(sumBF, nSample);
     }
-    printf("rotateOrder2 ends\n");
+    // printf("rotateOrder2 ends\n");
 
     __hpvm__return(2, bytes_rotator, bytes_sumBF);
 }
@@ -2190,11 +2194,11 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(1, rotator, 1, rotator);
 
-    printf("rotateOrder3 starts\n");
+    // printf("rotateOrder3 starts\n");
     if (rotator->m_nOrder >= 3) {
         rotator->ProcessOrder3_3D(sumBF, nSample);
     }
-    printf("rotateOrder3 ends\n");
+    // printf("rotateOrder3 ends\n");
 
     __hpvm__return(1, bytes_sumBF);
 }
@@ -2204,12 +2208,12 @@ void zoomSet_fxp(/*0*/ CAmbisonicZoomer* zoomer, /*1*/ size_t bytes_zoomer) {
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(1, zoomer, 1, zoomer);  // zoomer = audioAddr->zoomer
 
-    printf("zoomSet starts\n");
+    // printf("zoomSet starts\n");
     static int frame = 0;
 	frame++;
 	zoomer->SetZoom(sinf(frame/100));
 	zoomer->Refresh();
-    printf("zoomSet ends\n");
+    // printf("zoomSet ends\n");
 
     __hpvm__return(1, bytes_zoomer);
 }
@@ -2219,9 +2223,9 @@ void zoomProcess_fxp(/*0*/ CAmbisonicZoomer* zoomer, /*1*/ size_t bytes_zoomer, 
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(2, zoomer, sumBF, 1, sumBF);
 
-    printf("zoomProcess starts\n");
+    // printf("zoomProcess starts\n");
     zoomer->Process(sumBF, nSample);
-    printf("zoomProcess ends\n");
+    // printf("zoomProcess ends\n");
     
     __hpvm__return(1, bytes_sumBF);
 }
@@ -2245,7 +2249,7 @@ void setAndFFT_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_dec
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(2, decoder, sumBF, 1, decoder);
 
-    printf("setAndFFT starts\n");
+    // printf("setAndFFT starts\n");
     memset(decoder->m_pfScratchBufferA.data(), 0, (decoder->m_nFFTSize) * sizeof(float));
 
     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
@@ -2253,7 +2257,7 @@ void setAndFFT_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_dec
         memset(&(decoder->m_pfScratchBufferB[decoder->m_nBlockSize]), 0, (decoder->m_nFFTSize - decoder->m_nBlockSize) * sizeof(float));
         kiss_fftr(decoder->m_pFFT_cfg.get(), decoder->m_pfScratchBufferB.data(), decoder->m_pcpScratch.get());
     }
-    printf("setAndFFT ends\n");
+    // printf("setAndFFT ends\n");
 
     __hpvm__return(2, bytes_decoder, bytes_decoder);
 }
@@ -2273,7 +2277,7 @@ void FIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_deco
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(1, decoder, 1, decoder);
 
-    printf("FIR_left starts\n");
+    // printf("FIR_left starts\n");
     kiss_fft_cpx cpTemp;
     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
         for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
@@ -2282,7 +2286,7 @@ void FIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_deco
             decoder->m_pcpScratch[ni] = cpTemp;
         }
     }
-    printf("FIR_left ends\n");
+    // printf("FIR_left ends\n");
 
     __hpvm__return(1, bytes_decoder);
 }
@@ -2291,7 +2295,7 @@ void FIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_dec
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(1, decoder, 1, decoder);
 
-    printf("FIR_right starts\n");
+    // printf("FIR_right starts\n");
     kiss_fft_cpx cpTemp;
     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
         for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
@@ -2300,7 +2304,7 @@ void FIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_dec
             decoder->m_pcpScratch[ni] = cpTemp;
         }
     }
-    printf("FIR_right ends\n");
+    // printf("FIR_right ends\n");
 
     __hpvm__return(1, bytes_decoder);
 }
@@ -2310,12 +2314,15 @@ void IFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_dec
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(1, decoder, 1, decoder);
 
-    printf("IFFT_left starts\n");
-    kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB.data());
-    printf("Np with kiss_fftri\n");
-    for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
-        decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[ni];
-    printf("IFFT_left ends\n");
+    // printf("IFFT_left starts\n");
+    // printf("%d\n", decoder->m_nChannelCount);
+    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+        kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB.data());
+        printf("Np with kiss_fftri\n");
+        for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
+            decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[ni];
+    }    
+    // printf("IFFT_left ends\n");
 
     __hpvm__return(1, bytes_decoder);
 }
@@ -2324,11 +2331,13 @@ void IFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_de
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(1, decoder, 1, decoder);
 
-    printf("IFFT_right starts\n");
-    kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB.data());
-    for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
-        decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[ni];
-    printf("IFFT_right ends\n");
+    // printf("IFFT_right starts\n");
+    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+        kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB.data());
+        for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
+            decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[ni];        
+    }
+    // printf("IFFT_right ends\n");
 
     __hpvm__return(1, bytes_decoder);
 }
@@ -2338,7 +2347,7 @@ void overlap_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(2, decoder, resultSample, 1, resultSample);
 
-    printf("overlap_left starts\n");
+    // printf("overlap_left starts\n");
     for(int ni = 0; ni < decoder->m_nFFTSize; ni++) {
         decoder->m_pfScratchBufferA[ni] *= (decoder->m_fFFTScaler);
     }
@@ -2348,7 +2357,7 @@ void overlap_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_
         resultSample[0][ni] += (decoder->m_pfOverlap)[0][ni];
     }
     memcpy((decoder->m_pfOverlap[0]).data(), &(decoder->m_pfScratchBufferA[decoder->m_nBlockSize]), (decoder->m_nOverlapLength) * sizeof(float));
-    printf("overlap_left ends\n");
+    // printf("overlap_left ends\n");
 
 
     // __hpvm__return(1, bytes_resultSample);
@@ -2359,7 +2368,7 @@ void overlap_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(2, decoder, resultSample, 1, resultSample);
 
-    printf("overlap_right starts\n");
+    // printf("overlap_right starts\n");
     for(int ni = 0; ni < decoder->m_nFFTSize; ni++) {
         decoder->m_pfScratchBufferA[ni] *= (decoder->m_fFFTScaler);
     }
@@ -2369,7 +2378,7 @@ void overlap_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes
         resultSample[1][ni] += (decoder->m_pfOverlap)[0][ni];
     }
     memcpy((decoder->m_pfOverlap[1]).data(), &(decoder->m_pfScratchBufferA[decoder->m_nBlockSize]), (decoder->m_nOverlapLength) * sizeof(float));
-    printf("overlap_right ends\n");
+    // printf("overlap_right ends\n");
     
 
 
@@ -2574,37 +2583,37 @@ int main(int argc, char const *argv[])
     // ABAudio* audioAddr = &audio;
     for (int i = 0; i < numBlocks; ++i){
         // audio.processBlock();
-        printf("\nTracking!\nrotator\n");
+        // printf("\nTracking!\nrotator\n");
         llvm_hpvm_track_mem(audioAddr->rotator, bytes_rotator);
-        printf("sumBF\n");
+        // printf("sumBF\n");
         llvm_hpvm_track_mem(sumBF, bytes_sumBF);
-        printf("zoomer\n");
+        // printf("zoomer\n");
         llvm_hpvm_track_mem(audioAddr->zoomer, bytes_zoomer);
-        printf("decoder\n");
+        // printf("decoder\n");
         llvm_hpvm_track_mem(audioAddr->decoder, bytes_decoder);
-        printf("resultSample\n");
+        // printf("resultSample\n");
         llvm_hpvm_track_mem(resultSample, bytes_resultSample);
-        printf("Done with Tracking\n");
+        // printf("Done with Tracking\n");
 
         void* DFG = __hpvm__launch(0, audioDecoding, (void*) arg);
         __hpvm__wait(DFG);
-        printf("Execution complete");
+        // printf("Execution complete");
 
-        printf("\nRequesting Memory\n");
+        // printf("\nRequesting Memory\n");
         llvm_hpvm_request_mem(audioAddr->rotator, bytes_rotator);
         llvm_hpvm_request_mem(sumBF, bytes_sumBF);
         llvm_hpvm_request_mem(audioAddr->zoomer, bytes_zoomer);
         llvm_hpvm_request_mem(audioAddr->decoder, bytes_decoder);
         llvm_hpvm_request_mem(resultSample, bytes_resultSample);
-        printf("\nDone requesting Memory\n");
+        // printf("\nDone requesting Memory\n");
 
-        printf("Untracking\n");
+        // printf("Untracking\n");
         llvm_hpvm_untrack_mem(audioAddr->rotator);
         llvm_hpvm_untrack_mem(sumBF);
         llvm_hpvm_untrack_mem(audioAddr->zoomer);
         llvm_hpvm_untrack_mem(audioAddr->decoder);
         llvm_hpvm_untrack_mem(resultSample);
-        printf("Done with Untracking\n");
+        // printf("Done with Untracking\n");
     }
 
     __hpvm__cleanup();

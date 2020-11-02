@@ -130,15 +130,15 @@ void kiss_fftri(kiss_fftr_cfg st,const kiss_fft_cpx *freqdata,kiss_fft_scalar *t
         exit (1);
     }
 
-    // printf("Not kiss fft usage error\n");
+    printf("Not kiss fft usage error\n");
     ncfft = st->substate->nfft;
-    // printf("Get st->substate->nfft\n");
+    printf("Get st->substate->nfft\n");
 
     st->tmpbuf[0].r = freqdata[0].r + freqdata[ncfft].r;
     st->tmpbuf[0].i = freqdata[0].r - freqdata[ncfft].r;
     C_FIXDIV(st->tmpbuf[0],2);
 
-    // printf("Start of the for-loop\n");
+    printf("Start of the for-loop\n");
     for (k = 1; k <= ncfft / 2; ++k) {
         kiss_fft_cpx fk, fnkc, fek, fok, tmp;
         fk = freqdata[k];
@@ -157,8 +157,8 @@ void kiss_fftri(kiss_fftr_cfg st,const kiss_fft_cpx *freqdata,kiss_fft_scalar *t
 #else
         st->tmpbuf[ncfft - k].i *= -1;
 #endif
-        // printf("%d\n", k);
+        printf("%d\n", k);
     }
-    // printf("End of the for-loop\n");
+    printf("End of the for-loop\n");
     kiss_fft (st->substate, st->tmpbuf, (kiss_fft_cpx *) timedata);
 }
