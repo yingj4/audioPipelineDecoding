@@ -13,10 +13,10 @@
 // #include "../libspatialaudio/include/AmbisonicEncoder.h"
 #include "../include/kiss_fftr.h"
 
-#include "../include/mit_hrtf.h"
+// #include "../include/mit_hrtf.h"
 // #include "../libspatialaudio/include/hrtf/sofa_hrtf.h"
 
-
+// #include <mysofa.h>
 
 #include <memory>
 
@@ -27,6 +27,48 @@
 #define NORDER 3
 #define NUM_CHANNELS (OrderToComponents(NORDER, true))
 #define NUM_SRCS 16
+
+// Class HRTF
+class HRTF
+{
+public:
+    HRTF(unsigned i_sampleRate)
+        : i_sampleRate(i_sampleRate), i_len(0)
+    { }
+    virtual ~HRTF() = default;
+
+    virtual bool get(float f_azimuth, float f_elevation, float** pfHRTF) = 0;
+
+    bool isLoaded() { return i_len != 0; }
+    unsigned getHRTFLen() { return i_len; }
+
+// protected:
+    unsigned i_sampleRate;
+    unsigned i_len;
+};
+
+// Class MIT_HRTF
+class MIT_HRTF : public HRTF
+{
+public:
+    MIT_HRTF(unsigned i_sampleRate);
+    bool get(float f_azimuth, float f_elevation, float **pfHRTF);
+};
+
+// Class SOFA_HRTF
+// class SOFA_HRTF : public HRTF
+// {
+// public:
+//     SOFA_HRTF(std::string path, unsigned i_sampleRate);
+//     ~SOFA_HRTF();
+//     bool get(float f_azimuth, float f_elevation, float **pfHRTF);
+
+// // private:
+//     struct MYSOFA_EASY *hrtf;
+
+//     unsigned i_filterExtraLength;
+//     int i_internalLength;
+// };
 
 // Class CAmbisonicBase
 class CAmbisonicBase

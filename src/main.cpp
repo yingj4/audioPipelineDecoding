@@ -2,12 +2,104 @@
 #include <iostream>
 #include <algorithm>
 
-#include "../libspatialaudio/build/config.h"
+#include "../libspatialaudio/build/Debug/include/spatialaudio/config.h"
 #include "../include/audio.h"
-#include "../libspatialaudio/include/hrtf/mit_hrtf.h"
+#include "../include/mit_hrtf_lib.h"
+#include "../include/sofa_hrtf.h"
 
 #include <cstdlib>
 #include <cmath>
+#include <vector>
+
+// #define HAVE_MIT_HRTF 1
+// #define HAVE_MYSOFA 1
+
+// For MIT_HRTF
+MIT_HRTF::MIT_HRTF(unsigned i_sampleRate)
+    : HRTF(i_sampleRate)
+{
+    i_len = mit_hrtf_availability(0, 0, i_sampleRate);
+}
+
+
+bool MIT_HRTF::get(float f_azimuth, float f_elevation, float** pfHRTF)
+{
+    int nAzimuth = (int)RadiansToDegrees(-f_azimuth);
+    if(nAzimuth > 180)
+        nAzimuth -= 360;
+    int nElevation = (int)RadiansToDegrees(f_elevation);
+    //Get HRTFs for given position
+    std::vector<short> psHRTF[2] = {std::vector<short>(i_len), std::vector<short>(i_len)};
+    unsigned ret = mit_hrtf_get(&nAzimuth, &nElevation, i_sampleRate, psHRTF[0].data(), psHRTF[1].data());
+    if (ret == 0)
+        return false;
+
+    //Convert from short to float representation
+    for (unsigned t = 0; t < i_len; t++)
+    {
+        pfHRTF[0][t] = psHRTF[0][t] / 32767.f;
+        pfHRTF[1][t] = psHRTF[1][t] / 32767.f;
+    }
+
+    return true;
+}
+
+// For SOFA_HRTF
+// SOFA_HRTF::SOFA_HRTF(std::string path, unsigned i_sampleRate)
+//     : HRTF(i_sampleRate), hrtf(nullptr)
+// {
+//     int err;
+
+//     hrtf = mysofa_open(path.c_str(), i_sampleRate, &i_internalLength, &err);
+//     if (hrtf == nullptr)
+//     {
+//         std::cout << "Could not load the SOFA HRTF." << std::endl;
+//         return;
+//     }
+
+//     i_filterExtraLength = i_internalLength / 2;
+//     i_len = i_internalLength + i_filterExtraLength;
+// }
+
+
+// SOFA_HRTF::~SOFA_HRTF()
+// {
+//     if (hrtf != nullptr)
+//         mysofa_close(hrtf);
+// }
+
+
+// bool SOFA_HRTF::get(float f_azimuth, float f_elevation, float** pfHRTF)
+// {
+//     float delaysSec[2]; // unit is second.
+//     unsigned delaysSamples[2]; // unit is samples.
+//     std::vector<float> pfHRTFNotDelayed[2];
+//     pfHRTFNotDelayed[0].resize( i_internalLength, 0.f );
+//     pfHRTFNotDelayed[1].resize( i_internalLength, 0.f );
+
+//     float p[3] = {RadiansToDegrees(f_azimuth), RadiansToDegrees(f_elevation), 1.f};
+//     mysofa_s2c(p);
+
+//     mysofa_getfilter_float(hrtf, p[0], p[1], p[2],
+//         pfHRTFNotDelayed[0].data(), pfHRTFNotDelayed[1].data(), &delaysSec[0], &delaysSec[1]);
+//     delaysSamples[0] = std::roundf(delaysSec[0] * i_sampleRate);
+//     delaysSamples[1] = std::roundf(delaysSec[1] * i_sampleRate);
+
+//     if (delaysSamples[0] > i_filterExtraLength
+//         || delaysSamples[1] > i_filterExtraLength)
+//     {
+//         std::cout << "Too big HRTF delay for the buffer length." << std::endl;
+//         return false;
+//     }
+
+//     std::fill(pfHRTF[0], pfHRTF[0] + i_len, 0);
+//     std::fill(pfHRTF[1], pfHRTF[1] + i_len, 0);
+
+//     std::copy(pfHRTFNotDelayed[0].begin(), pfHRTFNotDelayed[0].end(), pfHRTF[0] + delaysSamples[0]);
+//     std::copy(pfHRTFNotDelayed[1].begin(), pfHRTFNotDelayed[1].end(), pfHRTF[1] + delaysSamples[1]);
+
+//     return true;
+// }
 
 // For CAmbisonicBase
 CAmbisonicBase::CAmbisonicBase()
@@ -1823,14 +1915,17 @@ HRTF *CAmbisonicBinauralizer::getHRTF(unsigned nSampleRate, std::string HRTFPath
 
 #ifdef HAVE_MYSOFA
 # ifdef HAVE_MIT_HRTF
-    if (HRTFPath == "")
+    if (HRTFPath == ""){
+        printf("In HRTFPath==""\n");
         p_hrtf = new MIT_HRTF(nSampleRate);
+        printf("p_hrtf is MIT_HRTF\n");
+    }
     else
 # endif
         p_hrtf = new SOFA_HRTF(HRTFPath, nSampleRate);
 #else
 # ifdef HAVE_MIT_HRTF
-    // p_hrtf = new MIT_HRTF(nSampleRate);
+    p_hrtf = new MIT_HRTF(nSampleRate);
 # else
 # error At least MySOFA or MIT_HRTF need to be enabled
 # endif
@@ -1943,7 +2038,7 @@ ILLIXR_AUDIO::ABAudio::ABAudio(std::string outputFilePath, ProcessType procTypeI
     // binauralizer as ambisonics decoder
     decoder = new CAmbisonicBinauralizer();
     unsigned temp;
-    bool ok = decoder->Configure(NORDER, true, SAMPLERATE, BLOCK_SIZE, temp);
+    bool ok = decoder->Configure(NORDER, true, SAMPLERATE, BLOCK_SIZE, temp, "");
     if (!ok){
         printf("Binauralizer Configuration failed!\n");
     }
@@ -2318,7 +2413,7 @@ void IFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_dec
     // printf("%d\n", decoder->m_nChannelCount);
     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
         kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB.data());
-        printf("Np with kiss_fftri\n");
+        // printf("Np with kiss_fftri\n");
         for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
             decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[ni];
     }    

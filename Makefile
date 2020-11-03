@@ -33,8 +33,8 @@ INCLUDES += -I$(LLVM_SRC_ROOT)/include -I../include -I$(HPVM_BUILD_DIR)/include
 
 ## BEGIN HPVM MAKEFILE
 LANGUAGE=hpvm
-SRCDIR_OBJS=AmbisonicCommons.ll kiss_fft.ll kiss_fftr.ll mit_hrtf_lib.ll mit_hrtf.ll sofa_hrtf.ll
-OBJS_SRC=src/AmbisonicCommons.cpp src/kiss_fft.c src/kiss_fftr.c src/mit_hrtf_lib.cpp src/mit_hrtf.cpp src/sofa_hrtf.cpp
+SRCDIR_OBJS=AmbisonicCommons.ll kiss_fft.ll kiss_fftr.ll mit_hrtf_lib.ll
+OBJS_SRC=src/AmbisonicCommons.cpp src/kiss_fft.c src/kiss_fftr.c src/mit_hrtf_lib.cpp
 HPVM_OBJS=main.hpvm.ll
 APP = $(EXE)
 APP_CFLAGS += $(INCLUDES) -ffast-math -O3 -fno-lax-vector-conversions -fno-vectorize -fno-slp-vectorize
