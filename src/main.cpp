@@ -2207,6 +2207,12 @@ struct __attribute__((__packed__)) RootArg {
     /*9*/ size_t bytes_resultSample;
     /*10*/ unsigned nSample;
     // /*11*/ unsigned channelCount;
+    /*11*/ float** channelpart1;
+    /*12*/ size_t bytes_channelpart1;
+    /*13*/ float** channelpart2;
+    /*14*/ size_t bytes_channelpart2;
+    /*15*/ float** channelpart3;
+    /*16*/ size_t bytes_channelpart3;
 };
 
 // A leaf node for the rotator
@@ -2241,9 +2247,23 @@ void rotatorSet_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotat
 }
 
 // A leaf node to add the psychoacoustic shelf filter
-void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
+// void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
+//     __hpvm__hint(hpvm::DEVICE);
+//     __hpvm__attributes(2, rotator, sumBF, 1, sumBF);
+
+//     // printf("psychoFilter starts\n");
+//     if (rotator->m_bOpt) {
+//         rotator->ShelfFilterOrder(sumBF, nSample);
+//     }
+//     else {}
+//     // printf("psychoFilter ends\n");
+
+//     __hpvm__return(2, bytes_rotator, bytes_sumBF);
+// }
+
+void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample, /*5*/ float** channelpart1, /*6*/ size_t bytes_channelpart1, /*7*/ float** channelpart2, /*8*/ size_t bytes_channelpart2, /*9*/ float** channelpart3, /*10*/ size_t bytes_channelpart3) {
     __hpvm__hint(hpvm::DEVICE);
-    __hpvm__attributes(2, rotator, sumBF, 1, sumBF);
+    __hpvm__attributes(2, rotator, sumBF, 3, channelpart1, channelpart2, channelpart3);
 
     // printf("psychoFilter starts\n");
     if (rotator->m_bOpt) {
@@ -2252,50 +2272,195 @@ void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
     else {}
     // printf("psychoFilter ends\n");
 
-    __hpvm__return(2, bytes_rotator, bytes_sumBF);
+    for (int i = 0; i < nSample; ++i) {
+        channelpart1[0][i] = sumBF->m_ppfChannels[kX][i];
+        channelpart1[1][i] = sumBF->m_ppfChannels[kY][i];
+        channelpart1[2][i] = sumBF->m_ppfChannels[kZ][i];
+
+        channelpart2[0][i] = sumBF->m_ppfChannels[kR][i];
+        channelpart2[1][i] = sumBF->m_ppfChannels[kS][i];
+        channelpart2[2][i] = sumBF->m_ppfChannels[kT][i];
+        channelpart2[3][i] = sumBF->m_ppfChannels[kU][i];
+        channelpart2[4][i] = sumBF->m_ppfChannels[kV][i];
+
+        channelpart3[0][i] = sumBF->m_ppfChannels[kQ][i];
+        channelpart3[1][i] = sumBF->m_ppfChannels[kO][i];
+        channelpart3[2][i] = sumBF->m_ppfChannels[kM][i];
+        channelpart3[3][i] = sumBF->m_ppfChannels[kK][i];
+        channelpart3[4][i] = sumBF->m_ppfChannels[kL][i];
+        channelpart3[5][i] = sumBF->m_ppfChannels[kN][i];
+        channelpart3[6][i] = sumBF->m_ppfChannels[kP][i];
+    }
+
+    __hpvm__return(7, bytes_rotator, bytes_rotator, bytes_rotator, bytes_sumBF, bytes_channelpart1, bytes_channelpart2, bytes_channelpart3);
 }
 
 // A leaf node to process rotate_order_1
-void rotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
+// void rotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
+//     __hpvm__hint(hpvm::DEVICE);
+//     __hpvm__attributes(2, rotator, sumBF, 1, rotator);
+
+//     // printf("rotateOrder1 starts\n");
+//     // printf("%u\n", rotator->m_nOrder);
+//     if (rotator->m_nOrder >= 1) {
+//         rotator->ProcessOrder1_3D(sumBF, nSample);
+//     }
+//     // printf("rotateOrder1 ends\n");
+
+//     __hpvm__return(2, bytes_rotator, bytes_sumBF);
+// }
+
+void rotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ unsigned nSample, /*3*/ float** channelpart1, /*4*/ size_t bytes_channelpart1) {
     __hpvm__hint(hpvm::DEVICE);
-    __hpvm__attributes(1, rotator, 1, rotator);
+    __hpvm__attributes(2, rotator, channelpart1, 1, channelpart1);
 
     // printf("rotateOrder1 starts\n");
     // printf("%u\n", rotator->m_nOrder);
     if (rotator->m_nOrder >= 1) {
-        rotator->ProcessOrder1_3D(sumBF, nSample);
+        // rotator->ProcessOrder1_3D(sumBF, nSample);
+        // float fSqrt3 = sqrt(3.f);
+
+        for(unsigned niSample = 0; niSample < nSample; niSample++) {
+            float valueY = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
+            float valueZ = channelpart1[2][niSample];
+            float valueX = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
+
+            channelpart1[1][niSample] = valueY;
+            channelpart1[2][niSample] = valueZ * rotator->m_fCosBeta + valueX * rotator->m_fSinBeta;
+            channelpart1[0][niSample] = valueX * rotator->m_fCosBeta + valueZ * rotator->m_fSinBeta;
+
+            valueY = -channelpart1[0][niSample] * rotator->m_fSinGamma + channelpart1[1][niSample] * rotator->m_fCosGamma;
+            valueZ = channelpart1[2][niSample];
+            valueX = channelpart1[0][niSample] * rotator->m_fCosGamma + channelpart1[1][niSample] * rotator->m_fSinGamma;
+
+            channelpart1[0][niSample] = valueX;
+            channelpart1[1][niSample] = valueY;
+            channelpart1[2][niSample] = valueZ;
+        }
     }
     // printf("rotateOrder1 ends\n");
 
-    __hpvm__return(2, bytes_rotator, bytes_sumBF);
+    __hpvm__return(1, bytes_channelpart1);
 }
 
 // A leaf node to process rotate_order_2
-void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
+// void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
+//     __hpvm__hint(hpvm::DEVICE);
+//     __hpvm__attributes(2, rotator, sumBF, 1, rotator);
+
+//     // printf("rotateOrder2 starts\n");
+//     if (rotator->m_nOrder >= 2) {
+//         rotator->ProcessOrder2_3D(sumBF, nSample);
+//     }
+//     // printf("rotateOrder2 ends\n");
+
+//     __hpvm__return(2, bytes_rotator, bytes_sumBF);
+// }
+
+void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ unsigned nSample, /*3*/ float** channelpart2, /*4*/ size_t bytes_channelpart2) {
     __hpvm__hint(hpvm::DEVICE);
-    __hpvm__attributes(1, rotator, 1, rotator);
+    __hpvm__attributes(2, rotator, channelpart2, 1, channelpart2);
 
-    // printf("rotateOrder2 starts\n");
+    // printf("rotateOrder1 starts\n");
+    // printf("%u\n", rotator->m_nOrder);
     if (rotator->m_nOrder >= 2) {
-        rotator->ProcessOrder2_3D(sumBF, nSample);
-    }
-    // printf("rotateOrder2 ends\n");
+        // rotator->ProcessOrder2_3D(sumBF, nSample);
+        float fSqrt3 = sqrt(3.f);
 
-    __hpvm__return(2, bytes_rotator, bytes_sumBF);
+        for (unsigned niSample = 0; niSample < nSample; niSample++) {  // R-0 S-1 T-2 U-3 V-4
+            float valueV = -channelpart2[3][niSample] * rotator->m_fSin2Alpha + channelpart2[4][niSample] * rotator->m_fCos2Alpha;
+            float valueT = -channelpart2[1][niSample] * rotator->m_fSinAlpha + channelpart2[2][niSample] * rotator->m_fCosAlpha;
+            float valueR = channelpart2[0][niSample];
+            float valueS = channelpart2[1][niSample] * rotator->m_fCosAlpha + channelpart2[2][niSample] * rotator->m_fSinAlpha;
+            float valueU = channelpart2[3][niSample] * rotator->m_fCos2Alpha + channelpart2[4][niSample] * rotator->m_fSin2Alpha;
+
+            channelpart2[4][niSample] = -rotator->m_fSinBeta * valueT + rotator->m_fCosBeta * valueV;
+            channelpart2[2][niSample] = -rotator->m_fCosBeta * valueT + rotator->m_fSinBeta * valueV;
+            channelpart2[0][niSample] = (0.75f * rotator->m_fCos2Beta + 0.25f) * valueR + (0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0)) * valueU + (fSqrt3 * rotator->m_fSinBeta * rotator->m_fCosBeta) * valueS;
+            channelpart2[1][niSample] = rotator->m_fCos2Beta * valueS - fSqrt3 * rotator->m_fCosBeta * rotator->m_fSinBeta * valueR + rotator->m_fCosBeta * rotator->m_fSinBeta * valueU;
+            channelpart2[3][niSample] = (0.25f * rotator->m_fCos2Beta + 0.75f) * valueU - rotator->m_fCosBeta * rotator->m_fSinBeta * valueS + 0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0) * valueR;
+
+            valueV = -channelpart2[3][niSample] * rotator->m_fSin2Gamma + channelpart2[4][niSample] * rotator->m_fCos2Gamma;
+            valueT = -channelpart2[1][niSample] * rotator->m_fSinGamma + channelpart2[2][niSample] * rotator->m_fCosGamma;
+            valueR = channelpart2[0][niSample];
+            valueS = channelpart2[1][niSample] * rotator->m_fCosGamma + channelpart2[2][niSample] * rotator->m_fSinGamma;
+            valueU = channelpart2[3][niSample] * rotator->m_fCos2Gamma + channelpart2[4][niSample] * rotator->m_fSin2Gamma;
+
+            channelpart2[0][niSample] = valueR;
+            channelpart2[1][niSample] = valueS;
+            channelpart2[2][niSample] = valueT;
+            channelpart2[3][niSample] = valueU;
+            channelpart2[4][niSample] = valueV;
+        }
+    }
+    // printf("rotateOrder1 ends\n");
+
+    __hpvm__return(1, bytes_channelpart2);
 }
 
 // A leaf node to process rotate_order_3
-void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
+// void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
+//     __hpvm__hint(hpvm::DEVICE);
+//     __hpvm__attributes(2, rotator, sumBF, 1, rotator);
+
+//     // printf("rotateOrder3 starts\n");
+//     if (rotator->m_nOrder >= 3) {
+//         rotator->ProcessOrder3_3D(sumBF, nSample);
+//     }
+//     // printf("rotateOrder3 ends\n");
+
+//     __hpvm__return(1, bytes_sumBF);
+// }
+
+void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ unsigned nSample, /*3*/ float** channelpart3, /*4*/ size_t bytes_channelpart3) {
     __hpvm__hint(hpvm::DEVICE);
-    __hpvm__attributes(1, rotator, 1, rotator);
+    __hpvm__attributes(2, rotator, channelpart3, 1, channelpart3);
 
-    // printf("rotateOrder3 starts\n");
+    // printf("rotateOrder1 starts\n");
+    // printf("%u\n", rotator->m_nOrder);
     if (rotator->m_nOrder >= 3) {
-        rotator->ProcessOrder3_3D(sumBF, nSample);
-    }
-    // printf("rotateOrder3 ends\n");
+        // rotator->ProcessOrder3_3D(sumBF, nSample);
+        float fSqrt3_2 = sqrt(3.f/2.f);
+        float fSqrt15 = sqrt(15.f);
+        float fSqrt5_2 = sqrt(5.f/2.f);
 
-    __hpvm__return(1, bytes_sumBF);
+        for (unsigned niSample = 0; niSample < nSample; niSample++) {  // Q-0 O-1 M-2 K-3 L-4 N-5 P-6
+            float valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
+            float valueO = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
+            float valueM = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
+            float valueK = channelpart3[3][niSample];
+            float valueL = channelpart3[4][niSample] * rotator->m_fCosAlpha + channelpart3[2][niSample] * rotator->m_fSinAlpha;
+            float valueN = channelpart3[5][niSample] * rotator->m_fCos2Alpha + channelpart3[1][niSample] * rotator->m_fSin2Alpha;
+            float valueP = channelpart3[6][niSample] * rotator->m_fCos3Alpha + channelpart3[0][niSample] * rotator->m_fSin3Alpha;
+
+            channelpart3[0][niSample] = 0.125f * valueQ * (5.f + 3.f * rotator->m_fCos2Beta) - fSqrt3_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueM * pow(rotator->m_fSinBeta, 2.0f);
+            channelpart3[1][niSample] = valueO * rotator->m_fCos2Beta - fSqrt5_2 * valueM * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] = 
+            channelpart3[2][niSample] = 0.125f * valueM * (3.f + 5.f * rotator->m_fCos2Beta) - fSqrt5_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueQ * pow(rotator->m_fSinBeta, 2.0f);
+            channelpart3[3][niSample] = 0.25f * valueK * rotator->m_fCosBeta * (-1.f + 15.f * rotator->m_fCos2Beta) + 0.5f * fSqrt15 * valueN * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.5f * fSqrt5_2 * valueP * pow(rotator->m_fSinBeta, 3.f) + 0.125f * fSqrt3_2 * valueL * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
+            channelpart3[4][niSample] = 0.0625f * valueL * (rotator->m_fCosBeta + 15.f * rotator->m_fCos3Beta) + 0.25f * fSqrt5_2 * valueN * (1.f + 3.f * rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueP * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.125 * fSqrt3_2 * valueK * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
+            channelpart3[5][niSample] = 0.125f * valueN * (5.f * rotator->m_fCosBeta + 3.f * rotator->m_fCos3Beta) + 0.25f * fSqrt3_2 * valueP * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.5f * fSqrt15 * valueK * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.125 * fSqrt5_2 * valueL * (rotator->m_fSinBeta - 3.f * rotator->m_fSin3Beta);
+            channelpart3[6][niSample] = 0.0625f * valueP * (15.f * rotator->m_fCosBeta + rotator->m_fCos3Beta) - 0.25f * fSqrt3_2 * valueN * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueL * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.5 * fSqrt5_2 * valueK * pow(rotator->m_fSinBeta, 3.f);
+
+            valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Gamma + channelpart3[0][niSample] * rotator->m_fCos3Gamma;
+            valueO = -channelpart3[5][niSample] * rotator->m_fSin2Gamma + channelpart3[1][niSample] * rotator->m_fCos2Gamma;
+            valueM = -channelpart3[4][niSample] * rotator->m_fSinGamma + channelpart3[2][niSample] * rotator->m_fCosGamma;
+            valueK = channelpart3[3][niSample];
+            valueL = channelpart3[4][niSample] * rotator->m_fCosGamma + channelpart3[2][niSample] * rotator->m_fSinGamma;
+            valueN = channelpart3[5][niSample] * rotator->m_fCos2Gamma + channelpart3[1][niSample] * rotator->m_fSin2Gamma;
+            valueP = channelpart3[6][niSample] * rotator->m_fCos3Gamma + channelpart3[0][niSample] * rotator->m_fSin3Gamma;
+            
+            channelpart3[0][niSample] = valueQ;
+            channelpart3[1][niSample] = valueO;
+            channelpart3[2][niSample] = valueM;
+            channelpart3[3][niSample] = valueK;
+            channelpart3[4][niSample] = valueL;
+            channelpart3[5][niSample] = valueN;
+            channelpart3[6][niSample] = valueP;
+        }
+    }
+    // printf("rotateOrder1 ends\n");
+
+    __hpvm__return(1, bytes_channelpart3);
 }
 
 // A leaf node for the zoomer setting
@@ -2314,9 +2479,40 @@ void zoomSet_fxp(/*0*/ CAmbisonicZoomer* zoomer, /*1*/ size_t bytes_zoomer) {
 }
 
 // A leaf node for the zoomer processing
-void zoomProcess_fxp(/*0*/ CAmbisonicZoomer* zoomer, /*1*/ size_t bytes_zoomer, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
+// void zoomProcess_fxp(/*0*/ CAmbisonicZoomer* zoomer, /*1*/ size_t bytes_zoomer, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
+//     __hpvm__hint(hpvm::DEVICE);
+//     __hpvm__attributes(2, zoomer, sumBF, 1, sumBF);
+
+//     // printf("zoomProcess starts\n");
+//     zoomer->Process(sumBF, nSample);
+//     // printf("zoomProcess ends\n");
+    
+//     __hpvm__return(1, bytes_sumBF);
+// }
+
+void zoomProcess_fxp(/*0*/ CAmbisonicZoomer* zoomer, /*1*/ size_t bytes_zoomer, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample, /*5*/ float** channelpart1, /*6*/ size_t bytes_channelpart1, /*7*/ float** channelpart2, /*8*/ size_t bytes_channelpart2, /*9*/ float** channelpart3, /*10*/ size_t bytes_channelpart3) {
     __hpvm__hint(hpvm::DEVICE);
-    __hpvm__attributes(2, zoomer, sumBF, 1, sumBF);
+    __hpvm__attributes(5, zoomer, sumBF, channelpart1, channelpart2, channelpart3, 1, sumBF);
+
+    for (unsigned i = 0; i < nSample; ++i) {
+        sumBF->m_ppfChannels[kX][i] = channelpart1[0][i];
+        sumBF->m_ppfChannels[kY][i] = channelpart1[1][i];
+        sumBF->m_ppfChannels[kZ][i] = channelpart1[2][i];
+
+        sumBF->m_ppfChannels[kR][i] = channelpart2[0][i];
+        sumBF->m_ppfChannels[kS][i] = channelpart2[1][i];
+        sumBF->m_ppfChannels[kT][i] = channelpart2[2][i];
+        sumBF->m_ppfChannels[kU][i] = channelpart2[3][i];
+        sumBF->m_ppfChannels[kV][i] = channelpart2[4][i];
+
+        sumBF->m_ppfChannels[kQ][i] = channelpart3[0][i];
+        sumBF->m_ppfChannels[kO][i] = channelpart3[1][i];
+        sumBF->m_ppfChannels[kM][i] = channelpart3[2][i];
+        sumBF->m_ppfChannels[kK][i] = channelpart3[3][i];
+        sumBF->m_ppfChannels[kL][i] = channelpart3[4][i];
+        sumBF->m_ppfChannels[kN][i] = channelpart3[5][i];
+        sumBF->m_ppfChannels[kP][i] = channelpart3[6][i];
+    }
 
     // printf("zoomProcess starts\n");
     zoomer->Process(sumBF, nSample);
@@ -2505,7 +2701,8 @@ void overlap_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes
 // The root node
 void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ CAmbisonicZoomer* zoomer, \
                     /*5*/ size_t bytes_zoomer, /*6*/ CAmbisonicBinauralizer* decoder, /*7*/ size_t bytes_decoder, /*8*/ float** resultSample, \
-                    /*9*/ size_t bytes_resultSample, /*10*/ unsigned nSample /*11*/ /*unsigned channelCount*/ ) {
+                    /*9*/ size_t bytes_resultSample, /*10*/ unsigned nSample, /*11*/ float** channelpart1, /*12*/ size_t bytes_channelpart1, /*13*/ float** channelpart2, /*14*/ size_t bytes_channelpart2,\
+                    /*15*/ float** channelpart3, /*16*/ size_t bytes_channelpart3) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(5, rotator, sumBF, zoomer, decoder, resultSample, 3, sumBF, zoomer, decoder, resultSample);
 
@@ -2545,24 +2742,48 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
     __hpvm__bindIn(psychoFilterNode, 2, 2, 0);
     __hpvm__bindIn(psychoFilterNode, 3, 3, 0);
     __hpvm__bindIn(psychoFilterNode, 10, 4, 0);
+    __hpvm__bindIn(psychoFilterNode, 11, 5, 0);
+    __hpvm__bindIn(psychoFilterNode, 12, 6, 0);
+    __hpvm__bindIn(psychoFilterNode, 13, 7, 0);
+    __hpvm__bindIn(psychoFilterNode, 14, 8, 0);
+    __hpvm__bindIn(psychoFilterNode, 15, 9, 0);
+    __hpvm__bindIn(psychoFilterNode, 16, 10, 0);
+
+    // __hpvm__bindIn(rotateOrder1Node, 0, 0, 0);
+    // __hpvm__edge(psychoFilterNode, rotateOrder1Node, 1, 0, 1, 0);
+    // __hpvm__bindIn(rotateOrder1Node, 2, 2, 0);
+    // __hpvm__edge(psychoFilterNode, rotateOrder1Node, 1, 1, 3, 0);
+    // __hpvm__bindIn(rotateOrder1Node, 10, 4, 0);
+
+    // __hpvm__bindIn(rotateOrder2Node, 0, 0, 0);
+    // __hpvm__edge(rotateOrder1Node, rotateOrder2Node, 1, 0, 1, 0);
+    // __hpvm__bindIn(rotateOrder2Node, 2, 2, 0);
+    // __hpvm__edge(rotateOrder1Node, rotateOrder2Node, 1, 1, 3, 0);
+    // __hpvm__bindIn(rotateOrder2Node, 10, 4, 0);
+
+    // __hpvm__bindIn(rotateOrder3Node, 0, 0, 0);
+    // __hpvm__edge(rotateOrder2Node, rotateOrder3Node, 1, 0, 1, 0);
+    // __hpvm__bindIn(rotateOrder3Node, 2, 2, 0);
+    // __hpvm__edge(rotateOrder2Node, rotateOrder3Node, 1, 1, 3, 0);
+    // __hpvm__bindIn(rotateOrder3Node, 10, 4, 0);
 
     __hpvm__bindIn(rotateOrder1Node, 0, 0, 0);
     __hpvm__edge(psychoFilterNode, rotateOrder1Node, 1, 0, 1, 0);
-    __hpvm__bindIn(rotateOrder1Node, 2, 2, 0);
-    __hpvm__edge(psychoFilterNode, rotateOrder1Node, 1, 1, 3, 0);
-    __hpvm__bindIn(rotateOrder1Node, 10, 4, 0);
+    __hpvm__bindIn(rotateOrder1Node, 10, 2, 0);
+    __hpvm__bindIn(rotateOrder1Node, 11, 3, 0);
+    __hpvm__edge(psychoFilterNode, rotateOrder1Node, 1, 4, 4, 0);
 
     __hpvm__bindIn(rotateOrder2Node, 0, 0, 0);
-    __hpvm__edge(rotateOrder1Node, rotateOrder2Node, 1, 0, 1, 0);
-    __hpvm__bindIn(rotateOrder2Node, 2, 2, 0);
-    __hpvm__edge(rotateOrder1Node, rotateOrder2Node, 1, 1, 3, 0);
-    __hpvm__bindIn(rotateOrder2Node, 10, 4, 0);
+    __hpvm__edge(psychoFilterNode, rotateOrder2Node, 1, 1, 1, 0);
+    __hpvm__bindIn(rotateOrder2Node, 10, 2, 0);
+    __hpvm__bindIn(rotateOrder2Node, 13, 3, 0);
+    __hpvm__edge(psychoFilterNode, rotateOrder2Node, 1, 5, 4, 0);
 
     __hpvm__bindIn(rotateOrder3Node, 0, 0, 0);
-    __hpvm__edge(rotateOrder2Node, rotateOrder3Node, 1, 0, 1, 0);
-    __hpvm__bindIn(rotateOrder3Node, 2, 2, 0);
-    __hpvm__edge(rotateOrder2Node, rotateOrder3Node, 1, 1, 3, 0);
-    __hpvm__bindIn(rotateOrder3Node, 10, 4, 0);
+    __hpvm__edge(psychoFilterNode, rotateOrder3Node, 1, 2, 1, 0);
+    __hpvm__bindIn(rotateOrder3Node, 10, 2, 0);
+    __hpvm__bindIn(rotateOrder3Node, 15, 3, 0);
+    __hpvm__edge(psychoFilterNode, rotateOrder3Node, 1, 6, 4, 0);
 
     __hpvm__bindIn(zoomSetNode, 4, 0, 0);
     __hpvm__bindIn(zoomSetNode, 5, 1, 0);
@@ -2570,8 +2791,16 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
     __hpvm__bindIn(zoomProcessNode, 4, 0, 0);
     __hpvm__edge(zoomSetNode, zoomProcessNode, 1, 0, 1, 0);
     __hpvm__bindIn(zoomProcessNode, 2, 2, 0);
-    __hpvm__edge(rotateOrder3Node, zoomProcessNode, 1, 0, 3, 0);
+    // __hpvm__edge(rotateOrder3Node, zoomProcessNode, 1, 0, 3, 0);
+    // __hpvm__bindIn(zoomProcessNode, 10, 4, 0);
+    __hpvm__edge(psychoFilterNode, zoomProcessNode, 1, 3, 3, 0);
     __hpvm__bindIn(zoomProcessNode, 10, 4, 0);
+    __hpvm__bindIn(zoomProcessNode, 11, 5, 0);
+    __hpvm__edge(rotateOrder1Node, zoomProcessNode, 1, 0, 6, 0);
+    __hpvm__bindIn(zoomProcessNode, 13, 7, 0);
+    __hpvm__edge(rotateOrder2Node, zoomProcessNode, 1, 0, 8, 0);
+    __hpvm__bindIn(zoomProcessNode, 15, 9, 0);
+    __hpvm__edge(rotateOrder3Node, zoomProcessNode, 1, 0, 10, 0);
 
     // __hpvm__bindIn(decodeProcessSetNode, 6, 0, 0);
     // __hpvm__bindIn(decodeProcessSetNode, 7, 1, 0);
@@ -2652,6 +2881,27 @@ int main(int argc, char const *argv[])
     CBFormat* sumBF = new CBFormat;
     sumBF->Configure(NORDER, true, BLOCK_SIZE);
 
+    float** channelpart1 = new float*[3];
+    channelpart1[0] = new float[BLOCK_SIZE];
+    channelpart1[1] = new float[BLOCK_SIZE];
+    channelpart1[2] = new float[BLOCK_SIZE];
+
+    float** channelpart2 = new float*[5];
+    channelpart2[0] = new float[BLOCK_SIZE];
+    channelpart2[1] = new float[BLOCK_SIZE];
+    channelpart2[2] = new float[BLOCK_SIZE];
+    channelpart2[3] = new float[BLOCK_SIZE];
+    channelpart2[4] = new float[BLOCK_SIZE];
+
+    float** channelpart3 = new float*[7];
+    channelpart3[0] = new float[BLOCK_SIZE];
+    channelpart3[1] = new float[BLOCK_SIZE];
+    channelpart3[2] = new float[BLOCK_SIZE];
+    channelpart3[3] = new float[BLOCK_SIZE];
+    channelpart3[4] = new float[BLOCK_SIZE];
+    channelpart3[5] = new float[BLOCK_SIZE];
+    channelpart3[6] = new float[BLOCK_SIZE];
+
     __hpvm__init();
 
     size_t bytes_rotator = sizeof(CAmbisonicProcessor);
@@ -2659,6 +2909,9 @@ int main(int argc, char const *argv[])
     size_t bytes_zoomer = sizeof(CAmbisonicZoomer);
     size_t bytes_decoder = sizeof(CAmbisonicBinauralizer);
     size_t bytes_resultSample = 2 * BLOCK_SIZE * sizeof(float);
+    size_t bytes_channelpart1 = 3 * BLOCK_SIZE * sizeof(float);
+    size_t bytes_channelpart2 = 5 * BLOCK_SIZE * sizeof(float);
+    size_t bytes_channelpart3 = 7 * BLOCK_SIZE * sizeof(float);
 
     RootArg* arg = (RootArg*)malloc(sizeof(RootArg));
 
@@ -2673,7 +2926,13 @@ int main(int argc, char const *argv[])
     arg->resultSample = resultSample;
     arg->bytes_resultSample = bytes_resultSample;
     arg->nSample = BLOCK_SIZE;
-    // arg->channelCount = audioAddr->decoder->m_nChannelCount;    
+    // arg->channelCount = audioAddr->decoder->m_nChannelCount;
+    arg->channelpart1 = channelpart1;
+    arg->bytes_channelpart1 = bytes_channelpart1;
+    arg->channelpart2 = channelpart2;
+    arg->bytes_channelpart2 = bytes_channelpart2;
+    arg->channelpart3 = channelpart3;
+    arg->bytes_channelpart3 = bytes_channelpart3;
 
     // ABAudio* audioAddr = &audio;
     for (int i = 0; i < numBlocks; ++i){
@@ -2688,6 +2947,9 @@ int main(int argc, char const *argv[])
         llvm_hpvm_track_mem(audioAddr->decoder, bytes_decoder);
         // printf("resultSample\n");
         llvm_hpvm_track_mem(resultSample, bytes_resultSample);
+        llvm_hpvm_track_mem(channelpart1, bytes_channelpart1);
+        llvm_hpvm_track_mem(channelpart2, bytes_channelpart2);
+        llvm_hpvm_track_mem(channelpart3, bytes_channelpart3);
         // printf("Done with Tracking\n");
 
         void* DFG = __hpvm__launch(0, audioDecoding, (void*) arg);
@@ -2700,6 +2962,9 @@ int main(int argc, char const *argv[])
         llvm_hpvm_request_mem(audioAddr->zoomer, bytes_zoomer);
         llvm_hpvm_request_mem(audioAddr->decoder, bytes_decoder);
         llvm_hpvm_request_mem(resultSample, bytes_resultSample);
+        llvm_hpvm_request_mem(channelpart1, bytes_channelpart1);
+        llvm_hpvm_request_mem(channelpart2, bytes_channelpart2);
+        llvm_hpvm_request_mem(channelpart3, bytes_channelpart3);
         // printf("\nDone requesting Memory\n");
 
         // printf("Untracking\n");
@@ -2708,6 +2973,9 @@ int main(int argc, char const *argv[])
         llvm_hpvm_untrack_mem(audioAddr->zoomer);
         llvm_hpvm_untrack_mem(audioAddr->decoder);
         llvm_hpvm_untrack_mem(resultSample);
+        llvm_hpvm_untrack_mem(channelpart1);
+        llvm_hpvm_untrack_mem(channelpart2);
+        llvm_hpvm_untrack_mem(channelpart3);
         // printf("Done with Untracking\n");
     }
 

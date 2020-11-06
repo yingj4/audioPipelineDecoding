@@ -17220,10 +17220,10 @@ declare void @__hpvm__attributes(i32, ...) local_unnamed_addr #1
 declare void @__hpvm__return(i32, ...) local_unnamed_addr #1
 
 ; Function Attrs: uwtable
-define void @psychoFilter_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i32 %nSample) #3 {
+define void @psychoFilter_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i32 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3) #3 {
 entry:
   tail call void @__hpvm__hint(i32 1) #24
-  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, i32 1, %class.CBFormat* %sumBF) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, i32 3, float** %channelpart1, float** %channelpart2, float** %channelpart3) #24
   %0 = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 0, i32 5
   %1 = load i8, i8* %0, align 4, !tbaa !35, !range !36
   %tobool = icmp eq i8 %1, 0
@@ -17234,64 +17234,743 @@ if.then:                                          ; preds = %entry
   br label %if.end
 
 if.end:                                           ; preds = %entry, %if.then
-  tail call void (i32, ...) @__hpvm__return(i32 2, i64 %bytes_rotator, i64 %bytes_sumBF) #24
+  %cmp198 = icmp eq i32 %nSample, 0
+  br i1 %cmp198, label %for.cond.cleanup, label %for.body.lr.ph
+
+for.body.lr.ph:                                   ; preds = %if.end
+  %_M_head_impl.i.i.i.i.i.i = getelementptr inbounds %class.CBFormat, %class.CBFormat* %sumBF, i64 0, i32 4, i32 0, i32 0, i32 0, i32 0
+  %2 = load float**, float*** %_M_head_impl.i.i.i.i.i.i, align 8, !tbaa !12
+  %arrayidx.i = getelementptr inbounds float*, float** %2, i64 3
+  %3 = load float*, float** %arrayidx.i, align 8, !tbaa !12
+  %4 = load float*, float** %channelpart1, align 8, !tbaa !12
+  %arrayidx.i197 = getelementptr inbounds float*, float** %2, i64 1
+  %5 = load float*, float** %arrayidx.i197, align 8, !tbaa !12
+  %arrayidx8 = getelementptr inbounds float*, float** %channelpart1, i64 1
+  %6 = load float*, float** %arrayidx8, align 8, !tbaa !12
+  %arrayidx.i195 = getelementptr inbounds float*, float** %2, i64 2
+  %7 = load float*, float** %arrayidx.i195, align 8, !tbaa !12
+  %arrayidx15 = getelementptr inbounds float*, float** %channelpart1, i64 2
+  %8 = load float*, float** %arrayidx15, align 8, !tbaa !12
+  %arrayidx.i193 = getelementptr inbounds float*, float** %2, i64 6
+  %9 = load float*, float** %arrayidx.i193, align 8, !tbaa !12
+  %10 = load float*, float** %channelpart2, align 8, !tbaa !12
+  %arrayidx.i191 = getelementptr inbounds float*, float** %2, i64 7
+  %11 = load float*, float** %arrayidx.i191, align 8, !tbaa !12
+  %arrayidx29 = getelementptr inbounds float*, float** %channelpart2, i64 1
+  %12 = load float*, float** %arrayidx29, align 8, !tbaa !12
+  %arrayidx.i189 = getelementptr inbounds float*, float** %2, i64 5
+  %13 = load float*, float** %arrayidx.i189, align 8, !tbaa !12
+  %arrayidx36 = getelementptr inbounds float*, float** %channelpart2, i64 2
+  %14 = load float*, float** %arrayidx36, align 8, !tbaa !12
+  %arrayidx.i187 = getelementptr inbounds float*, float** %2, i64 8
+  %15 = load float*, float** %arrayidx.i187, align 8, !tbaa !12
+  %arrayidx43 = getelementptr inbounds float*, float** %channelpart2, i64 3
+  %16 = load float*, float** %arrayidx43, align 8, !tbaa !12
+  %arrayidx.i185 = getelementptr inbounds float*, float** %2, i64 4
+  %17 = load float*, float** %arrayidx.i185, align 8, !tbaa !12
+  %arrayidx50 = getelementptr inbounds float*, float** %channelpart2, i64 4
+  %18 = load float*, float** %arrayidx50, align 8, !tbaa !12
+  %arrayidx.i183 = getelementptr inbounds float*, float** %2, i64 9
+  %19 = load float*, float** %arrayidx.i183, align 8, !tbaa !12
+  %20 = load float*, float** %channelpart3, align 8, !tbaa !12
+  %arrayidx.i181 = getelementptr inbounds float*, float** %2, i64 10
+  %21 = load float*, float** %arrayidx.i181, align 8, !tbaa !12
+  %arrayidx64 = getelementptr inbounds float*, float** %channelpart3, i64 1
+  %22 = load float*, float** %arrayidx64, align 8, !tbaa !12
+  %arrayidx.i179 = getelementptr inbounds float*, float** %2, i64 11
+  %23 = load float*, float** %arrayidx.i179, align 8, !tbaa !12
+  %arrayidx71 = getelementptr inbounds float*, float** %channelpart3, i64 2
+  %24 = load float*, float** %arrayidx71, align 8, !tbaa !12
+  %arrayidx.i177 = getelementptr inbounds float*, float** %2, i64 12
+  %25 = load float*, float** %arrayidx.i177, align 8, !tbaa !12
+  %arrayidx78 = getelementptr inbounds float*, float** %channelpart3, i64 3
+  %26 = load float*, float** %arrayidx78, align 8, !tbaa !12
+  %arrayidx.i175 = getelementptr inbounds float*, float** %2, i64 13
+  %27 = load float*, float** %arrayidx.i175, align 8, !tbaa !12
+  %arrayidx85 = getelementptr inbounds float*, float** %channelpart3, i64 4
+  %28 = load float*, float** %arrayidx85, align 8, !tbaa !12
+  %arrayidx.i173 = getelementptr inbounds float*, float** %2, i64 14
+  %29 = load float*, float** %arrayidx.i173, align 8, !tbaa !12
+  %arrayidx92 = getelementptr inbounds float*, float** %channelpart3, i64 5
+  %30 = load float*, float** %arrayidx92, align 8, !tbaa !12
+  %arrayidx.i171 = getelementptr inbounds float*, float** %2, i64 15
+  %31 = load float*, float** %arrayidx.i171, align 8, !tbaa !12
+  %arrayidx99 = getelementptr inbounds float*, float** %channelpart3, i64 6
+  %32 = load float*, float** %arrayidx99, align 8, !tbaa !12
+  %wide.trip.count = zext i32 %nSample to i64
+  br label %for.body
+
+for.cond.cleanup:                                 ; preds = %for.body, %if.end
+  tail call void (i32, ...) @__hpvm__return(i32 7, i64 %bytes_rotator, i64 %bytes_rotator, i64 %bytes_rotator, i64 %bytes_sumBF, i64 %bytes_channelpart1, i64 %bytes_channelpart2, i64 %bytes_channelpart3) #24
   ret void
+
+for.body:                                         ; preds = %for.body, %for.body.lr.ph
+  %indvars.iv = phi i64 [ 0, %for.body.lr.ph ], [ %indvars.iv.next, %for.body ]
+  %arrayidx = getelementptr inbounds float, float* %3, i64 %indvars.iv
+  %33 = bitcast float* %arrayidx to i32*
+  %34 = load i32, i32* %33, align 4, !tbaa !19
+  %arrayidx3 = getelementptr inbounds float, float* %4, i64 %indvars.iv
+  %35 = bitcast float* %arrayidx3 to i32*
+  store i32 %34, i32* %35, align 4, !tbaa !19
+  %arrayidx7 = getelementptr inbounds float, float* %5, i64 %indvars.iv
+  %36 = bitcast float* %arrayidx7 to i32*
+  %37 = load i32, i32* %36, align 4, !tbaa !19
+  %arrayidx10 = getelementptr inbounds float, float* %6, i64 %indvars.iv
+  %38 = bitcast float* %arrayidx10 to i32*
+  store i32 %37, i32* %38, align 4, !tbaa !19
+  %arrayidx14 = getelementptr inbounds float, float* %7, i64 %indvars.iv
+  %39 = bitcast float* %arrayidx14 to i32*
+  %40 = load i32, i32* %39, align 4, !tbaa !19
+  %arrayidx17 = getelementptr inbounds float, float* %8, i64 %indvars.iv
+  %41 = bitcast float* %arrayidx17 to i32*
+  store i32 %40, i32* %41, align 4, !tbaa !19
+  %arrayidx21 = getelementptr inbounds float, float* %9, i64 %indvars.iv
+  %42 = bitcast float* %arrayidx21 to i32*
+  %43 = load i32, i32* %42, align 4, !tbaa !19
+  %arrayidx24 = getelementptr inbounds float, float* %10, i64 %indvars.iv
+  %44 = bitcast float* %arrayidx24 to i32*
+  store i32 %43, i32* %44, align 4, !tbaa !19
+  %arrayidx28 = getelementptr inbounds float, float* %11, i64 %indvars.iv
+  %45 = bitcast float* %arrayidx28 to i32*
+  %46 = load i32, i32* %45, align 4, !tbaa !19
+  %arrayidx31 = getelementptr inbounds float, float* %12, i64 %indvars.iv
+  %47 = bitcast float* %arrayidx31 to i32*
+  store i32 %46, i32* %47, align 4, !tbaa !19
+  %arrayidx35 = getelementptr inbounds float, float* %13, i64 %indvars.iv
+  %48 = bitcast float* %arrayidx35 to i32*
+  %49 = load i32, i32* %48, align 4, !tbaa !19
+  %arrayidx38 = getelementptr inbounds float, float* %14, i64 %indvars.iv
+  %50 = bitcast float* %arrayidx38 to i32*
+  store i32 %49, i32* %50, align 4, !tbaa !19
+  %arrayidx42 = getelementptr inbounds float, float* %15, i64 %indvars.iv
+  %51 = bitcast float* %arrayidx42 to i32*
+  %52 = load i32, i32* %51, align 4, !tbaa !19
+  %arrayidx45 = getelementptr inbounds float, float* %16, i64 %indvars.iv
+  %53 = bitcast float* %arrayidx45 to i32*
+  store i32 %52, i32* %53, align 4, !tbaa !19
+  %arrayidx49 = getelementptr inbounds float, float* %17, i64 %indvars.iv
+  %54 = bitcast float* %arrayidx49 to i32*
+  %55 = load i32, i32* %54, align 4, !tbaa !19
+  %arrayidx52 = getelementptr inbounds float, float* %18, i64 %indvars.iv
+  %56 = bitcast float* %arrayidx52 to i32*
+  store i32 %55, i32* %56, align 4, !tbaa !19
+  %arrayidx56 = getelementptr inbounds float, float* %19, i64 %indvars.iv
+  %57 = bitcast float* %arrayidx56 to i32*
+  %58 = load i32, i32* %57, align 4, !tbaa !19
+  %arrayidx59 = getelementptr inbounds float, float* %20, i64 %indvars.iv
+  %59 = bitcast float* %arrayidx59 to i32*
+  store i32 %58, i32* %59, align 4, !tbaa !19
+  %arrayidx63 = getelementptr inbounds float, float* %21, i64 %indvars.iv
+  %60 = bitcast float* %arrayidx63 to i32*
+  %61 = load i32, i32* %60, align 4, !tbaa !19
+  %arrayidx66 = getelementptr inbounds float, float* %22, i64 %indvars.iv
+  %62 = bitcast float* %arrayidx66 to i32*
+  store i32 %61, i32* %62, align 4, !tbaa !19
+  %arrayidx70 = getelementptr inbounds float, float* %23, i64 %indvars.iv
+  %63 = bitcast float* %arrayidx70 to i32*
+  %64 = load i32, i32* %63, align 4, !tbaa !19
+  %arrayidx73 = getelementptr inbounds float, float* %24, i64 %indvars.iv
+  %65 = bitcast float* %arrayidx73 to i32*
+  store i32 %64, i32* %65, align 4, !tbaa !19
+  %arrayidx77 = getelementptr inbounds float, float* %25, i64 %indvars.iv
+  %66 = bitcast float* %arrayidx77 to i32*
+  %67 = load i32, i32* %66, align 4, !tbaa !19
+  %arrayidx80 = getelementptr inbounds float, float* %26, i64 %indvars.iv
+  %68 = bitcast float* %arrayidx80 to i32*
+  store i32 %67, i32* %68, align 4, !tbaa !19
+  %arrayidx84 = getelementptr inbounds float, float* %27, i64 %indvars.iv
+  %69 = bitcast float* %arrayidx84 to i32*
+  %70 = load i32, i32* %69, align 4, !tbaa !19
+  %arrayidx87 = getelementptr inbounds float, float* %28, i64 %indvars.iv
+  %71 = bitcast float* %arrayidx87 to i32*
+  store i32 %70, i32* %71, align 4, !tbaa !19
+  %arrayidx91 = getelementptr inbounds float, float* %29, i64 %indvars.iv
+  %72 = bitcast float* %arrayidx91 to i32*
+  %73 = load i32, i32* %72, align 4, !tbaa !19
+  %arrayidx94 = getelementptr inbounds float, float* %30, i64 %indvars.iv
+  %74 = bitcast float* %arrayidx94 to i32*
+  store i32 %73, i32* %74, align 4, !tbaa !19
+  %arrayidx98 = getelementptr inbounds float, float* %31, i64 %indvars.iv
+  %75 = bitcast float* %arrayidx98 to i32*
+  %76 = load i32, i32* %75, align 4, !tbaa !19
+  %arrayidx101 = getelementptr inbounds float, float* %32, i64 %indvars.iv
+  %77 = bitcast float* %arrayidx101 to i32*
+  store i32 %76, i32* %77, align 4, !tbaa !19
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
+  %exitcond = icmp eq i64 %indvars.iv.next, %wide.trip.count
+  br i1 %exitcond, label %for.cond.cleanup, label %for.body
 }
 
 ; Function Attrs: nounwind uwtable
-define void @rotateOrder1_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* nocapture readonly %sumBF, i64 %bytes_sumBF, i32 %nSample) #7 {
+define void @rotateOrder1_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i32 %nSample, float** %channelpart1, i64 %bytes_channelpart1) #7 {
 entry:
   tail call void @__hpvm__hint(i32 1) #24
-  tail call void (i32, ...) @__hpvm__attributes(i32 1, %class.CAmbisonicProcessor* %rotator, i32 1, %class.CAmbisonicProcessor* %rotator) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, float** %channelpart1, i32 1, float** %channelpart1) #24
   %0 = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 0, i32 1
   %1 = load i32, i32* %0, align 8, !tbaa !30
-  %cmp = icmp eq i32 %1, 0
-  br i1 %cmp, label %if.end, label %if.then
+  %cmp = icmp ne i32 %1, 0
+  %cmp1127 = icmp ne i32 %nSample, 0
+  %or.cond = and i1 %cmp, %cmp1127
+  br i1 %or.cond, label %for.body.lr.ph, label %if.end
 
-if.then:                                          ; preds = %entry
-  tail call void @_ZN19CAmbisonicProcessor16ProcessOrder1_3DEP8CBFormatj(%class.CAmbisonicProcessor* nonnull %rotator, %class.CBFormat* %sumBF, i32 %nSample)
-  br label %if.end
+for.body.lr.ph:                                   ; preds = %entry
+  %2 = load float*, float** %channelpart1, align 8, !tbaa !12
+  %m_fSinAlpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 16
+  %arrayidx3 = getelementptr inbounds float*, float** %channelpart1, i64 1
+  %3 = load float*, float** %arrayidx3, align 8, !tbaa !12
+  %m_fCosAlpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 15
+  %arrayidx7 = getelementptr inbounds float*, float** %channelpart1, i64 2
+  %4 = load float*, float** %arrayidx7, align 8, !tbaa !12
+  %m_fCosBeta = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 17
+  %m_fSinBeta = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 18
+  %m_fSinGamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 20
+  %m_fCosGamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 19
+  %wide.trip.count = zext i32 %nSample to i64
+  br label %for.body
 
-if.end:                                           ; preds = %entry, %if.then
-  tail call void (i32, ...) @__hpvm__return(i32 2, i64 %bytes_rotator, i64 %bytes_sumBF) #24
+for.body:                                         ; preds = %for.body, %for.body.lr.ph
+  %indvars.iv = phi i64 [ 0, %for.body.lr.ph ], [ %indvars.iv.next, %for.body ]
+  %arrayidx2 = getelementptr inbounds float, float* %2, i64 %indvars.iv
+  %5 = load float, float* %arrayidx2, align 4, !tbaa !19
+  %6 = load float, float* %m_fSinAlpha, align 4, !tbaa !172
+  %7 = fmul float %5, %6
+  %arrayidx5 = getelementptr inbounds float, float* %3, i64 %indvars.iv
+  %8 = load float, float* %arrayidx5, align 4, !tbaa !19
+  %9 = load float, float* %m_fCosAlpha, align 8, !tbaa !171
+  %mul6 = fmul float %8, %9
+  %add = fsub float %mul6, %7
+  %arrayidx9 = getelementptr inbounds float, float* %4, i64 %indvars.iv
+  %10 = load float, float* %arrayidx9, align 4, !tbaa !19
+  %mul14 = fmul float %5, %9
+  %mul19 = fmul float %6, %8
+  %add20 = fadd float %mul19, %mul14
+  store float %add, float* %arrayidx5, align 4, !tbaa !19
+  %11 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul24 = fmul float %10, %11
+  %12 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul25 = fmul float %add20, %12
+  %add26 = fadd float %mul24, %mul25
+  store float %add26, float* %arrayidx9, align 4, !tbaa !19
+  %13 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul31 = fmul float %add20, %13
+  %14 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul33 = fmul float %10, %14
+  %add34 = fadd float %mul31, %mul33
+  store float %add34, float* %arrayidx2, align 4, !tbaa !19
+  %15 = load float, float* %m_fSinGamma, align 4, !tbaa !178
+  %16 = fmul float %add34, %15
+  %17 = load float, float* %arrayidx5, align 4, !tbaa !19
+  %18 = load float, float* %m_fCosGamma, align 8, !tbaa !177
+  %mul46 = fmul float %17, %18
+  %add47 = fsub float %mul46, %16
+  %19 = bitcast float* %arrayidx9 to i32*
+  %20 = load i32, i32* %19, align 4, !tbaa !19
+  %mul55 = fmul float %add34, %18
+  %mul60 = fmul float %15, %17
+  %add61 = fadd float %mul60, %mul55
+  store float %add61, float* %arrayidx2, align 4, !tbaa !19
+  store float %add47, float* %arrayidx5, align 4, !tbaa !19
+  store i32 %20, i32* %19, align 4, !tbaa !19
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
+  %exitcond = icmp eq i64 %indvars.iv.next, %wide.trip.count
+  br i1 %exitcond, label %if.end, label %for.body
+
+if.end:                                           ; preds = %for.body, %entry
+  tail call void (i32, ...) @__hpvm__return(i32 1, i64 %bytes_channelpart1) #24
   ret void
 }
 
 ; Function Attrs: nounwind uwtable
-define void @rotateOrder2_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* readonly %sumBF, i64 %bytes_sumBF, i32 %nSample) #7 {
+define void @rotateOrder2_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i32 %nSample, float** %channelpart2, i64 %bytes_channelpart2) #7 {
 entry:
   tail call void @__hpvm__hint(i32 1) #24
-  tail call void (i32, ...) @__hpvm__attributes(i32 1, %class.CAmbisonicProcessor* %rotator, i32 1, %class.CAmbisonicProcessor* %rotator) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, float** %channelpart2, i32 1, float** %channelpart2) #24
   %0 = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 0, i32 1
   %1 = load i32, i32* %0, align 8, !tbaa !30
   %cmp = icmp ugt i32 %1, 1
-  br i1 %cmp, label %if.then, label %if.end
+  %cmp1297 = icmp ne i32 %nSample, 0
+  %or.cond = and i1 %cmp, %cmp1297
+  br i1 %or.cond, label %for.body.lr.ph, label %if.end
 
-if.then:                                          ; preds = %entry
-  tail call void @_ZN19CAmbisonicProcessor16ProcessOrder2_3DEP8CBFormatj(%class.CAmbisonicProcessor* nonnull %rotator, %class.CBFormat* %sumBF, i32 %nSample)
-  br label %if.end
+for.body.lr.ph:                                   ; preds = %entry
+  %arrayidx = getelementptr inbounds float*, float** %channelpart2, i64 3
+  %2 = load float*, float** %arrayidx, align 8, !tbaa !12
+  %m_fSin2Alpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 22
+  %arrayidx3 = getelementptr inbounds float*, float** %channelpart2, i64 4
+  %3 = load float*, float** %arrayidx3, align 8, !tbaa !12
+  %m_fCos2Alpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 21
+  %arrayidx7 = getelementptr inbounds float*, float** %channelpart2, i64 1
+  %4 = load float*, float** %arrayidx7, align 8, !tbaa !12
+  %m_fSinAlpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 16
+  %arrayidx12 = getelementptr inbounds float*, float** %channelpart2, i64 2
+  %5 = load float*, float** %arrayidx12, align 8, !tbaa !12
+  %m_fCosAlpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 15
+  %6 = load float*, float** %channelpart2, align 8, !tbaa !12
+  %m_fSinBeta = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 18
+  %m_fCosBeta = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 17
+  %m_fCos2Beta = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 23
+  %m_fSin2Gamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 26
+  %m_fCos2Gamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 25
+  %m_fSinGamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 20
+  %m_fCosGamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 19
+  %wide.trip.count = zext i32 %nSample to i64
+  br label %for.body
 
-if.end:                                           ; preds = %if.then, %entry
-  tail call void (i32, ...) @__hpvm__return(i32 2, i64 %bytes_rotator, i64 %bytes_sumBF) #24
+for.body:                                         ; preds = %for.body, %for.body.lr.ph
+  %indvars.iv = phi i64 [ 0, %for.body.lr.ph ], [ %indvars.iv.next, %for.body ]
+  %arrayidx2 = getelementptr inbounds float, float* %2, i64 %indvars.iv
+  %7 = load float, float* %arrayidx2, align 4, !tbaa !19
+  %8 = load float, float* %m_fSin2Alpha, align 4, !tbaa !180
+  %9 = fmul float %7, %8
+  %arrayidx5 = getelementptr inbounds float, float* %3, i64 %indvars.iv
+  %10 = load float, float* %arrayidx5, align 4, !tbaa !19
+  %11 = load float, float* %m_fCos2Alpha, align 8, !tbaa !179
+  %mul6 = fmul float %10, %11
+  %add = fsub float %mul6, %9
+  %arrayidx9 = getelementptr inbounds float, float* %4, i64 %indvars.iv
+  %12 = load float, float* %arrayidx9, align 4, !tbaa !19
+  %13 = load float, float* %m_fSinAlpha, align 4, !tbaa !172
+  %14 = fmul float %12, %13
+  %arrayidx14 = getelementptr inbounds float, float* %5, i64 %indvars.iv
+  %15 = load float, float* %arrayidx14, align 4, !tbaa !19
+  %16 = load float, float* %m_fCosAlpha, align 8, !tbaa !171
+  %mul15 = fmul float %15, %16
+  %add16 = fsub float %mul15, %14
+  %arrayidx19 = getelementptr inbounds float, float* %6, i64 %indvars.iv
+  %17 = load float, float* %arrayidx19, align 4, !tbaa !19
+  %mul24 = fmul float %12, %16
+  %mul29 = fmul float %13, %15
+  %add30 = fadd float %mul29, %mul24
+  %mul35 = fmul float %7, %11
+  %mul40 = fmul float %8, %10
+  %add41 = fadd float %mul40, %mul35
+  %18 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %19 = fmul float %add16, %18
+  %20 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul44 = fmul float %add, %20
+  %add45 = fsub float %mul44, %19
+  store float %add45, float* %arrayidx5, align 4, !tbaa !19
+  %21 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %22 = fmul float %add16, %21
+  %23 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul53 = fmul float %add, %23
+  %add54 = fsub float %mul53, %22
+  store float %add54, float* %arrayidx14, align 4, !tbaa !19
+  %24 = load float, float* %m_fCos2Beta, align 8, !tbaa !181
+  %mul58 = fmul float %24, 7.500000e-01
+  %add59 = fadd float %mul58, 2.500000e-01
+  %mul60 = fmul float %17, %add59
+  %conv61 = fpext float %mul60 to double
+  %25 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %conv65 = fpext float %25 to double
+  %square = fmul double %conv65, %conv65
+  %mul67 = fmul double %square, 0x3FEBB67AE0000000
+  %conv68 = fpext float %add41 to double
+  %mul69 = fmul double %mul67, %conv68
+  %add70 = fadd double %mul69, %conv61
+  %mul72 = fmul float %25, 0x3FFBB67AE0000000
+  %26 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul74 = fmul float %mul72, %26
+  %mul75 = fmul float %add30, %mul74
+  %conv76 = fpext float %mul75 to double
+  %add77 = fadd double %add70, %conv76
+  %conv78 = fptrunc double %add77 to float
+  store float %conv78, float* %arrayidx19, align 4, !tbaa !19
+  %27 = load float, float* %m_fCos2Beta, align 8, !tbaa !181
+  %mul83 = fmul float %add30, %27
+  %28 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul85 = fmul float %28, 0x3FFBB67AE0000000
+  %29 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul87 = fmul float %mul85, %29
+  %mul88 = fmul float %17, %mul87
+  %sub89 = fsub float %mul83, %mul88
+  %mul92 = fmul float %28, %29
+  %mul93 = fmul float %add41, %mul92
+  %add94 = fadd float %mul93, %sub89
+  store float %add94, float* %arrayidx9, align 4, !tbaa !19
+  %30 = load float, float* %m_fCos2Beta, align 8, !tbaa !181
+  %mul99 = fmul float %30, 2.500000e-01
+  %add100 = fadd float %mul99, 7.500000e-01
+  %mul101 = fmul float %add41, %add100
+  %31 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %32 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul104 = fmul float %31, %32
+  %mul105 = fmul float %add30, %mul104
+  %sub106 = fsub float %mul101, %mul105
+  %conv107 = fpext float %sub106 to double
+  %conv111 = fpext float %32 to double
+  %square296 = fmul double %conv111, %conv111
+  %mul113 = fmul double %square296, 0x3FEBB67AE0000000
+  %conv114 = fpext float %17 to double
+  %mul115 = fmul double %mul113, %conv114
+  %add116 = fadd double %mul115, %conv107
+  %conv117 = fptrunc double %add116 to float
+  store float %conv117, float* %arrayidx2, align 4, !tbaa !19
+  %33 = load float, float* %m_fSin2Gamma, align 4, !tbaa !184
+  %34 = fmul float %33, %conv117
+  %35 = load float, float* %arrayidx5, align 4, !tbaa !19
+  %36 = load float, float* %m_fCos2Gamma, align 8, !tbaa !183
+  %mul129 = fmul float %35, %36
+  %add130 = fsub float %mul129, %34
+  %37 = load float, float* %arrayidx9, align 4, !tbaa !19
+  %38 = load float, float* %m_fSinGamma, align 4, !tbaa !178
+  %39 = fmul float %37, %38
+  %40 = load float, float* %arrayidx14, align 4, !tbaa !19
+  %41 = load float, float* %m_fCosGamma, align 8, !tbaa !177
+  %mul139 = fmul float %40, %41
+  %add140 = fsub float %mul139, %39
+  %mul148 = fmul float %37, %41
+  %mul153 = fmul float %38, %40
+  %add154 = fadd float %mul153, %mul148
+  %mul159 = fmul float %36, %conv117
+  %mul164 = fmul float %33, %35
+  %add165 = fadd float %mul164, %mul159
+  store float %add154, float* %arrayidx9, align 4, !tbaa !19
+  store float %add140, float* %arrayidx14, align 4, !tbaa !19
+  store float %add165, float* %arrayidx2, align 4, !tbaa !19
+  store float %add130, float* %arrayidx5, align 4, !tbaa !19
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
+  %exitcond = icmp eq i64 %indvars.iv.next, %wide.trip.count
+  br i1 %exitcond, label %if.end, label %for.body
+
+if.end:                                           ; preds = %for.body, %entry
+  tail call void (i32, ...) @__hpvm__return(i32 1, i64 %bytes_channelpart2) #24
   ret void
 }
 
 ; Function Attrs: nounwind uwtable
-define void @rotateOrder3_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* readonly %sumBF, i64 %bytes_sumBF, i32 %nSample) #7 {
+define void @rotateOrder3_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i32 %nSample, float** %channelpart3, i64 %bytes_channelpart3) #7 {
 entry:
   tail call void @__hpvm__hint(i32 1) #24
-  tail call void (i32, ...) @__hpvm__attributes(i32 1, %class.CAmbisonicProcessor* %rotator, i32 1, %class.CAmbisonicProcessor* %rotator) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, float** %channelpart3, i32 1, float** %channelpart3) #24
   %0 = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 0, i32 1
   %1 = load i32, i32* %0, align 8, !tbaa !30
   %cmp = icmp ugt i32 %1, 2
-  br i1 %cmp, label %if.then, label %if.end
+  %cmp5584 = icmp ne i32 %nSample, 0
+  %or.cond = and i1 %cmp, %cmp5584
+  br i1 %or.cond, label %for.body.lr.ph, label %if.end
 
-if.then:                                          ; preds = %entry
-  tail call void @_ZN19CAmbisonicProcessor16ProcessOrder3_3DEP8CBFormatj(%class.CAmbisonicProcessor* nonnull %rotator, %class.CBFormat* %sumBF, i32 %nSample)
-  br label %if.end
+for.body.lr.ph:                                   ; preds = %entry
+  %arrayidx = getelementptr inbounds float*, float** %channelpart3, i64 6
+  %m_fSin3Alpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 28
+  %m_fCos3Alpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 27
+  %arrayidx11 = getelementptr inbounds float*, float** %channelpart3, i64 5
+  %m_fSin2Alpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 22
+  %arrayidx16 = getelementptr inbounds float*, float** %channelpart3, i64 1
+  %m_fCos2Alpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 21
+  %arrayidx21 = getelementptr inbounds float*, float** %channelpart3, i64 4
+  %m_fSinAlpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 16
+  %arrayidx26 = getelementptr inbounds float*, float** %channelpart3, i64 2
+  %m_fCosAlpha = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 15
+  %arrayidx31 = getelementptr inbounds float*, float** %channelpart3, i64 3
+  %m_fCos2Beta = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 23
+  %m_fCosBeta = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 17
+  %m_fSinBeta = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 18
+  %m_fSin3Beta = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 30
+  %m_fCos3Beta = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 29
+  %m_fSin3Gamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 32
+  %m_fCos3Gamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 31
+  %m_fSin2Gamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 26
+  %m_fCos2Gamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 25
+  %m_fSinGamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 20
+  %m_fCosGamma = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 19
+  %wide.trip.count = zext i32 %nSample to i64
+  %.pre = load float*, float** %arrayidx, align 8, !tbaa !12
+  %.pre586 = load float*, float** %channelpart3, align 8, !tbaa !12
+  %.pre587 = load float*, float** %arrayidx11, align 8, !tbaa !12
+  %.pre588 = load float*, float** %arrayidx16, align 8, !tbaa !12
+  %.pre589 = load float*, float** %arrayidx21, align 8, !tbaa !12
+  %.pre590 = load float*, float** %arrayidx26, align 8, !tbaa !12
+  %.pre591 = load float*, float** %arrayidx31, align 8, !tbaa !12
+  br label %for.body
 
-if.end:                                           ; preds = %if.then, %entry
-  tail call void (i32, ...) @__hpvm__return(i32 1, i64 %bytes_sumBF) #24
+for.body:                                         ; preds = %for.body, %for.body.lr.ph
+  %2 = phi float* [ %.pre591, %for.body.lr.ph ], [ %76, %for.body ]
+  %3 = phi float* [ %.pre590, %for.body.lr.ph ], [ %73, %for.body ]
+  %4 = phi float* [ %.pre589, %for.body.lr.ph ], [ %69, %for.body ]
+  %5 = phi float* [ %.pre588, %for.body.lr.ph ], [ %66, %for.body ]
+  %6 = phi float* [ %.pre587, %for.body.lr.ph ], [ %62, %for.body ]
+  %7 = phi float* [ %.pre586, %for.body.lr.ph ], [ %59, %for.body ]
+  %8 = phi float* [ %.pre, %for.body.lr.ph ], [ %56, %for.body ]
+  %indvars.iv = phi i64 [ 0, %for.body.lr.ph ], [ %indvars.iv.next, %for.body ]
+  %arrayidx6 = getelementptr inbounds float, float* %8, i64 %indvars.iv
+  %9 = load float, float* %arrayidx6, align 4, !tbaa !19
+  %10 = load float, float* %m_fSin3Alpha, align 4, !tbaa !186
+  %11 = fmul float %9, %10
+  %arrayidx9 = getelementptr inbounds float, float* %7, i64 %indvars.iv
+  %12 = load float, float* %arrayidx9, align 4, !tbaa !19
+  %13 = load float, float* %m_fCos3Alpha, align 8, !tbaa !185
+  %mul10 = fmul float %12, %13
+  %add = fsub float %mul10, %11
+  %arrayidx13 = getelementptr inbounds float, float* %6, i64 %indvars.iv
+  %14 = load float, float* %arrayidx13, align 4, !tbaa !19
+  %15 = load float, float* %m_fSin2Alpha, align 4, !tbaa !180
+  %16 = fmul float %14, %15
+  %arrayidx18 = getelementptr inbounds float, float* %5, i64 %indvars.iv
+  %17 = load float, float* %arrayidx18, align 4, !tbaa !19
+  %18 = load float, float* %m_fCos2Alpha, align 8, !tbaa !179
+  %mul19 = fmul float %17, %18
+  %add20 = fsub float %mul19, %16
+  %arrayidx23 = getelementptr inbounds float, float* %4, i64 %indvars.iv
+  %19 = load float, float* %arrayidx23, align 4, !tbaa !19
+  %20 = load float, float* %m_fSinAlpha, align 4, !tbaa !172
+  %21 = fmul float %19, %20
+  %arrayidx28 = getelementptr inbounds float, float* %3, i64 %indvars.iv
+  %22 = load float, float* %arrayidx28, align 4, !tbaa !19
+  %23 = load float, float* %m_fCosAlpha, align 8, !tbaa !171
+  %mul29 = fmul float %22, %23
+  %add30 = fsub float %mul29, %21
+  %arrayidx33 = getelementptr inbounds float, float* %2, i64 %indvars.iv
+  %24 = load float, float* %arrayidx33, align 4, !tbaa !19
+  %mul38 = fmul float %19, %23
+  %mul43 = fmul float %20, %22
+  %add44 = fadd float %mul43, %mul38
+  %mul49 = fmul float %14, %18
+  %mul54 = fmul float %15, %17
+  %add55 = fadd float %mul54, %mul49
+  %mul60 = fmul float %9, %13
+  %mul65 = fmul float %10, %12
+  %add66 = fadd float %mul65, %mul60
+  %mul67 = fmul float %add, 1.250000e-01
+  %25 = load float, float* %m_fCos2Beta, align 8, !tbaa !181
+  %mul68 = fmul float %25, 3.000000e+00
+  %add69 = fadd float %mul68, 5.000000e+00
+  %mul70 = fmul float %mul67, %add69
+  %mul71 = fmul float %add20, 0x3FF3988E20000000
+  %26 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul72 = fmul float %mul71, %26
+  %27 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul73 = fmul float %mul72, %27
+  %sub74 = fsub float %mul70, %mul73
+  %conv75 = fpext float %sub74 to double
+  %mul77 = fmul float %add30, 0x3FEEFBDEC0000000
+  %conv78 = fpext float %mul77 to double
+  %conv80 = fpext float %27 to double
+  %square = fmul double %conv80, %conv80
+  %mul82 = fmul double %square, %conv78
+  %add83 = fadd double %mul82, %conv75
+  %conv84 = fptrunc double %add83 to float
+  store float %conv84, float* %arrayidx9, align 4, !tbaa !19
+  %28 = load float, float* %m_fCos2Beta, align 8, !tbaa !181
+  %mul89 = fmul float %add20, %28
+  %mul90 = fmul float %add30, 0x3FF94C5840000000
+  %29 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul92 = fmul float %mul90, %29
+  %30 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul94 = fmul float %mul92, %30
+  %sub95 = fsub float %mul89, %mul94
+  %mul96 = fmul float %add, 0x3FF3988E20000000
+  %mul98 = fmul float %mul96, %29
+  %mul100 = fmul float %mul98, %30
+  %add101 = fadd float %mul100, %sub95
+  store float %add101, float* %arrayidx18, align 4, !tbaa !19
+  %mul105 = fmul float %add30, 1.250000e-01
+  %31 = load float, float* %m_fCos2Beta, align 8, !tbaa !181
+  %mul107 = fmul float %31, 5.000000e+00
+  %add108 = fadd float %mul107, 3.000000e+00
+  %mul109 = fmul float %mul105, %add108
+  %mul110 = fmul float %add20, 0x3FF94C5840000000
+  %32 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul112 = fmul float %mul110, %32
+  %33 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul114 = fmul float %mul112, %33
+  %sub115 = fsub float %mul109, %mul114
+  %conv116 = fpext float %sub115 to double
+  %mul118 = fmul float %add, 0x3FEEFBDEC0000000
+  %conv119 = fpext float %mul118 to double
+  %conv121 = fpext float %33 to double
+  %square579 = fmul double %conv121, %conv121
+  %mul123 = fmul double %square579, %conv119
+  %add124 = fadd double %mul123, %conv116
+  %conv125 = fptrunc double %add124 to float
+  store float %conv125, float* %arrayidx28, align 4, !tbaa !19
+  store float %conv125, float* %arrayidx9, align 4, !tbaa !19
+  %mul132 = fmul float %24, 2.500000e-01
+  %34 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul134 = fmul float %mul132, %34
+  %35 = load float, float* %m_fCos2Beta, align 8, !tbaa !181
+  %mul136 = fmul float %35, 1.500000e+01
+  %add137 = fadd float %mul136, -1.000000e+00
+  %mul138 = fmul float %mul134, %add137
+  %conv139 = fpext float %mul138 to double
+  %mul141 = fmul float %add55, 0x3FFEFBDEC0000000
+  %mul143 = fmul float %mul141, %34
+  %conv144 = fpext float %mul143 to double
+  %36 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %conv146 = fpext float %36 to double
+  %square580 = fmul double %conv146, %conv146
+  %mul148 = fmul double %square580, %conv144
+  %add149 = fadd double %mul148, %conv139
+  %mul151 = fmul float %add66, 0x3FE94C5840000000
+  %conv152 = fpext float %mul151 to double
+  %call155 = tail call double @pow(double %conv146, double 3.000000e+00) #24
+  %mul156 = fmul double %call155, %conv152
+  %add157 = fadd double %mul156, %add149
+  %mul159 = fmul float %add44, 0x3FC3988E20000000
+  %37 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %38 = load float, float* %m_fSin3Beta, align 4, !tbaa !188
+  %mul161 = fmul float %38, 5.000000e+00
+  %add162 = fadd float %37, %mul161
+  %mul163 = fmul float %mul159, %add162
+  %conv164 = fpext float %mul163 to double
+  %add165 = fadd double %add157, %conv164
+  %conv166 = fptrunc double %add165 to float
+  %39 = load float*, float** %arrayidx31, align 8, !tbaa !12
+  %arrayidx169 = getelementptr inbounds float, float* %39, i64 %indvars.iv
+  store float %conv166, float* %arrayidx169, align 4, !tbaa !19
+  %mul170 = fmul float %add44, 6.250000e-02
+  %40 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %41 = load float, float* %m_fCos3Beta, align 8, !tbaa !187
+  %mul172 = fmul float %41, 1.500000e+01
+  %add173 = fadd float %40, %mul172
+  %mul174 = fmul float %mul170, %add173
+  %mul176 = fmul float %add55, 0x3FD94C5840000000
+  %42 = load float, float* %m_fCos2Beta, align 8, !tbaa !181
+  %mul178 = fmul float %42, 3.000000e+00
+  %add179 = fadd float %mul178, 1.000000e+00
+  %mul180 = fmul float %mul176, %add179
+  %43 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul182 = fmul float %43, %mul180
+  %add183 = fadd float %mul174, %mul182
+  %conv184 = fpext float %add183 to double
+  %mul186 = fmul float %add66, 0x3FEEFBDEC0000000
+  %mul188 = fmul float %mul186, %40
+  %conv189 = fpext float %mul188 to double
+  %conv191 = fpext float %43 to double
+  %square581 = fmul double %conv191, %conv191
+  %mul193 = fmul double %square581, %conv189
+  %add194 = fadd double %mul193, %conv184
+  %conv197 = fpext float %24 to double
+  %mul198 = fmul double %conv197, 0x3FC3988E20000000
+  %44 = load float, float* %m_fSin3Beta, align 4, !tbaa !188
+  %mul201 = fmul float %44, 5.000000e+00
+  %add202 = fadd float %43, %mul201
+  %conv203 = fpext float %add202 to double
+  %mul204 = fmul double %mul198, %conv203
+  %sub205 = fsub double %add194, %mul204
+  %conv206 = fptrunc double %sub205 to float
+  %45 = load float*, float** %arrayidx21, align 8, !tbaa !12
+  %arrayidx209 = getelementptr inbounds float, float* %45, i64 %indvars.iv
+  store float %conv206, float* %arrayidx209, align 4, !tbaa !19
+  %mul210 = fmul float %add55, 1.250000e-01
+  %46 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul212 = fmul float %46, 5.000000e+00
+  %47 = load float, float* %m_fCos3Beta, align 8, !tbaa !187
+  %mul214 = fmul float %47, 3.000000e+00
+  %add215 = fadd float %mul212, %mul214
+  %mul216 = fmul float %mul210, %add215
+  %mul218 = fmul float %add66, 0x3FD3988E20000000
+  %48 = load float, float* %m_fCos2Beta, align 8, !tbaa !181
+  %add220 = fadd float %48, 3.000000e+00
+  %mul221 = fmul float %mul218, %add220
+  %49 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul223 = fmul float %49, %mul221
+  %add224 = fadd float %mul216, %mul223
+  %conv225 = fpext float %add224 to double
+  %mul227 = fmul float %24, 0x3FFEFBDEC0000000
+  %mul229 = fmul float %mul227, %46
+  %conv230 = fpext float %mul229 to double
+  %conv232 = fpext float %49 to double
+  %square582 = fmul double %conv232, %conv232
+  %mul234 = fmul double %square582, %conv230
+  %add235 = fadd double %mul234, %conv225
+  %conv238 = fpext float %add44 to double
+  %mul239 = fmul double %conv238, 0x3FC94C5840000000
+  %50 = load float, float* %m_fSin3Beta, align 4, !tbaa !188
+  %mul242 = fmul float %50, 3.000000e+00
+  %sub243 = fsub float %49, %mul242
+  %conv244 = fpext float %sub243 to double
+  %mul245 = fmul double %mul239, %conv244
+  %add246 = fadd double %add235, %mul245
+  %conv247 = fptrunc double %add246 to float
+  %51 = load float*, float** %arrayidx11, align 8, !tbaa !12
+  %arrayidx250 = getelementptr inbounds float, float* %51, i64 %indvars.iv
+  store float %conv247, float* %arrayidx250, align 4, !tbaa !19
+  %mul251 = fmul float %add66, 6.250000e-02
+  %52 = load float, float* %m_fCosBeta, align 8, !tbaa !174
+  %mul253 = fmul float %52, 1.500000e+01
+  %53 = load float, float* %m_fCos3Beta, align 8, !tbaa !187
+  %add255 = fadd float %mul253, %53
+  %mul256 = fmul float %mul251, %add255
+  %mul258 = fmul float %add55, 0x3FD3988E20000000
+  %54 = load float, float* %m_fCos2Beta, align 8, !tbaa !181
+  %add260 = fadd float %54, 3.000000e+00
+  %mul261 = fmul float %mul258, %add260
+  %55 = load float, float* %m_fSinBeta, align 4, !tbaa !175
+  %mul263 = fmul float %55, %mul261
+  %sub264 = fsub float %mul256, %mul263
+  %conv265 = fpext float %sub264 to double
+  %mul267 = fmul float %add44, 0x3FEEFBDEC0000000
+  %mul269 = fmul float %mul267, %52
+  %conv270 = fpext float %mul269 to double
+  %conv272 = fpext float %55 to double
+  %square583 = fmul double %conv272, %conv272
+  %mul274 = fmul double %square583, %conv270
+  %add275 = fadd double %mul274, %conv265
+  %mul279 = fmul double %conv197, 0x3FE94C5840000000
+  %call282 = tail call double @pow(double %conv272, double 3.000000e+00) #24
+  %mul283 = fmul double %mul279, %call282
+  %sub284 = fsub double %add275, %mul283
+  %conv285 = fptrunc double %sub284 to float
+  %56 = load float*, float** %arrayidx, align 8, !tbaa !12
+  %arrayidx288 = getelementptr inbounds float, float* %56, i64 %indvars.iv
+  store float %conv285, float* %arrayidx288, align 4, !tbaa !19
+  %57 = load float, float* %m_fSin3Gamma, align 4, !tbaa !190
+  %58 = fmul float %57, %conv285
+  %59 = load float*, float** %channelpart3, align 8, !tbaa !12
+  %arrayidx296 = getelementptr inbounds float, float* %59, i64 %indvars.iv
+  %60 = load float, float* %arrayidx296, align 4, !tbaa !19
+  %61 = load float, float* %m_fCos3Gamma, align 8, !tbaa !189
+  %mul297 = fmul float %60, %61
+  %add298 = fsub float %mul297, %58
+  %62 = load float*, float** %arrayidx11, align 8, !tbaa !12
+  %arrayidx301 = getelementptr inbounds float, float* %62, i64 %indvars.iv
+  %63 = load float, float* %arrayidx301, align 4, !tbaa !19
+  %64 = load float, float* %m_fSin2Gamma, align 4, !tbaa !184
+  %65 = fmul float %63, %64
+  %66 = load float*, float** %arrayidx16, align 8, !tbaa !12
+  %arrayidx306 = getelementptr inbounds float, float* %66, i64 %indvars.iv
+  %67 = load float, float* %arrayidx306, align 4, !tbaa !19
+  %68 = load float, float* %m_fCos2Gamma, align 8, !tbaa !183
+  %mul307 = fmul float %67, %68
+  %add308 = fsub float %mul307, %65
+  %69 = load float*, float** %arrayidx21, align 8, !tbaa !12
+  %arrayidx311 = getelementptr inbounds float, float* %69, i64 %indvars.iv
+  %70 = load float, float* %arrayidx311, align 4, !tbaa !19
+  %71 = load float, float* %m_fSinGamma, align 4, !tbaa !178
+  %72 = fmul float %70, %71
+  %73 = load float*, float** %arrayidx26, align 8, !tbaa !12
+  %arrayidx316 = getelementptr inbounds float, float* %73, i64 %indvars.iv
+  %74 = load float, float* %arrayidx316, align 4, !tbaa !19
+  %75 = load float, float* %m_fCosGamma, align 8, !tbaa !177
+  %mul317 = fmul float %74, %75
+  %add318 = fsub float %mul317, %72
+  %76 = load float*, float** %arrayidx31, align 8, !tbaa !12
+  %arrayidx321 = getelementptr inbounds float, float* %76, i64 %indvars.iv
+  %77 = bitcast float* %arrayidx321 to i32*
+  %78 = load i32, i32* %77, align 4, !tbaa !19
+  %mul326 = fmul float %70, %75
+  %mul331 = fmul float %71, %74
+  %add332 = fadd float %mul331, %mul326
+  %mul337 = fmul float %63, %68
+  %mul342 = fmul float %64, %67
+  %add343 = fadd float %mul342, %mul337
+  %mul348 = fmul float %61, %conv285
+  %mul353 = fmul float %57, %60
+  %add354 = fadd float %mul353, %mul348
+  store float %add298, float* %arrayidx296, align 4, !tbaa !19
+  store float %add308, float* %arrayidx306, align 4, !tbaa !19
+  store float %add318, float* %arrayidx316, align 4, !tbaa !19
+  store i32 %78, i32* %77, align 4, !tbaa !19
+  store float %add332, float* %arrayidx311, align 4, !tbaa !19
+  store float %add343, float* %arrayidx301, align 4, !tbaa !19
+  store float %add354, float* %arrayidx288, align 4, !tbaa !19
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
+  %exitcond = icmp eq i64 %indvars.iv.next, %wide.trip.count
+  br i1 %exitcond, label %if.end, label %for.body
+
+if.end:                                           ; preds = %for.body, %entry
+  tail call void (i32, ...) @__hpvm__return(i32 1, i64 %bytes_channelpart3) #24
   ret void
 }
 
@@ -17333,17 +18012,83 @@ entry:
 }
 
 ; Function Attrs: nounwind uwtable
-define void @zoomProcess_fxp(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i32 %nSample) #7 {
+define void @zoomProcess_fxp(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i32 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3) #7 {
 entry:
   tail call void @__hpvm__hint(i32 1) #24
-  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicZoomer* %zoomer, %class.CBFormat* %sumBF, i32 1, %class.CBFormat* %sumBF) #24
-  %cmp103.i = icmp eq i32 %nSample, 0
-  br i1 %cmp103.i, label %_ZN16CAmbisonicZoomer7ProcessEP8CBFormatj.exit, label %for.cond2.preheader.lr.ph.i
+  tail call void (i32, ...) @__hpvm__attributes(i32 5, %class.CAmbisonicZoomer* %zoomer, %class.CBFormat* %sumBF, float** %channelpart1, float** %channelpart2, float** %channelpart3, i32 1, %class.CBFormat* %sumBF) #24
+  %cmp197 = icmp eq i32 %nSample, 0
+  br i1 %cmp197, label %_ZN16CAmbisonicZoomer7ProcessEP8CBFormatj.exit, label %for.body.lr.ph
 
-for.cond2.preheader.lr.ph.i:                      ; preds = %entry
-  %0 = getelementptr inbounds %class.CAmbisonicZoomer, %class.CAmbisonicZoomer* %zoomer, i64 0, i32 0, i32 4
-  %1 = load i32, i32* %0, align 8, !tbaa !34
-  %cmp397.i = icmp eq i32 %1, 0
+for.body.lr.ph:                                   ; preds = %entry
+  %0 = load float*, float** %channelpart1, align 8, !tbaa !12
+  %_M_head_impl.i.i.i.i.i.i194 = getelementptr inbounds %class.CBFormat, %class.CBFormat* %sumBF, i64 0, i32 4, i32 0, i32 0, i32 0, i32 0
+  %1 = load float**, float*** %_M_head_impl.i.i.i.i.i.i194, align 8, !tbaa !12
+  %arrayidx.i195 = getelementptr inbounds float*, float** %1, i64 3
+  %2 = load float*, float** %arrayidx.i195, align 8, !tbaa !12
+  %arrayidx4 = getelementptr inbounds float*, float** %channelpart1, i64 1
+  %3 = load float*, float** %arrayidx4, align 8, !tbaa !12
+  %arrayidx.i193 = getelementptr inbounds float*, float** %1, i64 1
+  %4 = load float*, float** %arrayidx.i193, align 8, !tbaa !12
+  %arrayidx11 = getelementptr inbounds float*, float** %channelpart1, i64 2
+  %5 = load float*, float** %arrayidx11, align 8, !tbaa !12
+  %arrayidx.i191 = getelementptr inbounds float*, float** %1, i64 2
+  %6 = load float*, float** %arrayidx.i191, align 8, !tbaa !12
+  %7 = load float*, float** %channelpart2, align 8, !tbaa !12
+  %arrayidx.i189 = getelementptr inbounds float*, float** %1, i64 6
+  %8 = load float*, float** %arrayidx.i189, align 8, !tbaa !12
+  %arrayidx25 = getelementptr inbounds float*, float** %channelpart2, i64 1
+  %9 = load float*, float** %arrayidx25, align 8, !tbaa !12
+  %arrayidx.i187 = getelementptr inbounds float*, float** %1, i64 7
+  %10 = load float*, float** %arrayidx.i187, align 8, !tbaa !12
+  %arrayidx32 = getelementptr inbounds float*, float** %channelpart2, i64 2
+  %11 = load float*, float** %arrayidx32, align 8, !tbaa !12
+  %arrayidx.i185 = getelementptr inbounds float*, float** %1, i64 5
+  %12 = load float*, float** %arrayidx.i185, align 8, !tbaa !12
+  %arrayidx39 = getelementptr inbounds float*, float** %channelpart2, i64 3
+  %13 = load float*, float** %arrayidx39, align 8, !tbaa !12
+  %arrayidx.i183 = getelementptr inbounds float*, float** %1, i64 8
+  %14 = load float*, float** %arrayidx.i183, align 8, !tbaa !12
+  %arrayidx46 = getelementptr inbounds float*, float** %channelpart2, i64 4
+  %15 = load float*, float** %arrayidx46, align 8, !tbaa !12
+  %arrayidx.i181 = getelementptr inbounds float*, float** %1, i64 4
+  %16 = load float*, float** %arrayidx.i181, align 8, !tbaa !12
+  %17 = load float*, float** %channelpart3, align 8, !tbaa !12
+  %arrayidx.i179 = getelementptr inbounds float*, float** %1, i64 9
+  %18 = load float*, float** %arrayidx.i179, align 8, !tbaa !12
+  %arrayidx60 = getelementptr inbounds float*, float** %channelpart3, i64 1
+  %19 = load float*, float** %arrayidx60, align 8, !tbaa !12
+  %arrayidx.i177 = getelementptr inbounds float*, float** %1, i64 10
+  %20 = load float*, float** %arrayidx.i177, align 8, !tbaa !12
+  %arrayidx67 = getelementptr inbounds float*, float** %channelpart3, i64 2
+  %21 = load float*, float** %arrayidx67, align 8, !tbaa !12
+  %arrayidx.i175 = getelementptr inbounds float*, float** %1, i64 11
+  %22 = load float*, float** %arrayidx.i175, align 8, !tbaa !12
+  %arrayidx74 = getelementptr inbounds float*, float** %channelpart3, i64 3
+  %23 = load float*, float** %arrayidx74, align 8, !tbaa !12
+  %arrayidx.i173 = getelementptr inbounds float*, float** %1, i64 12
+  %24 = load float*, float** %arrayidx.i173, align 8, !tbaa !12
+  %arrayidx81 = getelementptr inbounds float*, float** %channelpart3, i64 4
+  %25 = load float*, float** %arrayidx81, align 8, !tbaa !12
+  %arrayidx.i171 = getelementptr inbounds float*, float** %1, i64 13
+  %26 = load float*, float** %arrayidx.i171, align 8, !tbaa !12
+  %arrayidx88 = getelementptr inbounds float*, float** %channelpart3, i64 5
+  %27 = load float*, float** %arrayidx88, align 8, !tbaa !12
+  %arrayidx.i169 = getelementptr inbounds float*, float** %1, i64 14
+  %28 = load float*, float** %arrayidx.i169, align 8, !tbaa !12
+  %arrayidx95 = getelementptr inbounds float*, float** %channelpart3, i64 6
+  %29 = load float*, float** %arrayidx95, align 8, !tbaa !12
+  %arrayidx.i = getelementptr inbounds float*, float** %1, i64 15
+  %30 = load float*, float** %arrayidx.i, align 8, !tbaa !12
+  %wide.trip.count = zext i32 %nSample to i64
+  br label %for.body
+
+for.cond.cleanup:                                 ; preds = %for.body
+  br i1 %cmp197, label %_ZN16CAmbisonicZoomer7ProcessEP8CBFormatj.exit, label %for.cond2.preheader.lr.ph.i
+
+for.cond2.preheader.lr.ph.i:                      ; preds = %for.cond.cleanup
+  %31 = getelementptr inbounds %class.CAmbisonicZoomer, %class.CAmbisonicZoomer* %zoomer, i64 0, i32 0, i32 4
+  %32 = load i32, i32* %31, align 8, !tbaa !34
+  %cmp397.i = icmp eq i32 %32, 0
   %m_fZoomRed.i = getelementptr inbounds %class.CAmbisonicZoomer, %class.CAmbisonicZoomer* %zoomer, i64 0, i32 6
   %m_fZoomBlend.i = getelementptr inbounds %class.CAmbisonicZoomer, %class.CAmbisonicZoomer* %zoomer, i64 0, i32 8
   %m_fZoom.i = getelementptr inbounds %class.CAmbisonicZoomer, %class.CAmbisonicZoomer* %zoomer, i64 0, i32 5
@@ -17357,18 +18102,18 @@ for.cond2.preheader.us.preheader.i:               ; preds = %for.cond2.preheader
   %wide.trip.count112.i = zext i32 %nSample to i64
   %.pre.i = load float*, float** %_M_head_impl.i.i.i.i.i.i.i, align 8, !tbaa !12
   %.pre122.i = load float**, float*** %_M_head_impl.i.i.i.i.i.i95.i, align 8, !tbaa !12
-  %2 = zext i32 %1 to i64
-  %3 = load float*, float** %_M_head_impl.i.i.i.i.i.i93.i, align 8, !tbaa !12
-  %4 = add nsw i64 %2, -1
-  %xtraiter = and i64 %2, 3
-  %5 = icmp ult i64 %4, 3
-  %unroll_iter = sub nsw i64 %2, %xtraiter
+  %33 = zext i32 %32 to i64
+  %34 = load float*, float** %_M_head_impl.i.i.i.i.i.i93.i, align 8, !tbaa !12
+  %35 = add nsw i64 %33, -1
+  %xtraiter = and i64 %33, 3
+  %36 = icmp ult i64 %35, 3
+  %unroll_iter = sub nsw i64 %33, %xtraiter
   %lcmp.mod = icmp eq i64 %xtraiter, 0
   br label %for.cond2.preheader.us.i
 
 for.cond2.preheader.us.i:                         ; preds = %for.cond.cleanup12.us.i, %for.cond2.preheader.us.preheader.i
   %indvars.iv110.i = phi i64 [ 0, %for.cond2.preheader.us.preheader.i ], [ %indvars.iv.next111.i, %for.cond.cleanup12.us.i ]
-  br i1 %5, label %for.body13.us.i.preheader.unr-lcssa, label %for.body5.us.i
+  br i1 %36, label %for.body13.us.i.preheader.unr-lcssa, label %for.body5.us.i
 
 for.cond.cleanup12.us.i:                          ; preds = %for.inc52.us.i
   %indvars.iv.next111.i = add nuw nsw i64 %indvars.iv110.i, 1
@@ -17377,45 +18122,45 @@ for.cond.cleanup12.us.i:                          ; preds = %for.inc52.us.i
 
 for.body13.us.i:                                  ; preds = %for.body13.us.i.preheader, %for.inc52.us.i
   %indvars.iv108.i = phi i64 [ %indvars.iv.next109.i, %for.inc52.us.i ], [ 0, %for.body13.us.i.preheader ]
-  %arrayidx.i94.us.i = getelementptr inbounds float, float* %3, i64 %indvars.iv108.i
-  %6 = load float, float* %arrayidx.i94.us.i, align 4, !tbaa !19
-  %7 = tail call float @llvm.fabs.f32(float %6) #24
-  %conv17.us.i = fpext float %7 to double
+  %arrayidx.i94.us.i = getelementptr inbounds float, float* %34, i64 %indvars.iv108.i
+  %37 = load float, float* %arrayidx.i94.us.i, align 4, !tbaa !19
+  %38 = tail call float @llvm.fabs.f32(float %37) #24
+  %conv17.us.i = fpext float %38 to double
   %cmp18.us.i = fcmp ogt double %conv17.us.i, 0x3EB0C6F7A0B5ED8D
   br i1 %cmp18.us.i, label %if.then.us.i, label %if.else.us.i
 
 if.else.us.i:                                     ; preds = %for.body13.us.i
   %arrayidx.i86.us.i = getelementptr inbounds float*, float** %.pre122.i, i64 %indvars.iv108.i
-  %8 = load float*, float** %arrayidx.i86.us.i, align 8, !tbaa !12
-  %arrayidx45.us.i = getelementptr inbounds float, float* %8, i64 %indvars.iv110.i
-  %9 = load float, float* %arrayidx45.us.i, align 4, !tbaa !19
-  %10 = load float, float* %m_fZoomRed.i, align 4, !tbaa !245
-  %mul46.us.i = fmul float %9, %10
+  %39 = load float*, float** %arrayidx.i86.us.i, align 8, !tbaa !12
+  %arrayidx45.us.i = getelementptr inbounds float, float* %39, i64 %indvars.iv110.i
+  %40 = load float, float* %arrayidx45.us.i, align 4, !tbaa !19
+  %41 = load float, float* %m_fZoomRed.i, align 4, !tbaa !245
+  %mul46.us.i = fmul float %40, %41
   store float %mul46.us.i, float* %arrayidx45.us.i, align 4, !tbaa !19
   br label %for.inc52.us.i
 
 if.then.us.i:                                     ; preds = %for.body13.us.i
-  %11 = load float, float* %m_fZoomBlend.i, align 4, !tbaa !251
+  %42 = load float, float* %m_fZoomBlend.i, align 4, !tbaa !251
   %arrayidx.i92.us.i = getelementptr inbounds float*, float** %.pre122.i, i64 %indvars.iv108.i
-  %12 = load float*, float** %arrayidx.i92.us.i, align 8, !tbaa !12
-  %arrayidx23.us.i = getelementptr inbounds float, float* %12, i64 %indvars.iv110.i
-  %13 = load float, float* %arrayidx23.us.i, align 4, !tbaa !19
-  %mul24.us.i = fmul float %11, %13
-  %14 = load float, float* %m_fZoom.i, align 8, !tbaa !250
-  %mul28.us.i = fmul float %6, %14
+  %43 = load float*, float** %arrayidx.i92.us.i, align 8, !tbaa !12
+  %arrayidx23.us.i = getelementptr inbounds float, float* %43, i64 %indvars.iv110.i
+  %44 = load float, float* %arrayidx23.us.i, align 4, !tbaa !19
+  %mul24.us.i = fmul float %42, %44
+  %45 = load float, float* %m_fZoom.i, align 8, !tbaa !250
+  %mul28.us.i = fmul float %37, %45
   %mul29.us.i = fmul float %add.us.i.lcssa, %mul28.us.i
   %add30.us.i = fadd float %mul24.us.i, %mul29.us.i
-  %15 = tail call float @llvm.fabs.f32(float %14) #24
-  %16 = load float, float* %m_AmbFrontMic.i, align 8, !tbaa !249
-  %mul34.us.i = fmul float %15, %16
-  %add35.us.i = fadd float %11, %mul34.us.i
+  %46 = tail call float @llvm.fabs.f32(float %45) #24
+  %47 = load float, float* %m_AmbFrontMic.i, align 8, !tbaa !249
+  %mul34.us.i = fmul float %46, %47
+  %add35.us.i = fadd float %42, %mul34.us.i
   %div.us.i = fdiv float %add30.us.i, %add35.us.i
   store float %div.us.i, float* %arrayidx23.us.i, align 4, !tbaa !19
   br label %for.inc52.us.i
 
 for.inc52.us.i:                                   ; preds = %if.then.us.i, %if.else.us.i
   %indvars.iv.next109.i = add nuw nsw i64 %indvars.iv108.i, 1
-  %exitcond.i = icmp eq i64 %indvars.iv.next109.i, %2
+  %exitcond.i = icmp eq i64 %indvars.iv.next109.i, %33
   br i1 %exitcond.i, label %for.cond.cleanup12.us.i, label %for.body13.us.i
 
 for.body5.us.i:                                   ; preds = %for.cond2.preheader.us.i, %for.body5.us.i
@@ -17423,39 +18168,39 @@ for.body5.us.i:                                   ; preds = %for.cond2.preheader
   %fMic.098.us.i = phi float [ %add.us.i.3, %for.body5.us.i ], [ 0.000000e+00, %for.cond2.preheader.us.i ]
   %niter = phi i64 [ %niter.nsub.3, %for.body5.us.i ], [ %unroll_iter, %for.cond2.preheader.us.i ]
   %arrayidx.i.us.i = getelementptr inbounds float, float* %.pre.i, i64 %indvars.iv.i
-  %17 = load float, float* %arrayidx.i.us.i, align 4, !tbaa !19
+  %48 = load float, float* %arrayidx.i.us.i, align 4, !tbaa !19
   %arrayidx.i96.us.i = getelementptr inbounds float*, float** %.pre122.i, i64 %indvars.iv.i
-  %18 = load float*, float** %arrayidx.i96.us.i, align 8, !tbaa !12
-  %arrayidx.us.i = getelementptr inbounds float, float* %18, i64 %indvars.iv110.i
-  %19 = load float, float* %arrayidx.us.i, align 4, !tbaa !19
-  %mul.us.i = fmul float %17, %19
+  %49 = load float*, float** %arrayidx.i96.us.i, align 8, !tbaa !12
+  %arrayidx.us.i = getelementptr inbounds float, float* %49, i64 %indvars.iv110.i
+  %50 = load float, float* %arrayidx.us.i, align 4, !tbaa !19
+  %mul.us.i = fmul float %48, %50
   %add.us.i = fadd float %fMic.098.us.i, %mul.us.i
   %indvars.iv.next.i = or i64 %indvars.iv.i, 1
   %arrayidx.i.us.i.1 = getelementptr inbounds float, float* %.pre.i, i64 %indvars.iv.next.i
-  %20 = load float, float* %arrayidx.i.us.i.1, align 4, !tbaa !19
+  %51 = load float, float* %arrayidx.i.us.i.1, align 4, !tbaa !19
   %arrayidx.i96.us.i.1 = getelementptr inbounds float*, float** %.pre122.i, i64 %indvars.iv.next.i
-  %21 = load float*, float** %arrayidx.i96.us.i.1, align 8, !tbaa !12
-  %arrayidx.us.i.1 = getelementptr inbounds float, float* %21, i64 %indvars.iv110.i
-  %22 = load float, float* %arrayidx.us.i.1, align 4, !tbaa !19
-  %mul.us.i.1 = fmul float %20, %22
+  %52 = load float*, float** %arrayidx.i96.us.i.1, align 8, !tbaa !12
+  %arrayidx.us.i.1 = getelementptr inbounds float, float* %52, i64 %indvars.iv110.i
+  %53 = load float, float* %arrayidx.us.i.1, align 4, !tbaa !19
+  %mul.us.i.1 = fmul float %51, %53
   %add.us.i.1 = fadd float %add.us.i, %mul.us.i.1
   %indvars.iv.next.i.1 = or i64 %indvars.iv.i, 2
   %arrayidx.i.us.i.2 = getelementptr inbounds float, float* %.pre.i, i64 %indvars.iv.next.i.1
-  %23 = load float, float* %arrayidx.i.us.i.2, align 4, !tbaa !19
+  %54 = load float, float* %arrayidx.i.us.i.2, align 4, !tbaa !19
   %arrayidx.i96.us.i.2 = getelementptr inbounds float*, float** %.pre122.i, i64 %indvars.iv.next.i.1
-  %24 = load float*, float** %arrayidx.i96.us.i.2, align 8, !tbaa !12
-  %arrayidx.us.i.2 = getelementptr inbounds float, float* %24, i64 %indvars.iv110.i
-  %25 = load float, float* %arrayidx.us.i.2, align 4, !tbaa !19
-  %mul.us.i.2 = fmul float %23, %25
+  %55 = load float*, float** %arrayidx.i96.us.i.2, align 8, !tbaa !12
+  %arrayidx.us.i.2 = getelementptr inbounds float, float* %55, i64 %indvars.iv110.i
+  %56 = load float, float* %arrayidx.us.i.2, align 4, !tbaa !19
+  %mul.us.i.2 = fmul float %54, %56
   %add.us.i.2 = fadd float %add.us.i.1, %mul.us.i.2
   %indvars.iv.next.i.2 = or i64 %indvars.iv.i, 3
   %arrayidx.i.us.i.3 = getelementptr inbounds float, float* %.pre.i, i64 %indvars.iv.next.i.2
-  %26 = load float, float* %arrayidx.i.us.i.3, align 4, !tbaa !19
+  %57 = load float, float* %arrayidx.i.us.i.3, align 4, !tbaa !19
   %arrayidx.i96.us.i.3 = getelementptr inbounds float*, float** %.pre122.i, i64 %indvars.iv.next.i.2
-  %27 = load float*, float** %arrayidx.i96.us.i.3, align 8, !tbaa !12
-  %arrayidx.us.i.3 = getelementptr inbounds float, float* %27, i64 %indvars.iv110.i
-  %28 = load float, float* %arrayidx.us.i.3, align 4, !tbaa !19
-  %mul.us.i.3 = fmul float %26, %28
+  %58 = load float*, float** %arrayidx.i96.us.i.3, align 8, !tbaa !12
+  %arrayidx.us.i.3 = getelementptr inbounds float, float* %58, i64 %indvars.iv110.i
+  %59 = load float, float* %arrayidx.us.i.3, align 4, !tbaa !19
+  %mul.us.i.3 = fmul float %57, %59
   %add.us.i.3 = fadd float %add.us.i.2, %mul.us.i.3
   %indvars.iv.next.i.3 = add nuw nsw i64 %indvars.iv.i, 4
   %niter.nsub.3 = add i64 %niter, -4
@@ -17473,12 +18218,12 @@ for.body5.us.i.epil:                              ; preds = %for.body13.us.i.pre
   %fMic.098.us.i.epil = phi float [ %add.us.i.epil, %for.body5.us.i.epil ], [ %fMic.098.us.i.unr, %for.body13.us.i.preheader.unr-lcssa ]
   %epil.iter = phi i64 [ %epil.iter.sub, %for.body5.us.i.epil ], [ %xtraiter, %for.body13.us.i.preheader.unr-lcssa ]
   %arrayidx.i.us.i.epil = getelementptr inbounds float, float* %.pre.i, i64 %indvars.iv.i.epil
-  %29 = load float, float* %arrayidx.i.us.i.epil, align 4, !tbaa !19
+  %60 = load float, float* %arrayidx.i.us.i.epil, align 4, !tbaa !19
   %arrayidx.i96.us.i.epil = getelementptr inbounds float*, float** %.pre122.i, i64 %indvars.iv.i.epil
-  %30 = load float*, float** %arrayidx.i96.us.i.epil, align 8, !tbaa !12
-  %arrayidx.us.i.epil = getelementptr inbounds float, float* %30, i64 %indvars.iv110.i
-  %31 = load float, float* %arrayidx.us.i.epil, align 4, !tbaa !19
-  %mul.us.i.epil = fmul float %29, %31
+  %61 = load float*, float** %arrayidx.i96.us.i.epil, align 8, !tbaa !12
+  %arrayidx.us.i.epil = getelementptr inbounds float, float* %61, i64 %indvars.iv110.i
+  %62 = load float, float* %arrayidx.us.i.epil, align 4, !tbaa !19
+  %mul.us.i.epil = fmul float %60, %62
   %add.us.i.epil = fadd float %fMic.098.us.i.epil, %mul.us.i.epil
   %indvars.iv.next.i.epil = add nuw nsw i64 %indvars.iv.i.epil, 1
   %epil.iter.sub = add i64 %epil.iter, -1
@@ -17489,9 +18234,105 @@ for.body13.us.i.preheader:                        ; preds = %for.body5.us.i.epil
   %add.us.i.lcssa = phi float [ %add.us.i.lcssa.ph, %for.body13.us.i.preheader.unr-lcssa ], [ %add.us.i.epil, %for.body5.us.i.epil ]
   br label %for.body13.us.i
 
-_ZN16CAmbisonicZoomer7ProcessEP8CBFormatj.exit:   ; preds = %for.cond.cleanup12.us.i, %for.cond2.preheader.lr.ph.i, %entry
+_ZN16CAmbisonicZoomer7ProcessEP8CBFormatj.exit:   ; preds = %for.cond.cleanup12.us.i, %entry, %for.cond2.preheader.lr.ph.i, %for.cond.cleanup
   tail call void (i32, ...) @__hpvm__return(i32 1, i64 %bytes_sumBF) #24
   ret void
+
+for.body:                                         ; preds = %for.body, %for.body.lr.ph
+  %indvars.iv = phi i64 [ 0, %for.body.lr.ph ], [ %indvars.iv.next, %for.body ]
+  %arrayidx1 = getelementptr inbounds float, float* %0, i64 %indvars.iv
+  %63 = bitcast float* %arrayidx1 to i32*
+  %64 = load i32, i32* %63, align 4, !tbaa !19
+  %arrayidx3 = getelementptr inbounds float, float* %2, i64 %indvars.iv
+  %65 = bitcast float* %arrayidx3 to i32*
+  store i32 %64, i32* %65, align 4, !tbaa !19
+  %arrayidx6 = getelementptr inbounds float, float* %3, i64 %indvars.iv
+  %66 = bitcast float* %arrayidx6 to i32*
+  %67 = load i32, i32* %66, align 4, !tbaa !19
+  %arrayidx10 = getelementptr inbounds float, float* %4, i64 %indvars.iv
+  %68 = bitcast float* %arrayidx10 to i32*
+  store i32 %67, i32* %68, align 4, !tbaa !19
+  %arrayidx13 = getelementptr inbounds float, float* %5, i64 %indvars.iv
+  %69 = bitcast float* %arrayidx13 to i32*
+  %70 = load i32, i32* %69, align 4, !tbaa !19
+  %arrayidx17 = getelementptr inbounds float, float* %6, i64 %indvars.iv
+  %71 = bitcast float* %arrayidx17 to i32*
+  store i32 %70, i32* %71, align 4, !tbaa !19
+  %arrayidx20 = getelementptr inbounds float, float* %7, i64 %indvars.iv
+  %72 = bitcast float* %arrayidx20 to i32*
+  %73 = load i32, i32* %72, align 4, !tbaa !19
+  %arrayidx24 = getelementptr inbounds float, float* %8, i64 %indvars.iv
+  %74 = bitcast float* %arrayidx24 to i32*
+  store i32 %73, i32* %74, align 4, !tbaa !19
+  %arrayidx27 = getelementptr inbounds float, float* %9, i64 %indvars.iv
+  %75 = bitcast float* %arrayidx27 to i32*
+  %76 = load i32, i32* %75, align 4, !tbaa !19
+  %arrayidx31 = getelementptr inbounds float, float* %10, i64 %indvars.iv
+  %77 = bitcast float* %arrayidx31 to i32*
+  store i32 %76, i32* %77, align 4, !tbaa !19
+  %arrayidx34 = getelementptr inbounds float, float* %11, i64 %indvars.iv
+  %78 = bitcast float* %arrayidx34 to i32*
+  %79 = load i32, i32* %78, align 4, !tbaa !19
+  %arrayidx38 = getelementptr inbounds float, float* %12, i64 %indvars.iv
+  %80 = bitcast float* %arrayidx38 to i32*
+  store i32 %79, i32* %80, align 4, !tbaa !19
+  %arrayidx41 = getelementptr inbounds float, float* %13, i64 %indvars.iv
+  %81 = bitcast float* %arrayidx41 to i32*
+  %82 = load i32, i32* %81, align 4, !tbaa !19
+  %arrayidx45 = getelementptr inbounds float, float* %14, i64 %indvars.iv
+  %83 = bitcast float* %arrayidx45 to i32*
+  store i32 %82, i32* %83, align 4, !tbaa !19
+  %arrayidx48 = getelementptr inbounds float, float* %15, i64 %indvars.iv
+  %84 = bitcast float* %arrayidx48 to i32*
+  %85 = load i32, i32* %84, align 4, !tbaa !19
+  %arrayidx52 = getelementptr inbounds float, float* %16, i64 %indvars.iv
+  %86 = bitcast float* %arrayidx52 to i32*
+  store i32 %85, i32* %86, align 4, !tbaa !19
+  %arrayidx55 = getelementptr inbounds float, float* %17, i64 %indvars.iv
+  %87 = bitcast float* %arrayidx55 to i32*
+  %88 = load i32, i32* %87, align 4, !tbaa !19
+  %arrayidx59 = getelementptr inbounds float, float* %18, i64 %indvars.iv
+  %89 = bitcast float* %arrayidx59 to i32*
+  store i32 %88, i32* %89, align 4, !tbaa !19
+  %arrayidx62 = getelementptr inbounds float, float* %19, i64 %indvars.iv
+  %90 = bitcast float* %arrayidx62 to i32*
+  %91 = load i32, i32* %90, align 4, !tbaa !19
+  %arrayidx66 = getelementptr inbounds float, float* %20, i64 %indvars.iv
+  %92 = bitcast float* %arrayidx66 to i32*
+  store i32 %91, i32* %92, align 4, !tbaa !19
+  %arrayidx69 = getelementptr inbounds float, float* %21, i64 %indvars.iv
+  %93 = bitcast float* %arrayidx69 to i32*
+  %94 = load i32, i32* %93, align 4, !tbaa !19
+  %arrayidx73 = getelementptr inbounds float, float* %22, i64 %indvars.iv
+  %95 = bitcast float* %arrayidx73 to i32*
+  store i32 %94, i32* %95, align 4, !tbaa !19
+  %arrayidx76 = getelementptr inbounds float, float* %23, i64 %indvars.iv
+  %96 = bitcast float* %arrayidx76 to i32*
+  %97 = load i32, i32* %96, align 4, !tbaa !19
+  %arrayidx80 = getelementptr inbounds float, float* %24, i64 %indvars.iv
+  %98 = bitcast float* %arrayidx80 to i32*
+  store i32 %97, i32* %98, align 4, !tbaa !19
+  %arrayidx83 = getelementptr inbounds float, float* %25, i64 %indvars.iv
+  %99 = bitcast float* %arrayidx83 to i32*
+  %100 = load i32, i32* %99, align 4, !tbaa !19
+  %arrayidx87 = getelementptr inbounds float, float* %26, i64 %indvars.iv
+  %101 = bitcast float* %arrayidx87 to i32*
+  store i32 %100, i32* %101, align 4, !tbaa !19
+  %arrayidx90 = getelementptr inbounds float, float* %27, i64 %indvars.iv
+  %102 = bitcast float* %arrayidx90 to i32*
+  %103 = load i32, i32* %102, align 4, !tbaa !19
+  %arrayidx94 = getelementptr inbounds float, float* %28, i64 %indvars.iv
+  %104 = bitcast float* %arrayidx94 to i32*
+  store i32 %103, i32* %104, align 4, !tbaa !19
+  %arrayidx97 = getelementptr inbounds float, float* %29, i64 %indvars.iv
+  %105 = bitcast float* %arrayidx97 to i32*
+  %106 = load i32, i32* %105, align 4, !tbaa !19
+  %arrayidx101 = getelementptr inbounds float, float* %30, i64 %indvars.iv
+  %107 = bitcast float* %arrayidx101 to i32*
+  store i32 %106, i32* %107, align 4, !tbaa !19
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
+  %exitcond200 = icmp eq i64 %indvars.iv.next, %wide.trip.count
+  br i1 %exitcond200, label %for.cond.cleanup, label %for.body
 }
 
 ; Function Attrs: uwtable
@@ -18602,17 +19443,17 @@ for.body9:                                        ; preds = %for.body9.preheader
 }
 
 ; Function Attrs: nounwind uwtable
-define void @audioDecoding(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, %class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float** %resultSample, i64 %bytes_resultSample, i32 %nSample) #7 {
+define void @audioDecoding(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, %class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float** %resultSample, i64 %bytes_resultSample, i32 %nSample, float** nocapture readnone %channelpart1, i64 %bytes_channelpart1, float** nocapture readnone %channelpart2, i64 %bytes_channelpart2, float** nocapture readnone %channelpart3, i64 %bytes_channelpart3) #7 {
 entry:
   tail call void @__hpvm__hint(i32 1) #24
   tail call void (i32, ...) @__hpvm__attributes(i32 5, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, %class.CAmbisonicZoomer* %zoomer, %class.CAmbisonicBinauralizer* %decoder, float** %resultSample, i32 3, %class.CBFormat* %sumBF, %class.CAmbisonicZoomer* %zoomer, %class.CAmbisonicBinauralizer* %decoder, float** %resultSample) #24
   %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64)* nonnull @rotatorSet_fxp) #24
-  %call1 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i32)* nonnull @psychoFilter_fxp) #24
-  %call2 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i32)* nonnull @rotateOrder1_fxp) #24
-  %call3 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i32)* nonnull @rotateOrder2_fxp) #24
-  %call4 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i32)* nonnull @rotateOrder3_fxp) #24
+  %call1 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i32, float**, i64, float**, i64, float**, i64)* nonnull @psychoFilter_fxp) #24
+  %call2 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @rotateOrder1_fxp) #24
+  %call3 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @rotateOrder2_fxp) #24
+  %call4 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @rotateOrder3_fxp) #24
   %call5 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicZoomer*, i64)* nonnull @zoomSet_fxp) #24
-  %call6 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicZoomer*, i64, %class.CBFormat*, i64, i32)* nonnull @zoomProcess_fxp) #24
+  %call6 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicZoomer*, i64, %class.CBFormat*, i64, i32, float**, i64, float**, i64, float**, i64)* nonnull @zoomProcess_fxp) #24
   %call7 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, %class.CBFormat*, i64)* nonnull @setAndFFT_fxp) #24
   %call8 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @FIR_left_fxp) #24
   %call9 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @FIR_right_fxp) #24
@@ -18627,46 +19468,58 @@ entry:
   tail call void @__hpvm__bindIn(i8* %call1, i32 2, i32 2, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call1, i32 3, i32 3, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call1, i32 10, i32 4, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call1, i32 11, i32 5, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call1, i32 12, i32 6, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call1, i32 13, i32 7, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call1, i32 14, i32 8, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call1, i32 15, i32 9, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call1, i32 16, i32 10, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call2, i32 0, i32 0, i32 0) #24
   %call15 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call2, i32 1, i32 0, i32 1, i32 0) #24
-  tail call void @__hpvm__bindIn(i8* %call2, i32 2, i32 2, i32 0) #24
-  %call16 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call2, i32 1, i32 1, i32 3, i32 0) #24
-  tail call void @__hpvm__bindIn(i8* %call2, i32 10, i32 4, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call2, i32 10, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call2, i32 11, i32 3, i32 0) #24
+  %call16 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call2, i32 1, i32 4, i32 4, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call3, i32 0, i32 0, i32 0) #24
-  %call17 = tail call i8* @__hpvm__edge(i8* %call2, i8* %call3, i32 1, i32 0, i32 1, i32 0) #24
-  tail call void @__hpvm__bindIn(i8* %call3, i32 2, i32 2, i32 0) #24
-  %call18 = tail call i8* @__hpvm__edge(i8* %call2, i8* %call3, i32 1, i32 1, i32 3, i32 0) #24
-  tail call void @__hpvm__bindIn(i8* %call3, i32 10, i32 4, i32 0) #24
+  %call17 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call3, i32 1, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call3, i32 10, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call3, i32 13, i32 3, i32 0) #24
+  %call18 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call3, i32 1, i32 5, i32 4, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call4, i32 0, i32 0, i32 0) #24
-  %call19 = tail call i8* @__hpvm__edge(i8* %call3, i8* %call4, i32 1, i32 0, i32 1, i32 0) #24
-  tail call void @__hpvm__bindIn(i8* %call4, i32 2, i32 2, i32 0) #24
-  %call20 = tail call i8* @__hpvm__edge(i8* %call3, i8* %call4, i32 1, i32 1, i32 3, i32 0) #24
-  tail call void @__hpvm__bindIn(i8* %call4, i32 10, i32 4, i32 0) #24
+  %call19 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call4, i32 1, i32 2, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call4, i32 10, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call4, i32 15, i32 3, i32 0) #24
+  %call20 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call4, i32 1, i32 6, i32 4, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call5, i32 4, i32 0, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call5, i32 5, i32 1, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call6, i32 4, i32 0, i32 0) #24
   %call21 = tail call i8* @__hpvm__edge(i8* %call5, i8* %call6, i32 1, i32 0, i32 1, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call6, i32 2, i32 2, i32 0) #24
-  %call22 = tail call i8* @__hpvm__edge(i8* %call4, i8* %call6, i32 1, i32 0, i32 3, i32 0) #24
+  %call22 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call6, i32 1, i32 3, i32 3, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call6, i32 10, i32 4, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call6, i32 11, i32 5, i32 0) #24
+  %call23 = tail call i8* @__hpvm__edge(i8* %call2, i8* %call6, i32 1, i32 0, i32 6, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call6, i32 13, i32 7, i32 0) #24
+  %call24 = tail call i8* @__hpvm__edge(i8* %call3, i8* %call6, i32 1, i32 0, i32 8, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call6, i32 15, i32 9, i32 0) #24
+  %call25 = tail call i8* @__hpvm__edge(i8* %call4, i8* %call6, i32 1, i32 0, i32 10, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call7, i32 6, i32 0, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call7, i32 7, i32 1, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call7, i32 2, i32 2, i32 0) #24
-  %call23 = tail call i8* @__hpvm__edge(i8* %call6, i8* %call7, i32 1, i32 0, i32 3, i32 0) #24
+  %call26 = tail call i8* @__hpvm__edge(i8* %call6, i8* %call7, i32 1, i32 0, i32 3, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call8, i32 6, i32 0, i32 0) #24
-  %call24 = tail call i8* @__hpvm__edge(i8* %call7, i8* %call8, i32 1, i32 0, i32 1, i32 0) #24
+  %call27 = tail call i8* @__hpvm__edge(i8* %call7, i8* %call8, i32 1, i32 0, i32 1, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call9, i32 6, i32 0, i32 0) #24
-  %call25 = tail call i8* @__hpvm__edge(i8* %call7, i8* %call9, i32 1, i32 1, i32 1, i32 0) #24
+  %call28 = tail call i8* @__hpvm__edge(i8* %call7, i8* %call9, i32 1, i32 1, i32 1, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call10, i32 6, i32 0, i32 0) #24
-  %call26 = tail call i8* @__hpvm__edge(i8* %call8, i8* %call10, i32 1, i32 0, i32 1, i32 0) #24
+  %call29 = tail call i8* @__hpvm__edge(i8* %call8, i8* %call10, i32 1, i32 0, i32 1, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call11, i32 6, i32 0, i32 0) #24
-  %call27 = tail call i8* @__hpvm__edge(i8* %call9, i8* %call11, i32 1, i32 0, i32 1, i32 0) #24
+  %call30 = tail call i8* @__hpvm__edge(i8* %call9, i8* %call11, i32 1, i32 0, i32 1, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call12, i32 6, i32 0, i32 0) #24
-  %call28 = tail call i8* @__hpvm__edge(i8* %call10, i8* %call12, i32 1, i32 0, i32 1, i32 0) #24
+  %call31 = tail call i8* @__hpvm__edge(i8* %call10, i8* %call12, i32 1, i32 0, i32 1, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call12, i32 8, i32 2, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call12, i32 9, i32 3, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call13, i32 6, i32 0, i32 0) #24
-  %call29 = tail call i8* @__hpvm__edge(i8* %call11, i8* %call13, i32 1, i32 0, i32 1, i32 0) #24
+  %call32 = tail call i8* @__hpvm__edge(i8* %call11, i8* %call13, i32 1, i32 0, i32 1, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call13, i32 8, i32 2, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call13, i32 9, i32 3, i32 0) #24
   ret void
@@ -18710,14 +19563,14 @@ if.then.i:                                        ; preds = %if.then
   br label %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
 
 if.else.i:                                        ; preds = %if.then
-  %call.i.i117 = tail call i64 @strlen(i8* nonnull %0) #24
-  %call1.i118 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull %0, i64 %call.i.i117)
+  %call.i.i225 = tail call i64 @strlen(i8* nonnull %0) #24
+  %call1.i226 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull %0, i64 %call.i.i225)
   br label %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
 
 _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit: ; preds = %if.then.i, %if.else.i
-  %call1.i120 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([42 x i8], [42 x i8]* @.str.7, i64 0, i64 0), i64 41)
-  %call1.i123 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([27 x i8], [27 x i8]* @.str.8, i64 0, i64 0), i64 26)
-  %call1.i126 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([122 x i8], [122 x i8]* @.str.9, i64 0, i64 0), i64 121)
+  %call1.i228 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([42 x i8], [42 x i8]* @.str.7, i64 0, i64 0), i64 41)
+  %call1.i231 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([27 x i8], [27 x i8]* @.str.8, i64 0, i64 0), i64 26)
+  %call1.i234 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([122 x i8], [122 x i8]* @.str.9, i64 0, i64 0), i64 121)
   br label %return
 
 if.end:                                           ; preds = %entry
@@ -18794,131 +19647,282 @@ invoke.cont22:                                    ; preds = %invoke.cont18
           to label %invoke.cont27 unwind label %lpad21
 
 invoke.cont27:                                    ; preds = %invoke.cont22
-  call void @__hpvm__init() #24
-  %call29 = call noalias i8* @malloc(i64 84) #24
-  %rotator = getelementptr inbounds %"class.ILLIXR_AUDIO::ABAudio", %"class.ILLIXR_AUDIO::ABAudio"* %audio, i64 0, i32 4
-  %22 = bitcast %class.CAmbisonicProcessor** %rotator to i64*
-  %23 = load i64, i64* %22, align 8, !tbaa !393
-  %24 = bitcast i8* %call29 to i64*
-  store i64 %23, i64* %24, align 1, !tbaa !452
-  %bytes_rotator31 = getelementptr inbounds i8, i8* %call29, i64 8
-  %25 = bitcast i8* %bytes_rotator31 to i64*
-  store i64 200, i64* %25, align 1, !tbaa !454
-  %sumBF32 = getelementptr inbounds i8, i8* %call29, i64 16
-  %26 = bitcast i8* %sumBF32 to i8**
-  store i8* %call23, i8** %26, align 1, !tbaa !455
-  %bytes_sumBF33 = getelementptr inbounds i8, i8* %call29, i64 24
-  %27 = bitcast i8* %bytes_sumBF33 to i64*
-  store i64 64, i64* %27, align 1, !tbaa !456
-  %zoomer = getelementptr inbounds %"class.ILLIXR_AUDIO::ABAudio", %"class.ILLIXR_AUDIO::ABAudio"* %audio, i64 0, i32 5
-  %28 = bitcast %class.CAmbisonicZoomer** %zoomer to i64*
-  %29 = load i64, i64* %28, align 8, !tbaa !394
-  %zoomer34 = getelementptr inbounds i8, i8* %call29, i64 32
-  %30 = bitcast i8* %zoomer34 to i64*
-  store i64 %29, i64* %30, align 1, !tbaa !457
-  %bytes_zoomer35 = getelementptr inbounds i8, i8* %call29, i64 40
-  %31 = bitcast i8* %bytes_zoomer35 to i64*
-  store i64 104, i64* %31, align 1, !tbaa !458
-  %decoder = getelementptr inbounds %"class.ILLIXR_AUDIO::ABAudio", %"class.ILLIXR_AUDIO::ABAudio"* %audio, i64 0, i32 3
-  %32 = bitcast %class.CAmbisonicBinauralizer** %decoder to i64*
-  %33 = load i64, i64* %32, align 8, !tbaa !392
-  %decoder36 = getelementptr inbounds i8, i8* %call29, i64 48
-  %34 = bitcast i8* %decoder36 to i64*
-  store i64 %33, i64* %34, align 1, !tbaa !459
-  %bytes_decoder37 = getelementptr inbounds i8, i8* %call29, i64 56
-  %35 = bitcast i8* %bytes_decoder37 to i64*
-  store i64 296, i64* %35, align 1, !tbaa !460
-  %resultSample38 = getelementptr inbounds i8, i8* %call29, i64 64
-  %36 = bitcast i8* %resultSample38 to i8**
-  store i8* %call14, i8** %36, align 1, !tbaa !461
-  %bytes_resultSample39 = getelementptr inbounds i8, i8* %call29, i64 72
-  %37 = bitcast i8* %bytes_resultSample39 to i64*
-  store i64 8192, i64* %37, align 1, !tbaa !462
-  %nSample = getelementptr inbounds i8, i8* %call29, i64 80
-  %38 = bitcast i8* %nSample to i32*
-  store i32 1024, i32* %38, align 1, !tbaa !463
-  %cmp40135 = icmp sgt i32 %conv.i, 0
-  %39 = inttoptr i64 %23 to i8*
-  %40 = inttoptr i64 %29 to i8*
-  %41 = inttoptr i64 %33 to i8*
-  br i1 %cmp40135, label %for.body, label %for.cond.cleanup
+  %call31 = invoke i8* @_Znam(i64 24) #25
+          to label %invoke.cont30 unwind label %lpad29
 
-for.cond.cleanup:                                 ; preds = %for.body, %invoke.cont27
+invoke.cont30:                                    ; preds = %invoke.cont27
+  %call33 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont32 unwind label %lpad29
+
+invoke.cont32:                                    ; preds = %invoke.cont30
+  %22 = bitcast i8* %call31 to i8**
+  store i8* %call33, i8** %22, align 8, !tbaa !12
+  %call36 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont35 unwind label %lpad29
+
+invoke.cont35:                                    ; preds = %invoke.cont32
+  %arrayidx37 = getelementptr inbounds i8, i8* %call31, i64 8
+  %23 = bitcast i8* %arrayidx37 to i8**
+  store i8* %call36, i8** %23, align 8, !tbaa !12
+  %call39 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont38 unwind label %lpad29
+
+invoke.cont38:                                    ; preds = %invoke.cont35
+  %arrayidx40 = getelementptr inbounds i8, i8* %call31, i64 16
+  %24 = bitcast i8* %arrayidx40 to i8**
+  store i8* %call39, i8** %24, align 8, !tbaa !12
+  %call43 = invoke i8* @_Znam(i64 40) #25
+          to label %invoke.cont42 unwind label %lpad41
+
+invoke.cont42:                                    ; preds = %invoke.cont38
+  %call45 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont44 unwind label %lpad41
+
+invoke.cont44:                                    ; preds = %invoke.cont42
+  %25 = bitcast i8* %call43 to i8**
+  store i8* %call45, i8** %25, align 8, !tbaa !12
+  %call48 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont47 unwind label %lpad41
+
+invoke.cont47:                                    ; preds = %invoke.cont44
+  %arrayidx49 = getelementptr inbounds i8, i8* %call43, i64 8
+  %26 = bitcast i8* %arrayidx49 to i8**
+  store i8* %call48, i8** %26, align 8, !tbaa !12
+  %call51 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont50 unwind label %lpad41
+
+invoke.cont50:                                    ; preds = %invoke.cont47
+  %arrayidx52 = getelementptr inbounds i8, i8* %call43, i64 16
+  %27 = bitcast i8* %arrayidx52 to i8**
+  store i8* %call51, i8** %27, align 8, !tbaa !12
+  %call54 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont53 unwind label %lpad41
+
+invoke.cont53:                                    ; preds = %invoke.cont50
+  %arrayidx55 = getelementptr inbounds i8, i8* %call43, i64 24
+  %28 = bitcast i8* %arrayidx55 to i8**
+  store i8* %call54, i8** %28, align 8, !tbaa !12
+  %call57 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont56 unwind label %lpad41
+
+invoke.cont56:                                    ; preds = %invoke.cont53
+  %arrayidx58 = getelementptr inbounds i8, i8* %call43, i64 32
+  %29 = bitcast i8* %arrayidx58 to i8**
+  store i8* %call57, i8** %29, align 8, !tbaa !12
+  %call61 = invoke i8* @_Znam(i64 56) #25
+          to label %invoke.cont60 unwind label %lpad59
+
+invoke.cont60:                                    ; preds = %invoke.cont56
+  %call63 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont62 unwind label %lpad59
+
+invoke.cont62:                                    ; preds = %invoke.cont60
+  %30 = bitcast i8* %call61 to i8**
+  store i8* %call63, i8** %30, align 8, !tbaa !12
+  %call66 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont65 unwind label %lpad59
+
+invoke.cont65:                                    ; preds = %invoke.cont62
+  %arrayidx67 = getelementptr inbounds i8, i8* %call61, i64 8
+  %31 = bitcast i8* %arrayidx67 to i8**
+  store i8* %call66, i8** %31, align 8, !tbaa !12
+  %call69 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont68 unwind label %lpad59
+
+invoke.cont68:                                    ; preds = %invoke.cont65
+  %arrayidx70 = getelementptr inbounds i8, i8* %call61, i64 16
+  %32 = bitcast i8* %arrayidx70 to i8**
+  store i8* %call69, i8** %32, align 8, !tbaa !12
+  %call72 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont71 unwind label %lpad59
+
+invoke.cont71:                                    ; preds = %invoke.cont68
+  %arrayidx73 = getelementptr inbounds i8, i8* %call61, i64 24
+  %33 = bitcast i8* %arrayidx73 to i8**
+  store i8* %call72, i8** %33, align 8, !tbaa !12
+  %call75 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont74 unwind label %lpad59
+
+invoke.cont74:                                    ; preds = %invoke.cont71
+  %arrayidx76 = getelementptr inbounds i8, i8* %call61, i64 32
+  %34 = bitcast i8* %arrayidx76 to i8**
+  store i8* %call75, i8** %34, align 8, !tbaa !12
+  %call78 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont77 unwind label %lpad59
+
+invoke.cont77:                                    ; preds = %invoke.cont74
+  %arrayidx79 = getelementptr inbounds i8, i8* %call61, i64 40
+  %35 = bitcast i8* %arrayidx79 to i8**
+  store i8* %call78, i8** %35, align 8, !tbaa !12
+  %call81 = invoke i8* @_Znam(i64 4096) #25
+          to label %invoke.cont80 unwind label %lpad59
+
+invoke.cont80:                                    ; preds = %invoke.cont77
+  %arrayidx82 = getelementptr inbounds i8, i8* %call61, i64 48
+  %36 = bitcast i8* %arrayidx82 to i8**
+  store i8* %call81, i8** %36, align 8, !tbaa !12
+  call void @__hpvm__init() #24
+  %call83 = call noalias i8* @malloc(i64 132) #24
+  %rotator = getelementptr inbounds %"class.ILLIXR_AUDIO::ABAudio", %"class.ILLIXR_AUDIO::ABAudio"* %audio, i64 0, i32 4
+  %37 = bitcast %class.CAmbisonicProcessor** %rotator to i64*
+  %38 = load i64, i64* %37, align 8, !tbaa !393
+  %39 = bitcast i8* %call83 to i64*
+  store i64 %38, i64* %39, align 1, !tbaa !452
+  %bytes_rotator85 = getelementptr inbounds i8, i8* %call83, i64 8
+  %40 = bitcast i8* %bytes_rotator85 to i64*
+  store i64 200, i64* %40, align 1, !tbaa !454
+  %sumBF86 = getelementptr inbounds i8, i8* %call83, i64 16
+  %41 = bitcast i8* %sumBF86 to i8**
+  store i8* %call23, i8** %41, align 1, !tbaa !455
+  %bytes_sumBF87 = getelementptr inbounds i8, i8* %call83, i64 24
+  %42 = bitcast i8* %bytes_sumBF87 to i64*
+  store i64 64, i64* %42, align 1, !tbaa !456
+  %zoomer = getelementptr inbounds %"class.ILLIXR_AUDIO::ABAudio", %"class.ILLIXR_AUDIO::ABAudio"* %audio, i64 0, i32 5
+  %43 = bitcast %class.CAmbisonicZoomer** %zoomer to i64*
+  %44 = load i64, i64* %43, align 8, !tbaa !394
+  %zoomer88 = getelementptr inbounds i8, i8* %call83, i64 32
+  %45 = bitcast i8* %zoomer88 to i64*
+  store i64 %44, i64* %45, align 1, !tbaa !457
+  %bytes_zoomer89 = getelementptr inbounds i8, i8* %call83, i64 40
+  %46 = bitcast i8* %bytes_zoomer89 to i64*
+  store i64 104, i64* %46, align 1, !tbaa !458
+  %decoder = getelementptr inbounds %"class.ILLIXR_AUDIO::ABAudio", %"class.ILLIXR_AUDIO::ABAudio"* %audio, i64 0, i32 3
+  %47 = bitcast %class.CAmbisonicBinauralizer** %decoder to i64*
+  %48 = load i64, i64* %47, align 8, !tbaa !392
+  %decoder90 = getelementptr inbounds i8, i8* %call83, i64 48
+  %49 = bitcast i8* %decoder90 to i64*
+  store i64 %48, i64* %49, align 1, !tbaa !459
+  %bytes_decoder91 = getelementptr inbounds i8, i8* %call83, i64 56
+  %50 = bitcast i8* %bytes_decoder91 to i64*
+  store i64 296, i64* %50, align 1, !tbaa !460
+  %resultSample92 = getelementptr inbounds i8, i8* %call83, i64 64
+  %51 = bitcast i8* %resultSample92 to i8**
+  store i8* %call14, i8** %51, align 1, !tbaa !461
+  %bytes_resultSample93 = getelementptr inbounds i8, i8* %call83, i64 72
+  %52 = bitcast i8* %bytes_resultSample93 to i64*
+  store i64 8192, i64* %52, align 1, !tbaa !462
+  %nSample = getelementptr inbounds i8, i8* %call83, i64 80
+  %53 = bitcast i8* %nSample to i32*
+  store i32 1024, i32* %53, align 1, !tbaa !463
+  %channelpart194 = getelementptr inbounds i8, i8* %call83, i64 84
+  %54 = bitcast i8* %channelpart194 to i8**
+  store i8* %call31, i8** %54, align 1, !tbaa !464
+  %bytes_channelpart195 = getelementptr inbounds i8, i8* %call83, i64 92
+  %55 = bitcast i8* %bytes_channelpart195 to i64*
+  store i64 12288, i64* %55, align 1, !tbaa !465
+  %channelpart296 = getelementptr inbounds i8, i8* %call83, i64 100
+  %56 = bitcast i8* %channelpart296 to i8**
+  store i8* %call43, i8** %56, align 1, !tbaa !466
+  %bytes_channelpart297 = getelementptr inbounds i8, i8* %call83, i64 108
+  %57 = bitcast i8* %bytes_channelpart297 to i64*
+  store i64 20480, i64* %57, align 1, !tbaa !467
+  %channelpart398 = getelementptr inbounds i8, i8* %call83, i64 116
+  %58 = bitcast i8* %channelpart398 to i8**
+  store i8* %call61, i8** %58, align 1, !tbaa !468
+  %bytes_channelpart399 = getelementptr inbounds i8, i8* %call83, i64 124
+  %59 = bitcast i8* %bytes_channelpart399 to i64*
+  store i64 28672, i64* %59, align 1, !tbaa !469
+  %cmp100243 = icmp sgt i32 %conv.i, 0
+  %60 = inttoptr i64 %38 to i8*
+  %61 = inttoptr i64 %44 to i8*
+  %62 = inttoptr i64 %48 to i8*
+  br i1 %cmp100243, label %for.body, label %for.cond.cleanup
+
+for.cond.cleanup:                                 ; preds = %for.body, %invoke.cont80
   call void @__hpvm__cleanup() #24
   call void @_ZN12ILLIXR_AUDIO7ABAudioD2Ev(%"class.ILLIXR_AUDIO::ABAudio"* nonnull %audio) #24
   call void @llvm.lifetime.end.p0i8(i64 48, i8* nonnull %6) #24
   br label %return
 
 lpad7:                                            ; preds = %if.end
-  %42 = landingpad { i8*, i32 }
+  %63 = landingpad { i8*, i32 }
           cleanup
-  %43 = extractvalue { i8*, i32 } %42, 0
-  %44 = extractvalue { i8*, i32 } %42, 1
-  %45 = load i8*, i8** %_M_p.i.i.i.i.i, align 8, !tbaa !258
-  %cmp.i.i.i132 = icmp eq i8* %45, %9
-  br i1 %cmp.i.i.i132, label %ehcleanup55, label %if.then.i.i133
+  %64 = extractvalue { i8*, i32 } %63, 0
+  %65 = extractvalue { i8*, i32 } %63, 1
+  %66 = load i8*, i8** %_M_p.i.i.i.i.i, align 8, !tbaa !258
+  %cmp.i.i.i240 = icmp eq i8* %66, %9
+  br i1 %cmp.i.i.i240, label %ehcleanup118, label %if.then.i.i241
 
-if.then.i.i133:                                   ; preds = %lpad7
-  call void @_ZdlPv(i8* %45) #24
-  br label %ehcleanup55
+if.then.i.i241:                                   ; preds = %lpad7
+  call void @_ZdlPv(i8* %66) #24
+  br label %ehcleanup118
 
 lpad10:                                           ; preds = %_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED2Ev.exit
-  %46 = landingpad { i8*, i32 }
+  %67 = landingpad { i8*, i32 }
           cleanup
-  %47 = extractvalue { i8*, i32 } %46, 0
-  %48 = extractvalue { i8*, i32 } %46, 1
-  br label %ehcleanup54
+  br label %ehcleanup117
 
 lpad12:                                           ; preds = %invoke.cont15, %invoke.cont13, %invoke.cont11
-  %49 = landingpad { i8*, i32 }
+  %68 = landingpad { i8*, i32 }
           cleanup
-  %50 = extractvalue { i8*, i32 } %49, 0
-  %51 = extractvalue { i8*, i32 } %49, 1
-  br label %ehcleanup54
+  br label %ehcleanup117
 
 lpad21:                                           ; preds = %invoke.cont22, %invoke.cont18
-  %52 = landingpad { i8*, i32 }
+  %69 = landingpad { i8*, i32 }
           cleanup
-  %53 = extractvalue { i8*, i32 } %52, 1
-  %54 = extractvalue { i8*, i32 } %52, 0
-  br label %ehcleanup54
+  br label %ehcleanup117
 
-for.body:                                         ; preds = %invoke.cont27, %for.body
-  %i.0136 = phi i32 [ %inc, %for.body ], [ 0, %invoke.cont27 ]
-  call void @llvm_hpvm_track_mem(i8* %39, i64 200) #24
+lpad29:                                           ; preds = %invoke.cont35, %invoke.cont32, %invoke.cont30, %invoke.cont27
+  %70 = landingpad { i8*, i32 }
+          cleanup
+  br label %ehcleanup117
+
+lpad41:                                           ; preds = %invoke.cont53, %invoke.cont50, %invoke.cont47, %invoke.cont44, %invoke.cont42, %invoke.cont38
+  %71 = landingpad { i8*, i32 }
+          cleanup
+  br label %ehcleanup117
+
+lpad59:                                           ; preds = %invoke.cont77, %invoke.cont74, %invoke.cont71, %invoke.cont68, %invoke.cont65, %invoke.cont62, %invoke.cont60, %invoke.cont56
+  %72 = landingpad { i8*, i32 }
+          cleanup
+  br label %ehcleanup117
+
+for.body:                                         ; preds = %invoke.cont80, %for.body
+  %i.0244 = phi i32 [ %inc, %for.body ], [ 0, %invoke.cont80 ]
+  call void @llvm_hpvm_track_mem(i8* %60, i64 200) #24
   call void @llvm_hpvm_track_mem(i8* nonnull %call23, i64 64) #24
-  call void @llvm_hpvm_track_mem(i8* %40, i64 104) #24
-  call void @llvm_hpvm_track_mem(i8* %41, i64 296) #24
+  call void @llvm_hpvm_track_mem(i8* %61, i64 104) #24
+  call void @llvm_hpvm_track_mem(i8* %62, i64 296) #24
   call void @llvm_hpvm_track_mem(i8* nonnull %call14, i64 8192) #24
-  %call44 = call i8* (i32, ...) @__hpvm__launch(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, %class.CAmbisonicZoomer*, i64, %class.CAmbisonicBinauralizer*, i64, float**, i64, i32)* nonnull @audioDecoding, i8* %call29) #24
-  call void @__hpvm__wait(i8* %call44) #24
-  call void @llvm_hpvm_request_mem(i8* %39, i64 200) #24
+  call void @llvm_hpvm_track_mem(i8* nonnull %call31, i64 12288) #24
+  call void @llvm_hpvm_track_mem(i8* nonnull %call43, i64 20480) #24
+  call void @llvm_hpvm_track_mem(i8* nonnull %call61, i64 28672) #24
+  %call104 = call i8* (i32, ...) @__hpvm__launch(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, %class.CAmbisonicZoomer*, i64, %class.CAmbisonicBinauralizer*, i64, float**, i64, i32, float**, i64, float**, i64, float**, i64)* nonnull @audioDecoding, i8* %call83) #24
+  call void @__hpvm__wait(i8* %call104) #24
+  call void @llvm_hpvm_request_mem(i8* %60, i64 200) #24
   call void @llvm_hpvm_request_mem(i8* nonnull %call23, i64 64) #24
-  call void @llvm_hpvm_request_mem(i8* %40, i64 104) #24
-  call void @llvm_hpvm_request_mem(i8* %41, i64 296) #24
+  call void @llvm_hpvm_request_mem(i8* %61, i64 104) #24
+  call void @llvm_hpvm_request_mem(i8* %62, i64 296) #24
   call void @llvm_hpvm_request_mem(i8* nonnull %call14, i64 8192) #24
-  call void @llvm_hpvm_untrack_mem(i8* %39) #24
+  call void @llvm_hpvm_request_mem(i8* nonnull %call31, i64 12288) #24
+  call void @llvm_hpvm_request_mem(i8* nonnull %call43, i64 20480) #24
+  call void @llvm_hpvm_request_mem(i8* nonnull %call61, i64 28672) #24
+  call void @llvm_hpvm_untrack_mem(i8* %60) #24
   call void @llvm_hpvm_untrack_mem(i8* nonnull %call23) #24
-  call void @llvm_hpvm_untrack_mem(i8* %40) #24
-  call void @llvm_hpvm_untrack_mem(i8* %41) #24
+  call void @llvm_hpvm_untrack_mem(i8* %61) #24
+  call void @llvm_hpvm_untrack_mem(i8* %62) #24
   call void @llvm_hpvm_untrack_mem(i8* nonnull %call14) #24
-  %inc = add nuw nsw i32 %i.0136, 1
+  call void @llvm_hpvm_untrack_mem(i8* nonnull %call31) #24
+  call void @llvm_hpvm_untrack_mem(i8* nonnull %call43) #24
+  call void @llvm_hpvm_untrack_mem(i8* nonnull %call61) #24
+  %inc = add nuw nsw i32 %i.0244, 1
   %exitcond = icmp eq i32 %inc, %conv.i
   br i1 %exitcond, label %for.cond.cleanup, label %for.body
 
-ehcleanup54:                                      ; preds = %lpad12, %lpad21, %lpad10
-  %ehselector.slot.3 = phi i32 [ %48, %lpad10 ], [ %53, %lpad21 ], [ %51, %lpad12 ]
-  %exn.slot.3 = phi i8* [ %47, %lpad10 ], [ %54, %lpad21 ], [ %50, %lpad12 ]
+ehcleanup117:                                     ; preds = %lpad12, %lpad29, %lpad59, %lpad41, %lpad21, %lpad10
+  %.sink245 = phi { i8*, i32 } [ %68, %lpad12 ], [ %70, %lpad29 ], [ %72, %lpad59 ], [ %71, %lpad41 ], [ %69, %lpad21 ], [ %67, %lpad10 ]
+  %73 = extractvalue { i8*, i32 } %.sink245, 0
+  %74 = extractvalue { i8*, i32 } %.sink245, 1
   call void @_ZN12ILLIXR_AUDIO7ABAudioD2Ev(%"class.ILLIXR_AUDIO::ABAudio"* nonnull %audio) #24
-  br label %ehcleanup55
+  br label %ehcleanup118
 
-ehcleanup55:                                      ; preds = %lpad7, %if.then.i.i133, %ehcleanup54
-  %ehselector.slot.4 = phi i32 [ %ehselector.slot.3, %ehcleanup54 ], [ %44, %lpad7 ], [ %44, %if.then.i.i133 ]
-  %exn.slot.4 = phi i8* [ %exn.slot.3, %ehcleanup54 ], [ %43, %lpad7 ], [ %43, %if.then.i.i133 ]
+ehcleanup118:                                     ; preds = %lpad7, %if.then.i.i241, %ehcleanup117
+  %ehselector.slot.6 = phi i32 [ %74, %ehcleanup117 ], [ %65, %lpad7 ], [ %65, %if.then.i.i241 ]
+  %exn.slot.6 = phi i8* [ %73, %ehcleanup117 ], [ %64, %lpad7 ], [ %64, %if.then.i.i241 ]
   call void @llvm.lifetime.end.p0i8(i64 48, i8* nonnull %6) #24
-  %lpad.val = insertvalue { i8*, i32 } undef, i8* %exn.slot.4, 0
-  %lpad.val57 = insertvalue { i8*, i32 } %lpad.val, i32 %ehselector.slot.4, 1
-  resume { i8*, i32 } %lpad.val57
+  %lpad.val = insertvalue { i8*, i32 } undef, i8* %exn.slot.6, 0
+  %lpad.val120 = insertvalue { i8*, i32 } %lpad.val, i32 %ehselector.slot.6, 1
+  resume { i8*, i32 } %lpad.val120
 
 return:                                           ; preds = %for.cond.cleanup, %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
   %retval.0 = phi i32 [ 1, %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit ], [ 0, %for.cond.cleanup ]
@@ -19470,7 +20474,7 @@ entry:
 if.then:                                          ; preds = %entry
   %_M_end_of_storage = getelementptr inbounds %"class.std::vector.0", %"class.std::vector.0"* %this, i64 0, i32 0, i32 0, i32 2
   %1 = bitcast float** %_M_end_of_storage to i64*
-  %2 = load i64, i64* %1, align 8, !tbaa !464
+  %2 = load i64, i64* %1, align 8, !tbaa !470
   %_M_finish = getelementptr inbounds %"class.std::vector.0", %"class.std::vector.0"* %this, i64 0, i32 0, i32 0, i32 1
   %3 = bitcast float** %_M_finish to i64*
   %4 = load i64, i64* %3, align 8, !tbaa !42
@@ -19608,7 +20612,7 @@ vector.body244:                                   ; preds = %vector.body244, %ve
   %index.next252.7 = add i64 %index251, 64
   %niter295.nsub.7 = add i64 %niter295, -8
   %niter295.ncmp.7 = icmp eq i64 %niter295.nsub.7, 0
-  br i1 %niter295.ncmp.7, label %middle.block245.unr-lcssa, label %vector.body244, !llvm.loop !465
+  br i1 %niter295.ncmp.7, label %middle.block245.unr-lcssa, label %vector.body244, !llvm.loop !471
 
 middle.block245.unr-lcssa:                        ; preds = %vector.body244, %vector.ph248
   %index251.unr = phi i64 [ 0, %vector.ph248 ], [ %index.next252.7, %vector.body244 ]
@@ -19627,7 +20631,7 @@ vector.body244.epil:                              ; preds = %middle.block245.unr
   %index.next252.epil = add i64 %index251.epil, 8
   %epil.iter292.sub = add i64 %epil.iter292, -1
   %epil.iter292.cmp = icmp eq i64 %epil.iter292.sub, 0
-  br i1 %epil.iter292.cmp, label %middle.block245, label %vector.body244.epil, !llvm.loop !466
+  br i1 %epil.iter292.cmp, label %middle.block245, label %vector.body244.epil, !llvm.loop !472
 
 middle.block245:                                  ; preds = %vector.body244.epil, %middle.block245.unr-lcssa
   %cmp.n255 = icmp eq i64 %16, %n.vec250
@@ -19643,7 +20647,7 @@ for.body.i.i196:                                  ; preds = %for.body.i.i196.pre
   store i32 %7, i32* %48, align 4, !tbaa !19
   %incdec.ptr.i.i194 = getelementptr inbounds float, float* %__first.addr.05.i.i193, i64 1
   %cmp.i.i195 = icmp eq float* %incdec.ptr.i.i194, %add.ptr28
-  br i1 %cmp.i.i195, label %if.end102, label %for.body.i.i196, !llvm.loop !467
+  br i1 %cmp.i.i195, label %if.end102, label %for.body.i.i196, !llvm.loop !473
 
 if.else:                                          ; preds = %if.then4
   %sub = sub i64 %__n, %sub.ptr.div.i
@@ -19734,7 +20738,7 @@ vector.body:                                      ; preds = %vector.body, %vecto
   %index.next.7 = add i64 %index, 64
   %niter305.nsub.7 = add i64 %niter305, -8
   %niter305.ncmp.7 = icmp eq i64 %niter305.nsub.7, 0
-  br i1 %niter305.ncmp.7, label %middle.block.unr-lcssa, label %vector.body, !llvm.loop !468
+  br i1 %niter305.ncmp.7, label %middle.block.unr-lcssa, label %vector.body, !llvm.loop !474
 
 middle.block.unr-lcssa:                           ; preds = %vector.body, %vector.ph
   %index.unr = phi i64 [ 0, %vector.ph ], [ %index.next.7, %vector.body ]
@@ -19753,7 +20757,7 @@ vector.body.epil:                                 ; preds = %middle.block.unr-lc
   %index.next.epil = add i64 %index.epil, 8
   %epil.iter302.sub = add i64 %epil.iter302, -1
   %epil.iter302.cmp = icmp eq i64 %epil.iter302.sub, 0
-  br i1 %epil.iter302.cmp, label %middle.block, label %vector.body.epil, !llvm.loop !469
+  br i1 %epil.iter302.cmp, label %middle.block, label %vector.body.epil, !llvm.loop !475
 
 middle.block:                                     ; preds = %vector.body.epil, %middle.block.unr-lcssa
   %cmp.n = icmp eq i64 %sub, %n.vec
@@ -19772,7 +20776,7 @@ for.body.i.i.i.i.i189:                            ; preds = %for.body.i.i.i.i.i1
   %dec.i.i.i.i.i186 = add i64 %__niter.08.i.i.i.i.i184, -1
   %incdec.ptr.i.i.i.i.i187 = getelementptr inbounds float, float* %__first.addr.07.i.i.i.i.i185, i64 1
   %cmp.i.i.i.i.i188 = icmp eq i64 %dec.i.i.i.i.i186, 0
-  br i1 %cmp.i.i.i.i.i188, label %_ZSt24__uninitialized_fill_n_aIPfmffET_S1_T0_RKT1_RSaIT2_E.exit191, label %for.body.i.i.i.i.i189, !llvm.loop !470
+  br i1 %cmp.i.i.i.i.i188, label %_ZSt24__uninitialized_fill_n_aIPfmffET_S1_T0_RKT1_RSaIT2_E.exit191, label %for.body.i.i.i.i.i189, !llvm.loop !476
 
 _ZSt24__uninitialized_fill_n_aIPfmffET_S1_T0_RKT1_RSaIT2_E.exit191: ; preds = %for.body.i.i.i.i.i189, %middle.block, %if.else
   %__first.addr.0.lcssa.i.i.i.i.i190 = phi float* [ %5, %if.else ], [ %ind.end217, %middle.block ], [ %incdec.ptr.i.i.i.i.i187, %for.body.i.i.i.i.i189 ]
@@ -19882,7 +20886,7 @@ vector.body224:                                   ; preds = %vector.body224, %ve
   %index.next234.7 = add i64 %index233, 64
   %niter300.nsub.7 = add i64 %niter300, -8
   %niter300.ncmp.7 = icmp eq i64 %niter300.nsub.7, 0
-  br i1 %niter300.ncmp.7, label %middle.block225.unr-lcssa, label %vector.body224, !llvm.loop !471
+  br i1 %niter300.ncmp.7, label %middle.block225.unr-lcssa, label %vector.body224, !llvm.loop !477
 
 middle.block225.unr-lcssa:                        ; preds = %vector.body224, %vector.ph230
   %index233.unr = phi i64 [ 0, %vector.ph230 ], [ %index.next234.7, %vector.body224 ]
@@ -19901,7 +20905,7 @@ vector.body224.epil:                              ; preds = %middle.block225.unr
   %index.next234.epil = add i64 %index233.epil, 8
   %epil.iter297.sub = add i64 %epil.iter297, -1
   %epil.iter297.cmp = icmp eq i64 %epil.iter297.sub, 0
-  br i1 %epil.iter297.cmp, label %middle.block225, label %vector.body224.epil, !llvm.loop !472
+  br i1 %epil.iter297.cmp, label %middle.block225, label %vector.body224.epil, !llvm.loop !478
 
 middle.block225:                                  ; preds = %vector.body224.epil, %middle.block225.unr-lcssa
   %cmp.n237 = icmp eq i64 %87, %n.vec232
@@ -19917,7 +20921,7 @@ for.body.i.i:                                     ; preds = %for.body.i.i.prehea
   store i32 %7, i32* %119, align 4, !tbaa !19
   %incdec.ptr.i.i = getelementptr inbounds float, float* %__first.addr.05.i.i, i64 1
   %cmp.i.i172 = icmp eq float* %incdec.ptr.i.i, %5
-  br i1 %cmp.i.i172, label %if.end102, label %for.body.i.i, !llvm.loop !473
+  br i1 %cmp.i.i172, label %if.end102, label %for.body.i.i, !llvm.loop !479
 
 if.else44:                                        ; preds = %if.then
   %120 = bitcast %"class.std::vector.0"* %this to i64*
@@ -20041,7 +21045,7 @@ vector.body262:                                   ; preds = %vector.body262, %ve
   %index.next270.7 = add i64 %index269, 64
   %niter.nsub.7 = add i64 %niter, -8
   %niter.ncmp.7 = icmp eq i64 %niter.nsub.7, 0
-  br i1 %niter.ncmp.7, label %middle.block263.unr-lcssa, label %vector.body262, !llvm.loop !474
+  br i1 %niter.ncmp.7, label %middle.block263.unr-lcssa, label %vector.body262, !llvm.loop !480
 
 middle.block263.unr-lcssa:                        ; preds = %vector.body262, %vector.ph266
   %index269.unr = phi i64 [ 0, %vector.ph266 ], [ %index.next270.7, %vector.body262 ]
@@ -20060,7 +21064,7 @@ vector.body262.epil:                              ; preds = %middle.block263.unr
   %index.next270.epil = add i64 %index269.epil, 8
   %epil.iter.sub = add i64 %epil.iter, -1
   %epil.iter.cmp = icmp eq i64 %epil.iter.sub, 0
-  br i1 %epil.iter.cmp, label %middle.block263, label %vector.body262.epil, !llvm.loop !475
+  br i1 %epil.iter.cmp, label %middle.block263, label %vector.body262.epil, !llvm.loop !481
 
 middle.block263:                                  ; preds = %vector.body262.epil, %middle.block263.unr-lcssa
   %cmp.n275 = icmp eq i64 %n.vec268, %__n
@@ -20079,7 +21083,7 @@ for.body.i.i.i.i.i:                               ; preds = %for.body.i.i.i.i.i.
   %dec.i.i.i.i.i = add i64 %__niter.08.i.i.i.i.i, -1
   %incdec.ptr.i.i.i.i.i = getelementptr inbounds float, float* %__first.addr.07.i.i.i.i.i, i64 1
   %cmp.i.i.i.i.i = icmp eq i64 %dec.i.i.i.i.i, 0
-  br i1 %cmp.i.i.i.i.i, label %invoke.cont, label %for.body.i.i.i.i.i, !llvm.loop !476
+  br i1 %cmp.i.i.i.i.i, label %invoke.cont, label %for.body.i.i.i.i.i, !llvm.loop !482
 
 invoke.cont:                                      ; preds = %for.body.i.i.i.i.i, %middle.block263
   %160 = load float*, float** %122, align 8, !tbaa !45
@@ -20123,7 +21127,7 @@ _ZNSt12_Vector_baseIfSaIfEE13_M_deallocateEPfm.exit148: ; preds = %invoke.cont64
   store float* %124, float** %122, align 8, !tbaa !45
   store float* %add.ptr.i.i.i.i.i.i.i.i155, float** %_M_finish, align 8, !tbaa !42
   %add.ptr98 = getelementptr inbounds float, float* %124, i64 %cond.i170
-  store float* %add.ptr98, float** %_M_end_of_storage, align 8, !tbaa !464
+  store float* %add.ptr98, float** %_M_end_of_storage, align 8, !tbaa !470
   br label %if.end102
 
 if.end102:                                        ; preds = %for.body.i.i, %for.body.i.i196, %middle.block225, %middle.block245, %_ZSt22__uninitialized_move_aIPfS0_SaIfEET0_T_S3_S2_RT1_.exit181, %entry, %_ZNSt12_Vector_baseIfSaIfEE13_M_deallocateEPfm.exit148
@@ -20145,7 +21149,7 @@ entry:
 if.then:                                          ; preds = %entry
   %_M_end_of_storage = getelementptr inbounds %"class.std::vector.0", %"class.std::vector.0"* %this, i64 0, i32 0, i32 0, i32 2
   %0 = bitcast float** %_M_end_of_storage to i64*
-  %1 = load i64, i64* %0, align 8, !tbaa !464
+  %1 = load i64, i64* %0, align 8, !tbaa !470
   %_M_finish = getelementptr inbounds %"class.std::vector.0", %"class.std::vector.0"* %this, i64 0, i32 0, i32 0, i32 1
   %2 = load float*, float** %_M_finish, align 8, !tbaa !42
   %sub.ptr.rhs.cast = ptrtoint float* %2 to i64
@@ -20268,7 +21272,7 @@ entry:
 if.then:                                          ; preds = %entry
   %_M_end_of_storage = getelementptr inbounds %"class.std::vector.26", %"class.std::vector.26"* %this, i64 0, i32 0, i32 0, i32 2
   %0 = bitcast %"class.std::unique_ptr.31"** %_M_end_of_storage to i64*
-  %1 = load i64, i64* %0, align 8, !tbaa !477
+  %1 = load i64, i64* %0, align 8, !tbaa !483
   %_M_finish = getelementptr inbounds %"class.std::vector.26", %"class.std::vector.26"* %this, i64 0, i32 0, i32 0, i32 1
   %2 = load %"class.std::unique_ptr.31"*, %"class.std::unique_ptr.31"** %_M_finish, align 8, !tbaa !359
   %sub.ptr.rhs.cast = ptrtoint %"class.std::unique_ptr.31"* %2 to i64
@@ -20346,12 +21350,12 @@ for.body.i.i.i.i.prol:                            ; preds = %for.body.i.i.i.i.pr
   %16 = load i64, i64* %15, align 8, !tbaa !12
   store %struct.kiss_fft_cpx* null, %struct.kiss_fft_cpx** %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.prol, align 8, !tbaa !12
   %17 = bitcast %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i.prol to i64*
-  store i64 %16, i64* %17, align 8, !tbaa !478
+  store i64 %16, i64* %17, align 8, !tbaa !484
   %incdec.ptr.i.i.i.i.i.prol = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__first.sroa.0.024.i.i.i.i.prol, i64 1
   %incdec.ptr.i.i.i.i.prol = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i.prol, i64 1
   %prol.iter.sub = add i64 %prol.iter, -1
   %prol.iter.cmp = icmp eq i64 %prol.iter.sub, 0
-  br i1 %prol.iter.cmp, label %for.body.i.i.i.i.prol.loopexit, label %for.body.i.i.i.i.prol, !llvm.loop !480
+  br i1 %prol.iter.cmp, label %for.body.i.i.i.i.prol.loopexit, label %for.body.i.i.i.i.prol, !llvm.loop !486
 
 for.body.i.i.i.i.prol.loopexit:                   ; preds = %for.body.i.i.i.i.prol, %for.body.i.i.i.i.preheader
   %incdec.ptr.i.i.i.i.lcssa.unr = phi %"class.std::unique_ptr.31"* [ undef, %for.body.i.i.i.i.preheader ], [ %incdec.ptr.i.i.i.i.prol, %for.body.i.i.i.i.prol ]
@@ -20368,7 +21372,7 @@ for.body.i.i.i.i:                                 ; preds = %for.body.i.i.i.i.pr
   %20 = load i64, i64* %19, align 8, !tbaa !12
   store %struct.kiss_fft_cpx* null, %struct.kiss_fft_cpx** %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i, align 8, !tbaa !12
   %21 = bitcast %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i to i64*
-  store i64 %20, i64* %21, align 8, !tbaa !478
+  store i64 %20, i64* %21, align 8, !tbaa !484
   %incdec.ptr.i.i.i.i.i = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__first.sroa.0.024.i.i.i.i, i64 1
   %incdec.ptr.i.i.i.i = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i, i64 1
   %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.1 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.i, i64 0, i32 0, i32 0, i32 0, i32 0
@@ -20376,7 +21380,7 @@ for.body.i.i.i.i:                                 ; preds = %for.body.i.i.i.i.pr
   %23 = load i64, i64* %22, align 8, !tbaa !12
   store %struct.kiss_fft_cpx* null, %struct.kiss_fft_cpx** %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.1, align 8, !tbaa !12
   %24 = bitcast %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i to i64*
-  store i64 %23, i64* %24, align 8, !tbaa !478
+  store i64 %23, i64* %24, align 8, !tbaa !484
   %incdec.ptr.i.i.i.i.i.1 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__first.sroa.0.024.i.i.i.i, i64 2
   %incdec.ptr.i.i.i.i.1 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i, i64 2
   %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.2 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.i.1, i64 0, i32 0, i32 0, i32 0, i32 0
@@ -20384,7 +21388,7 @@ for.body.i.i.i.i:                                 ; preds = %for.body.i.i.i.i.pr
   %26 = load i64, i64* %25, align 8, !tbaa !12
   store %struct.kiss_fft_cpx* null, %struct.kiss_fft_cpx** %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.2, align 8, !tbaa !12
   %27 = bitcast %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.1 to i64*
-  store i64 %26, i64* %27, align 8, !tbaa !478
+  store i64 %26, i64* %27, align 8, !tbaa !484
   %incdec.ptr.i.i.i.i.i.2 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__first.sroa.0.024.i.i.i.i, i64 3
   %incdec.ptr.i.i.i.i.2 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i, i64 3
   %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.3 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.i.2, i64 0, i32 0, i32 0, i32 0, i32 0
@@ -20392,7 +21396,7 @@ for.body.i.i.i.i:                                 ; preds = %for.body.i.i.i.i.pr
   %29 = load i64, i64* %28, align 8, !tbaa !12
   store %struct.kiss_fft_cpx* null, %struct.kiss_fft_cpx** %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.3, align 8, !tbaa !12
   %30 = bitcast %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.2 to i64*
-  store i64 %29, i64* %30, align 8, !tbaa !478
+  store i64 %29, i64* %30, align 8, !tbaa !484
   %incdec.ptr.i.i.i.i.i.3 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__first.sroa.0.024.i.i.i.i, i64 4
   %incdec.ptr.i.i.i.i.3 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i, i64 4
   %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.4 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.i.3, i64 0, i32 0, i32 0, i32 0, i32 0
@@ -20400,7 +21404,7 @@ for.body.i.i.i.i:                                 ; preds = %for.body.i.i.i.i.pr
   %32 = load i64, i64* %31, align 8, !tbaa !12
   store %struct.kiss_fft_cpx* null, %struct.kiss_fft_cpx** %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.4, align 8, !tbaa !12
   %33 = bitcast %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.3 to i64*
-  store i64 %32, i64* %33, align 8, !tbaa !478
+  store i64 %32, i64* %33, align 8, !tbaa !484
   %incdec.ptr.i.i.i.i.i.4 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__first.sroa.0.024.i.i.i.i, i64 5
   %incdec.ptr.i.i.i.i.4 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i, i64 5
   %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.5 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.i.4, i64 0, i32 0, i32 0, i32 0, i32 0
@@ -20408,7 +21412,7 @@ for.body.i.i.i.i:                                 ; preds = %for.body.i.i.i.i.pr
   %35 = load i64, i64* %34, align 8, !tbaa !12
   store %struct.kiss_fft_cpx* null, %struct.kiss_fft_cpx** %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.5, align 8, !tbaa !12
   %36 = bitcast %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.4 to i64*
-  store i64 %35, i64* %36, align 8, !tbaa !478
+  store i64 %35, i64* %36, align 8, !tbaa !484
   %incdec.ptr.i.i.i.i.i.5 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__first.sroa.0.024.i.i.i.i, i64 6
   %incdec.ptr.i.i.i.i.5 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i, i64 6
   %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.6 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.i.5, i64 0, i32 0, i32 0, i32 0, i32 0
@@ -20416,7 +21420,7 @@ for.body.i.i.i.i:                                 ; preds = %for.body.i.i.i.i.pr
   %38 = load i64, i64* %37, align 8, !tbaa !12
   store %struct.kiss_fft_cpx* null, %struct.kiss_fft_cpx** %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.6, align 8, !tbaa !12
   %39 = bitcast %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.5 to i64*
-  store i64 %38, i64* %39, align 8, !tbaa !478
+  store i64 %38, i64* %39, align 8, !tbaa !484
   %incdec.ptr.i.i.i.i.i.6 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__first.sroa.0.024.i.i.i.i, i64 7
   %incdec.ptr.i.i.i.i.6 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i, i64 7
   %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.7 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.i.6, i64 0, i32 0, i32 0, i32 0, i32 0
@@ -20424,7 +21428,7 @@ for.body.i.i.i.i:                                 ; preds = %for.body.i.i.i.i.pr
   %41 = load i64, i64* %40, align 8, !tbaa !12
   store %struct.kiss_fft_cpx* null, %struct.kiss_fft_cpx** %_M_head_impl.i.i.i.i.i.i.i.i20.i.i.i.i.7, align 8, !tbaa !12
   %42 = bitcast %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.6 to i64*
-  store i64 %41, i64* %42, align 8, !tbaa !478
+  store i64 %41, i64* %42, align 8, !tbaa !484
   %incdec.ptr.i.i.i.i.i.7 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__first.sroa.0.024.i.i.i.i, i64 8
   %incdec.ptr.i.i.i.i.7 = getelementptr inbounds %"class.std::unique_ptr.31", %"class.std::unique_ptr.31"* %__cur.025.i.i.i.i, i64 8
   %cmp.i.i.i.i.i.i.7 = icmp eq %"class.std::unique_ptr.31"* %incdec.ptr.i.i.i.i.i.7, %8
@@ -20988,7 +21992,7 @@ attributes #28 = { noreturn nounwind }
 !450 = distinct !{!450, !28}
 !451 = distinct !{!451, !28}
 !452 = !{!453, !13, i64 0}
-!453 = !{!"_ZTS7RootArg", !13, i64 0, !260, i64 8, !13, i64 16, !260, i64 24, !13, i64 32, !260, i64 40, !13, i64 48, !260, i64 56, !13, i64 64, !260, i64 72, !5, i64 80}
+!453 = !{!"_ZTS7RootArg", !13, i64 0, !260, i64 8, !13, i64 16, !260, i64 24, !13, i64 32, !260, i64 40, !13, i64 48, !260, i64 56, !13, i64 64, !260, i64 72, !5, i64 80, !13, i64 84, !260, i64 92, !13, i64 100, !260, i64 108, !13, i64 116, !260, i64 124}
 !454 = !{!453, !260, i64 8}
 !455 = !{!453, !13, i64 16}
 !456 = !{!453, !260, i64 24}
@@ -20999,20 +22003,26 @@ attributes #28 = { noreturn nounwind }
 !461 = !{!453, !13, i64 64}
 !462 = !{!453, !260, i64 72}
 !463 = !{!453, !5, i64 80}
-!464 = !{!43, !13, i64 16}
-!465 = distinct !{!465, !28}
-!466 = distinct !{!466, !57}
-!467 = distinct !{!467, !59, !28}
-!468 = distinct !{!468, !28}
-!469 = distinct !{!469, !57}
-!470 = distinct !{!470, !59, !28}
+!464 = !{!453, !13, i64 84}
+!465 = !{!453, !260, i64 92}
+!466 = !{!453, !13, i64 100}
+!467 = !{!453, !260, i64 108}
+!468 = !{!453, !13, i64 116}
+!469 = !{!453, !260, i64 124}
+!470 = !{!43, !13, i64 16}
 !471 = distinct !{!471, !28}
 !472 = distinct !{!472, !57}
 !473 = distinct !{!473, !59, !28}
 !474 = distinct !{!474, !28}
 !475 = distinct !{!475, !57}
 !476 = distinct !{!476, !59, !28}
-!477 = !{!309, !13, i64 16}
-!478 = !{!479, !13, i64 0}
-!479 = !{!"_ZTSSt10_Head_baseILm0EP12kiss_fft_cpxLb0EE", !13, i64 0}
-!480 = distinct !{!480, !57}
+!477 = distinct !{!477, !28}
+!478 = distinct !{!478, !57}
+!479 = distinct !{!479, !59, !28}
+!480 = distinct !{!480, !28}
+!481 = distinct !{!481, !57}
+!482 = distinct !{!482, !59, !28}
+!483 = !{!309, !13, i64 16}
+!484 = !{!485, !13, i64 0}
+!485 = !{!"_ZTSSt10_Head_baseILm0EP12kiss_fft_cpxLb0EE", !13, i64 0}
+!486 = distinct !{!486, !57}
