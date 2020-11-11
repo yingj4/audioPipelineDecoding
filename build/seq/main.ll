@@ -17223,7 +17223,7 @@ declare void @__hpvm__return(i32, ...) local_unnamed_addr #1
 define void @psychoFilter_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i32 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3) #3 {
 entry:
   tail call void @__hpvm__hint(i32 1) #24
-  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, i32 3, float** %channelpart1, float** %channelpart2, float** %channelpart3) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, i32 5, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, float** %channelpart1, float** %channelpart2, float** %channelpart3) #24
   %0 = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 0, i32 5
   %1 = load i8, i8* %0, align 4, !tbaa !35, !range !36
   %tobool = icmp eq i8 %1, 0
@@ -17234,8 +17234,8 @@ if.then:                                          ; preds = %entry
   br label %if.end
 
 if.end:                                           ; preds = %entry, %if.then
-  %cmp198 = icmp eq i32 %nSample, 0
-  br i1 %cmp198, label %for.cond.cleanup, label %for.body.lr.ph
+  %cmp200 = icmp eq i32 %nSample, 0
+  br i1 %cmp200, label %for.cond.cleanup, label %for.body.lr.ph
 
 for.body.lr.ph:                                   ; preds = %if.end
   %_M_head_impl.i.i.i.i.i.i = getelementptr inbounds %class.CBFormat, %class.CBFormat* %sumBF, i64 0, i32 4, i32 0, i32 0, i32 0, i32 0
@@ -17243,58 +17243,58 @@ for.body.lr.ph:                                   ; preds = %if.end
   %arrayidx.i = getelementptr inbounds float*, float** %2, i64 3
   %3 = load float*, float** %arrayidx.i, align 8, !tbaa !12
   %4 = load float*, float** %channelpart1, align 8, !tbaa !12
-  %arrayidx.i197 = getelementptr inbounds float*, float** %2, i64 1
-  %5 = load float*, float** %arrayidx.i197, align 8, !tbaa !12
+  %arrayidx.i199 = getelementptr inbounds float*, float** %2, i64 1
+  %5 = load float*, float** %arrayidx.i199, align 8, !tbaa !12
   %arrayidx8 = getelementptr inbounds float*, float** %channelpart1, i64 1
   %6 = load float*, float** %arrayidx8, align 8, !tbaa !12
-  %arrayidx.i195 = getelementptr inbounds float*, float** %2, i64 2
-  %7 = load float*, float** %arrayidx.i195, align 8, !tbaa !12
+  %arrayidx.i197 = getelementptr inbounds float*, float** %2, i64 2
+  %7 = load float*, float** %arrayidx.i197, align 8, !tbaa !12
   %arrayidx15 = getelementptr inbounds float*, float** %channelpart1, i64 2
   %8 = load float*, float** %arrayidx15, align 8, !tbaa !12
-  %arrayidx.i193 = getelementptr inbounds float*, float** %2, i64 6
-  %9 = load float*, float** %arrayidx.i193, align 8, !tbaa !12
+  %arrayidx.i195 = getelementptr inbounds float*, float** %2, i64 6
+  %9 = load float*, float** %arrayidx.i195, align 8, !tbaa !12
   %10 = load float*, float** %channelpart2, align 8, !tbaa !12
-  %arrayidx.i191 = getelementptr inbounds float*, float** %2, i64 7
-  %11 = load float*, float** %arrayidx.i191, align 8, !tbaa !12
+  %arrayidx.i193 = getelementptr inbounds float*, float** %2, i64 7
+  %11 = load float*, float** %arrayidx.i193, align 8, !tbaa !12
   %arrayidx29 = getelementptr inbounds float*, float** %channelpart2, i64 1
   %12 = load float*, float** %arrayidx29, align 8, !tbaa !12
-  %arrayidx.i189 = getelementptr inbounds float*, float** %2, i64 5
-  %13 = load float*, float** %arrayidx.i189, align 8, !tbaa !12
+  %arrayidx.i191 = getelementptr inbounds float*, float** %2, i64 5
+  %13 = load float*, float** %arrayidx.i191, align 8, !tbaa !12
   %arrayidx36 = getelementptr inbounds float*, float** %channelpart2, i64 2
   %14 = load float*, float** %arrayidx36, align 8, !tbaa !12
-  %arrayidx.i187 = getelementptr inbounds float*, float** %2, i64 8
-  %15 = load float*, float** %arrayidx.i187, align 8, !tbaa !12
+  %arrayidx.i189 = getelementptr inbounds float*, float** %2, i64 8
+  %15 = load float*, float** %arrayidx.i189, align 8, !tbaa !12
   %arrayidx43 = getelementptr inbounds float*, float** %channelpart2, i64 3
   %16 = load float*, float** %arrayidx43, align 8, !tbaa !12
-  %arrayidx.i185 = getelementptr inbounds float*, float** %2, i64 4
-  %17 = load float*, float** %arrayidx.i185, align 8, !tbaa !12
+  %arrayidx.i187 = getelementptr inbounds float*, float** %2, i64 4
+  %17 = load float*, float** %arrayidx.i187, align 8, !tbaa !12
   %arrayidx50 = getelementptr inbounds float*, float** %channelpart2, i64 4
   %18 = load float*, float** %arrayidx50, align 8, !tbaa !12
-  %arrayidx.i183 = getelementptr inbounds float*, float** %2, i64 9
-  %19 = load float*, float** %arrayidx.i183, align 8, !tbaa !12
+  %arrayidx.i185 = getelementptr inbounds float*, float** %2, i64 9
+  %19 = load float*, float** %arrayidx.i185, align 8, !tbaa !12
   %20 = load float*, float** %channelpart3, align 8, !tbaa !12
-  %arrayidx.i181 = getelementptr inbounds float*, float** %2, i64 10
-  %21 = load float*, float** %arrayidx.i181, align 8, !tbaa !12
+  %arrayidx.i183 = getelementptr inbounds float*, float** %2, i64 10
+  %21 = load float*, float** %arrayidx.i183, align 8, !tbaa !12
   %arrayidx64 = getelementptr inbounds float*, float** %channelpart3, i64 1
   %22 = load float*, float** %arrayidx64, align 8, !tbaa !12
-  %arrayidx.i179 = getelementptr inbounds float*, float** %2, i64 11
-  %23 = load float*, float** %arrayidx.i179, align 8, !tbaa !12
+  %arrayidx.i181 = getelementptr inbounds float*, float** %2, i64 11
+  %23 = load float*, float** %arrayidx.i181, align 8, !tbaa !12
   %arrayidx71 = getelementptr inbounds float*, float** %channelpart3, i64 2
   %24 = load float*, float** %arrayidx71, align 8, !tbaa !12
-  %arrayidx.i177 = getelementptr inbounds float*, float** %2, i64 12
-  %25 = load float*, float** %arrayidx.i177, align 8, !tbaa !12
+  %arrayidx.i179 = getelementptr inbounds float*, float** %2, i64 12
+  %25 = load float*, float** %arrayidx.i179, align 8, !tbaa !12
   %arrayidx78 = getelementptr inbounds float*, float** %channelpart3, i64 3
   %26 = load float*, float** %arrayidx78, align 8, !tbaa !12
-  %arrayidx.i175 = getelementptr inbounds float*, float** %2, i64 13
-  %27 = load float*, float** %arrayidx.i175, align 8, !tbaa !12
+  %arrayidx.i177 = getelementptr inbounds float*, float** %2, i64 13
+  %27 = load float*, float** %arrayidx.i177, align 8, !tbaa !12
   %arrayidx85 = getelementptr inbounds float*, float** %channelpart3, i64 4
   %28 = load float*, float** %arrayidx85, align 8, !tbaa !12
-  %arrayidx.i173 = getelementptr inbounds float*, float** %2, i64 14
-  %29 = load float*, float** %arrayidx.i173, align 8, !tbaa !12
+  %arrayidx.i175 = getelementptr inbounds float*, float** %2, i64 14
+  %29 = load float*, float** %arrayidx.i175, align 8, !tbaa !12
   %arrayidx92 = getelementptr inbounds float*, float** %channelpart3, i64 5
   %30 = load float*, float** %arrayidx92, align 8, !tbaa !12
-  %arrayidx.i171 = getelementptr inbounds float*, float** %2, i64 15
-  %31 = load float*, float** %arrayidx.i171, align 8, !tbaa !12
+  %arrayidx.i173 = getelementptr inbounds float*, float** %2, i64 15
+  %31 = load float*, float** %arrayidx.i173, align 8, !tbaa !12
   %arrayidx99 = getelementptr inbounds float*, float** %channelpart3, i64 6
   %32 = load float*, float** %arrayidx99, align 8, !tbaa !12
   %wide.trip.count = zext i32 %nSample to i64
