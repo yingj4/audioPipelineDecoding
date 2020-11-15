@@ -799,7 +799,9 @@ namespace ILLIXR_AUDIO{
 		// target output file
 		std::ofstream* outputFile;
 		// decoder associated with this audio
-		CAmbisonicBinauralizer* decoder;
+		// CAmbisonicBinauralizer* decoder;
+        CAmbisonicBinauralizer* decoder0;   // For HPVM
+        CAmbisonicBinauralizer* decoder1;   // For HPVM
 		// ambisonics rotator associated with this audio
 		CAmbisonicProcessor* rotator;
 		// ambisonics zoomer associated with this audio
