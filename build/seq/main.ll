@@ -17320,6 +17320,27 @@ declare void @__hpvm__attributes(i32, ...) local_unnamed_addr #1
 ; Function Attrs: nounwind
 declare void @__hpvm__return(i32, ...) local_unnamed_addr #1
 
+; Function Attrs: nounwind uwtable
+define void @wrapperRotatorSet_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 1, %class.CAmbisonicProcessor* %rotator, i32 1, %class.CAmbisonicProcessor* %rotator) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64)* nonnull @rotatorSet_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  ret void
+}
+
+; Function Attrs: nounwind
+declare i8* @__hpvm__createNodeND(i32, ...) local_unnamed_addr #1
+
+; Function Attrs: nounwind
+declare void @__hpvm__bindIn(i8*, i32, i32, i32) local_unnamed_addr #1
+
+; Function Attrs: nounwind
+declare void @__hpvm__bindOut(i8*, i32, i32, i32) local_unnamed_addr #1
+
 ; Function Attrs: uwtable
 define void @psychoFilter_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i32 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3) #3 {
 entry:
@@ -17503,6 +17524,33 @@ for.body:                                         ; preds = %for.body, %for.body
 }
 
 ; Function Attrs: nounwind uwtable
+define void @wrapperPsychoFilter_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i32 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, i32 5, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, float** %channelpart1, float** %channelpart2, float** %channelpart3) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i32, float**, i64, float**, i64, float**, i64)* nonnull @psychoFilter_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 2, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 3, i32 3, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 4, i32 4, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 5, i32 5, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 6, i32 6, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 7, i32 7, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 8, i32 8, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 9, i32 9, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 10, i32 10, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 2, i32 2, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 3, i32 3, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 4, i32 4, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 5, i32 5, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 6, i32 6, i32 0) #24
+  ret void
+}
+
+; Function Attrs: nounwind uwtable
 define void @rotateOrder1_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i32 %nSample, float** %channelpart1, i64 %bytes_channelpart1) #7 {
 entry:
   tail call void @__hpvm__hint(i32 1) #24
@@ -17578,6 +17626,21 @@ for.body:                                         ; preds = %for.body, %for.body
 
 if.end:                                           ; preds = %for.body, %entry
   tail call void (i32, ...) @__hpvm__return(i32 1, i64 %bytes_channelpart1) #24
+  ret void
+}
+
+; Function Attrs: nounwind uwtable
+define void @wrapperRotateOrder1_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i32 %nSample, float** %channelpart1, i64 %bytes_channelpart1) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, float** %channelpart1, i32 1, float** %channelpart1) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @rotateOrder1_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 2, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 3, i32 3, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 4, i32 4, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
   ret void
 }
 
@@ -17736,6 +17799,21 @@ for.body:                                         ; preds = %for.body, %for.body
 
 if.end:                                           ; preds = %for.body, %entry
   tail call void (i32, ...) @__hpvm__return(i32 1, i64 %bytes_channelpart2) #24
+  ret void
+}
+
+; Function Attrs: nounwind uwtable
+define void @wrapperRotateOrder2_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i32 %nSample, float** %channelpart2, i64 %bytes_channelpart2) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, float** %channelpart2, i32 1, float** %channelpart2) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @rotateOrder2_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 2, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 3, i32 3, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 4, i32 4, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
   ret void
 }
 
@@ -18075,6 +18153,21 @@ if.end:                                           ; preds = %for.body, %entry
   ret void
 }
 
+; Function Attrs: nounwind uwtable
+define void @wrapperRotateOrder3_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i32 %nSample, float** %channelpart3, i64 %bytes_channelpart3) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, float** %channelpart3, i32 1, float** %channelpart3) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @rotateOrder3_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 2, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 3, i32 3, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 4, i32 4, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  ret void
+}
+
 ; Function Attrs: uwtable
 define void @zoomSet_fxp(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer) #3 {
 entry:
@@ -18109,6 +18202,18 @@ entry:
   %5 = load void (%class.CAmbisonicZoomer*)*, void (%class.CAmbisonicZoomer*)** %vfn, align 8
   tail call void %5(%class.CAmbisonicZoomer* %zoomer)
   tail call void (i32, ...) @__hpvm__return(i32 1, i64 %bytes_zoomer) #24
+  ret void
+}
+
+; Function Attrs: nounwind uwtable
+define void @wrapperZoomSet_fxp(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 1, %class.CAmbisonicZoomer* %zoomer, i32 1, %class.CAmbisonicZoomer* %zoomer) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicZoomer*, i64)* nonnull @zoomSet_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
   ret void
 }
 
@@ -18436,6 +18541,28 @@ for.body:                                         ; preds = %for.body, %for.body
   br i1 %exitcond201, label %for.cond.cleanup, label %for.body
 }
 
+; Function Attrs: nounwind uwtable
+define void @wrapperZoomProcess_fxp(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i32 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 5, %class.CAmbisonicZoomer* %zoomer, %class.CBFormat* %sumBF, float** %channelpart1, float** %channelpart2, float** %channelpart3, i32 1, %class.CBFormat* %sumBF) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicZoomer*, i64, %class.CBFormat*, i64, i32, float**, i64, float**, i64, float**, i64)* nonnull @zoomProcess_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 2, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 3, i32 3, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 4, i32 4, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 5, i32 5, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 6, i32 6, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 7, i32 7, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 8, i32 8, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 9, i32 9, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 10, i32 10, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 1, i32 1, i32 0) #24
+  ret void
+}
+
 ; Function Attrs: uwtable
 define void @setAndFFT_left_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, %class.CBFormat* %sumBF, i64 %bytes_sumBF) #3 personality i32 (...)* @__gxx_personality_v0 {
 entry:
@@ -18499,6 +18626,20 @@ for.body:                                         ; preds = %for.body.lr.ph, %fo
   br i1 %cmp, label %for.body, label %for.cond.cleanup
 }
 
+; Function Attrs: nounwind uwtable
+define void @wrapperSetAndFFT_left_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, %class.CBFormat* %sumBF, i64 %bytes_sumBF) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicBinauralizer* %decoder, %class.CBFormat* %sumBF, i32 1, %class.CAmbisonicBinauralizer* %decoder) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, %class.CBFormat*, i64)* nonnull @setAndFFT_left_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 2, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 3, i32 3, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  ret void
+}
+
 ; Function Attrs: uwtable
 define void @setAndFFT_right_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, %class.CBFormat* %sumBF, i64 %bytes_sumBF) #3 personality i32 (...)* @__gxx_personality_v0 {
 entry:
@@ -18560,6 +18701,20 @@ for.body:                                         ; preds = %for.body.lr.ph, %fo
   %19 = zext i32 %18 to i64
   %cmp = icmp ult i64 %indvars.iv.next, %19
   br i1 %cmp, label %for.body, label %for.cond.cleanup
+}
+
+; Function Attrs: nounwind uwtable
+define void @wrapperSetAndFFT_right_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, %class.CBFormat* %sumBF, i64 %bytes_sumBF) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicBinauralizer* %decoder, %class.CBFormat* %sumBF, i32 1, %class.CAmbisonicBinauralizer* %decoder) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, %class.CBFormat*, i64)* nonnull @setAndFFT_right_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 2, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 3, i32 3, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  ret void
 }
 
 ; Function Attrs: nounwind uwtable
@@ -18635,6 +18790,18 @@ for.body4:                                        ; preds = %for.body4.lr.ph, %f
 }
 
 ; Function Attrs: nounwind uwtable
+define void @wrapperFIR_left_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 1, %class.CAmbisonicBinauralizer* %decoder, i32 1, %class.CAmbisonicBinauralizer* %decoder) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @FIR_left_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  ret void
+}
+
+; Function Attrs: nounwind uwtable
 define void @FIR_right_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder) #7 {
 entry:
   tail call void @__hpvm__hint(i32 1) #24
@@ -18704,6 +18871,18 @@ for.body4:                                        ; preds = %for.body4.lr.ph, %f
   %15 = zext i32 %14 to i64
   %cmp2 = icmp ult i64 %indvars.iv.next, %15
   br i1 %cmp2, label %for.body4, label %for.cond.cleanup3.loopexit
+}
+
+; Function Attrs: nounwind uwtable
+define void @wrapperFIR_right_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 1, %class.CAmbisonicBinauralizer* %decoder, i32 1, %class.CAmbisonicBinauralizer* %decoder) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @FIR_right_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  ret void
 }
 
 ; Function Attrs: uwtable
@@ -18864,6 +19043,18 @@ for.body6:                                        ; preds = %for.body6.preheader
   br i1 %cmp4, label %for.body6, label %for.cond.cleanup5, !llvm.loop !417
 }
 
+; Function Attrs: nounwind uwtable
+define void @wrapperIFFT_left_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 1, %class.CAmbisonicBinauralizer* %decoder, i32 1, %class.CAmbisonicBinauralizer* %decoder) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @IFFT_left_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  ret void
+}
+
 ; Function Attrs: uwtable
 define void @IFFT_right_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder) #3 personality i32 (...)* @__gxx_personality_v0 {
 entry:
@@ -19020,6 +19211,18 @@ for.body6:                                        ; preds = %for.body6.preheader
   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
   %cmp4 = icmp ult i64 %indvars.iv.next, %8
   br i1 %cmp4, label %for.body6, label %for.cond.cleanup5, !llvm.loop !424
+}
+
+; Function Attrs: nounwind uwtable
+define void @wrapperIFFT_right_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 1, %class.CAmbisonicBinauralizer* %decoder, i32 1, %class.CAmbisonicBinauralizer* %decoder) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @IFFT_right_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  ret void
 }
 
 ; Function Attrs: nounwind uwtable
@@ -19316,6 +19519,20 @@ for.body9:                                        ; preds = %for.body9.preheader
 }
 
 ; Function Attrs: nounwind uwtable
+define void @wrapperOverlap_left_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample0, i64 %bytes_resultSample0) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicBinauralizer* %decoder, float* %resultSample0, i32 1, float* %resultSample0) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, float*, i64)* nonnull @overlap_left_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 2, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 3, i32 3, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  ret void
+}
+
+; Function Attrs: nounwind uwtable
 define void @overlap_right_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample1, i64 %bytes_resultSample1) #7 personality i32 (...)* @__gxx_personality_v0 {
 entry:
   %0 = bitcast float* %resultSample1 to i8*
@@ -19604,25 +19821,39 @@ for.body9:                                        ; preds = %for.body9.preheader
 }
 
 ; Function Attrs: nounwind uwtable
+define void @wrapperOverlap_right_fxp(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample1, i64 %bytes_resultSample1) #7 {
+entry:
+  tail call void @__hpvm__hint(i32 1) #24
+  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicBinauralizer* %decoder, float* %resultSample1, i32 1, float* %resultSample1) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, float*, i64)* nonnull @overlap_right_fxp) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 2, i32 2, i32 0) #24
+  tail call void @__hpvm__bindIn(i8* %call, i32 3, i32 3, i32 0) #24
+  tail call void @__hpvm__bindOut(i8* %call, i32 0, i32 0, i32 0) #24
+  ret void
+}
+
+; Function Attrs: nounwind uwtable
 define void @audioDecoding(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, %class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CAmbisonicBinauralizer* %decoder0, i64 %bytes_decoder0, float* %resultSample0, i64 %bytes_resultSample0, i32 %nSample, float** nocapture readnone %channelpart1, i64 %bytes_channelpart1, float** nocapture readnone %channelpart2, i64 %bytes_channelpart2, float** nocapture readnone %channelpart3, i64 %bytes_channelpart3, %class.CAmbisonicBinauralizer* %decoder1, i64 %bytes_decoder1, float* %resultSample1, i64 %bytes_resultSample1) #7 {
 entry:
   tail call void @__hpvm__hint(i32 1) #24
   tail call void (i32, ...) @__hpvm__attributes(i32 7, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, %class.CAmbisonicZoomer* %zoomer, %class.CAmbisonicBinauralizer* %decoder0, %class.CAmbisonicBinauralizer* %decoder1, float* %resultSample0, float* %resultSample1, i32 6, %class.CBFormat* %sumBF, %class.CAmbisonicZoomer* %zoomer, %class.CAmbisonicBinauralizer* %decoder0, %class.CAmbisonicBinauralizer* %decoder1, float* %resultSample0, float* %resultSample1) #24
-  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64)* nonnull @rotatorSet_fxp) #24
-  %call1 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i32, float**, i64, float**, i64, float**, i64)* nonnull @psychoFilter_fxp) #24
-  %call2 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @rotateOrder1_fxp) #24
-  %call3 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @rotateOrder2_fxp) #24
-  %call4 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @rotateOrder3_fxp) #24
-  %call5 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicZoomer*, i64)* nonnull @zoomSet_fxp) #24
-  %call6 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicZoomer*, i64, %class.CBFormat*, i64, i32, float**, i64, float**, i64, float**, i64)* nonnull @zoomProcess_fxp) #24
-  %call7 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, %class.CBFormat*, i64)* nonnull @setAndFFT_left_fxp) #24
-  %call8 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, %class.CBFormat*, i64)* nonnull @setAndFFT_right_fxp) #24
-  %call9 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @FIR_left_fxp) #24
-  %call10 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @FIR_right_fxp) #24
-  %call11 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @IFFT_left_fxp) #24
-  %call12 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @IFFT_right_fxp) #24
-  %call13 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, float*, i64)* nonnull @overlap_left_fxp) #24
-  %call14 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, float*, i64)* nonnull @overlap_right_fxp) #24
+  %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64)* nonnull @wrapperRotatorSet_fxp) #24
+  %call1 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i32, float**, i64, float**, i64, float**, i64)* nonnull @wrapperPsychoFilter_fxp) #24
+  %call2 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @wrapperRotateOrder1_fxp) #24
+  %call3 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @wrapperRotateOrder2_fxp) #24
+  %call4 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicProcessor*, i64, i32, float**, i64)* nonnull @wrapperRotateOrder3_fxp) #24
+  %call5 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicZoomer*, i64)* nonnull @wrapperZoomSet_fxp) #24
+  %call6 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicZoomer*, i64, %class.CBFormat*, i64, i32, float**, i64, float**, i64, float**, i64)* nonnull @wrapperZoomProcess_fxp) #24
+  %call7 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, %class.CBFormat*, i64)* nonnull @wrapperSetAndFFT_left_fxp) #24
+  %call8 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, %class.CBFormat*, i64)* nonnull @wrapperSetAndFFT_right_fxp) #24
+  %call9 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @wrapperFIR_left_fxp) #24
+  %call10 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @wrapperFIR_right_fxp) #24
+  %call11 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @wrapperIFFT_left_fxp) #24
+  %call12 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @wrapperIFFT_right_fxp) #24
+  %call13 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, float*, i64)* nonnull @wrapperOverlap_left_fxp) #24
+  %call14 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, float*, i64)* nonnull @wrapperOverlap_right_fxp) #24
   tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #24
   tail call void @__hpvm__bindIn(i8* %call1, i32 0, i32 0, i32 0) #24
@@ -19690,12 +19921,6 @@ entry:
   tail call void @__hpvm__bindIn(i8* %call14, i32 20, i32 3, i32 0) #24
   ret void
 }
-
-; Function Attrs: nounwind
-declare i8* @__hpvm__createNodeND(i32, ...) local_unnamed_addr #1
-
-; Function Attrs: nounwind
-declare void @__hpvm__bindIn(i8*, i32, i32, i32) local_unnamed_addr #1
 
 ; Function Attrs: nounwind
 declare i8* @__hpvm__edge(i8*, i8*, i32, i32, i32, i32) local_unnamed_addr #1
