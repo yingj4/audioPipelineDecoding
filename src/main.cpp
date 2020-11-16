@@ -2426,7 +2426,7 @@ void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(2, rotator, channelpart2, 1, channelpart2);
 
-    // printf("rotateOrder1 starts\n");
+    // printf("rotateOrder2 starts\n");
     // printf("%u\n", rotator->m_nOrder);
     if (rotator->m_nOrder >= 2) {
         // rotator->ProcessOrder2_3D(sumBF, nSample);
@@ -2458,7 +2458,7 @@ void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
             channelpart2[4][niSample] = valueV;
         }
     }
-    // printf("rotateOrder1 ends\n");
+    // printf("rotateOrder2 ends\n");
 
     __hpvm__return(1, bytes_channelpart2);
 }
@@ -2496,7 +2496,7 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(2, rotator, channelpart3, 1, channelpart3);
 
-    // printf("rotateOrder1 starts\n");
+    // printf("rotateOrder3 starts\n");
     // printf("%u\n", rotator->m_nOrder);
     if (rotator->m_nOrder >= 3) {
         // rotator->ProcessOrder3_3D(sumBF, nSample);
@@ -2538,7 +2538,7 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
             channelpart3[6][niSample] = valueP;
         }
     }
-    // printf("rotateOrder1 ends\n");
+    // printf("rotateOrder3 ends\n");
 
     __hpvm__return(1, bytes_channelpart3);
 }
@@ -2601,6 +2601,7 @@ void zoomProcess_fxp(/*0*/ CAmbisonicZoomer* zoomer, /*1*/ size_t bytes_zoomer, 
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(5, zoomer, sumBF, channelpart1, channelpart2, channelpart3, 1, sumBF);
 
+    // printf("zoomProcess starts\n");
     for (unsigned i = 0; i < nSample; ++i) {
         sumBF->m_ppfChannels[kX][i] = channelpart1[0][i];
         sumBF->m_ppfChannels[kY][i] = channelpart1[1][i];
@@ -2671,7 +2672,7 @@ void setAndFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t byte
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(2, decoder, sumBF, 1, decoder);
 
-    // printf("setAndFFT starts\n");
+    // printf("setAndFFT_left starts\n");
     memset(decoder->m_pfScratchBufferA.data(), 0, (decoder->m_nFFTSize) * sizeof(float));
 
     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
@@ -2704,7 +2705,7 @@ void setAndFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t byt
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(2, decoder, sumBF, 1, decoder);
 
-    // printf("setAndFFT starts\n");
+    // printf("setAndFFT_right starts\n");
     memset(decoder->m_pfScratchBufferA.data(), 0, (decoder->m_nFFTSize) * sizeof(float));
 
     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
