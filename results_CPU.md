@@ -17,3 +17,8 @@
 |---------|------------|----------------------|--------------|-----|------|---------------|--------------|
 | Basic | 500 | 0.585 | 21.3% | 23.9% | 28.7% | 8.3% | 15.0% |
 | Basic | 1000 | 1.174 | 26.4% | 23.0% | 28.7% | 5.1% | 7.6% |
+
+Remarks
+1. The reason I am using percentage instead of the absolute value is that we care about the functions that are taking the largest portion of the time. Unlike audio encoding, audio decoding has more dominant functions.
+2. As show in the table, the average CPU time doubles when the block size changes from 500 to 1000.
+3. The three most time-consuming functions (`psychoFilter`, `FFT`, and `IFFT`) are all calling a function called `kf_work`. According to the profiling results, `kf_work` is the function that is taking the most portion of the time.
