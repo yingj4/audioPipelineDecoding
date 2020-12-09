@@ -1,0 +1,32 @@
+Script started on Tue 08 Dec 2020 02:46:33 PM CST
+[01;32myingj4@acadia[00m:[01;34m/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/test/benchmarks/audioDecodingNoPara[00m$ make TARGET=sqe[K[Keq
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/clang -O3 -std=c++14 -Wall -fPIC -I./include -DDEVICE=CPU_TARGET -I./libspatialaudio/build/Debug/include -emit-llvm -S -o build/seq/main.ll src//main.cpp
+In file included from src//main.cpp:1:
+[1m./include/audio.h:442:10: [0m[0;1;35mwarning: [0m[1m'CAmbisonicProcessor::Configure' hides overloaded virtual function [-Woverloaded-virtual][0m
+    bool Configure(unsigned nOrder, bool b3D, unsigned nBlockSize, unsigned nMisc);
+[0;1;32m         ^
+[0m[1m./include/audio.h:97:18: [0m[0;1;30mnote: [0mhidden overloaded virtual function 'CAmbisonicBase::Configure' declared here: different number of parameters (3 vs 4)[0m
+    virtual bool Configure(unsigned nOrder, bool b3D, unsigned nMisc);
+[0;1;32m                 ^
+[0m[1m./include/audio.h:569:10: [0m[0;1;35mwarning: [0m[1m'CAmbisonicDecoder::Configure' hides overloaded virtual function [-Woverloaded-virtual][0m
+    bool Configure(unsigned nOrder, bool b3D, int nSpeakerSetUp, unsigned nSpeakers = 0);
+[0;1;32m         ^
+[0m[1m./include/audio.h:97:18: [0m[0;1;30mnote: [0mhidden overloaded virtual function 'CAmbisonicBase::Configure' declared here: different number of parameters (3 vs 4)[0m
+    virtual bool Configure(unsigned nOrder, bool b3D, unsigned nMisc);
+[0;1;32m                 ^
+[0m[1m./include/audio.h:702:18: [0m[0;1;35mwarning: [0m[1m'CAmbisonicBinauralizer::Configure' hides overloaded virtual function [-Woverloaded-virtual][0m
+    virtual bool Configure(unsigned nOrder,
+[0;1;32m                 ^
+[0m[1m./include/audio.h:97:18: [0m[0;1;30mnote: [0mhidden overloaded virtual function 'CAmbisonicBase::Configure' declared here: different number of parameters (3 vs 6)[0m
+    virtual bool Configure(unsigned nOrder, bool b3D, unsigned nMisc);
+[0;1;32m                 ^
+[0m3 warnings generated.
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/opt -load LLVMGenHPVM.so -genhpvm -globaldce build/seq/main.ll -S -o build/seq/main.hpvm.ll
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/opt -load LLVMBuildDFG.so -load LLVMDFG2LLVM_CPU.so -load LLVMClearDFG.so -dfg2llvm-cpu -clearDFG -S build/seq/main.hpvm.ll -o build/seq/audioDecoding-seq.host.ll
+Writing '/tmp/DataflowGraph-0b6ed9.dot'...  done. 
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/llvm-link build/seq/audioDecoding-seq.host.ll build/seq/AmbisonicCommons.ll build/seq/kiss_fft.ll build/seq/kiss_fftr.ll build/seq/mit_hrtf_lib.ll /shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/tools/hpvm/projects/hpvm-rt/hpvm-rt.bc -S -o build/seq/audioDecoding-seq.linked.ll
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/clang++ -O3 `pkg-config opencv --libs` -lm -lpthread -lrt -lOpenCL -L/software/cuda-9.1/lib64 build/seq/audioDecoding-seq.linked.ll -o audioDecoding-seq
+[01;32myingj4@acadia[00m:[01;34m/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/test/benchmarks/audioDecodingNoPara[00m$ exit
+exit
+
+Script done on Tue 08 Dec 2020 02:48:29 PM CST
