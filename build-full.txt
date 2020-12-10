@@ -1,0 +1,30 @@
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/clang -O3 -std=c++14 -Wall -fPIC -I./include -DDEVICE=CPU_TARGET -I./libspatialaudio/build/Debug/include -emit-llvm -S -o build/seq/main.ll src//main.cpp
+In file included from src//main.cpp:1:
+./include/audio.h:442:10: warning: 'CAmbisonicProcessor::Configure' hides overloaded virtual function [-Woverloaded-virtual]
+    bool Configure(unsigned nOrder, bool b3D, unsigned nBlockSize, unsigned nMisc);
+         ^
+./include/audio.h:97:18: note: hidden overloaded virtual function 'CAmbisonicBase::Configure' declared here: different number of parameters (3 vs 4)
+    virtual bool Configure(unsigned nOrder, bool b3D, unsigned nMisc);
+                 ^
+./include/audio.h:569:10: warning: 'CAmbisonicDecoder::Configure' hides overloaded virtual function [-Woverloaded-virtual]
+    bool Configure(unsigned nOrder, bool b3D, int nSpeakerSetUp, unsigned nSpeakers = 0);
+         ^
+./include/audio.h:97:18: note: hidden overloaded virtual function 'CAmbisonicBase::Configure' declared here: different number of parameters (3 vs 4)
+    virtual bool Configure(unsigned nOrder, bool b3D, unsigned nMisc);
+                 ^
+./include/audio.h:702:18: warning: 'CAmbisonicBinauralizer::Configure' hides overloaded virtual function [-Woverloaded-virtual]
+    virtual bool Configure(unsigned nOrder,
+                 ^
+./include/audio.h:97:18: note: hidden overloaded virtual function 'CAmbisonicBase::Configure' declared here: different number of parameters (3 vs 6)
+    virtual bool Configure(unsigned nOrder, bool b3D, unsigned nMisc);
+                 ^
+3 warnings generated.
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/opt -load LLVMGenHPVM.so -genhpvm -globaldce build/seq/main.ll -S -o build/seq/main.hpvm.ll
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/opt -load LLVMBuildDFG.so -load LLVMDFG2LLVM_CPU.so -load LLVMClearDFG.so -dfg2llvm-cpu -clearDFG -S build/seq/main.hpvm.ll -o build/seq/audioDecoding-seq.host.ll
+Writing '/tmp/DataflowGraph-17abe2.dot'...  done. 
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/clang -Isrc/ -I/include -I../include -I/include -ffast-math -O3 -fno-lax-vector-conversions -fno-vectorize -fno-slp-vectorize -I/software/cuda-9.1/include/CL/ -I/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/test/benchmarks/include -emit-llvm -S -o build/seq/AmbisonicCommons.ll src//AmbisonicCommons.cpp
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/clang -Isrc/ -I/include -I../include -I/include -ffast-math -O3 -fno-lax-vector-conversions -fno-vectorize -fno-slp-vectorize -I/software/cuda-9.1/include/CL/ -I/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/test/benchmarks/include -emit-llvm -S -o build/seq/kiss_fft.ll src//kiss_fft.cpp
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/clang -Isrc/ -I/include -I../include -I/include -ffast-math -O3 -fno-lax-vector-conversions -fno-vectorize -fno-slp-vectorize -I/software/cuda-9.1/include/CL/ -I/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/test/benchmarks/include -emit-llvm -S -o build/seq/kiss_fftr.ll src//kiss_fftr.cpp
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/clang -Isrc/ -I/include -I../include -I/include -ffast-math -O3 -fno-lax-vector-conversions -fno-vectorize -fno-slp-vectorize -I/software/cuda-9.1/include/CL/ -I/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/test/benchmarks/include -emit-llvm -S -o build/seq/mit_hrtf_lib.ll src//mit_hrtf_lib.cpp
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/llvm-link build/seq/audioDecoding-seq.host.ll build/seq/AmbisonicCommons.ll build/seq/kiss_fft.ll build/seq/kiss_fftr.ll build/seq/mit_hrtf_lib.ll /shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/tools/hpvm/projects/hpvm-rt/hpvm-rt.bc -S -o build/seq/audioDecoding-seq.linked.ll
+/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/build/bin/clang++ -O3 `pkg-config opencv --libs` -lm -lpthread -lrt -lOpenCL -L/software/cuda-9.1/lib64 build/seq/audioDecoding-seq.linked.ll -o audioDecoding-seq
