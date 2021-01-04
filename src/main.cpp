@@ -3228,12 +3228,12 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
     // __hpvm__bindIn(decodeProcessSetNode, 6, 0, 0);
     // __hpvm__bindIn(decodeProcessSetNode, 7, 1, 0);
 
-    __hpvm__bindIn(setAndFFT_LeftNode, 6, 0, 0);    // Ying: TODO: bindIn and edge the previous nodes, and check the pipeline example
+    __hpvm__bindIn(setAndFFT_LeftNode, 6, 0, 0);
     __hpvm__bindIn(setAndFFT_LeftNode, 7, 1, 0);
     __hpvm__bindIn(setAndFFT_LeftNode, 2, 2, 0);
     __hpvm__edge(zoomProcessNode, setAndFFT_LeftNode, 1, 0, 3, 0);
 
-    __hpvm__bindIn(setAndFFT_RightNode, 17, 0, 0);    // Ying: TODO: bindIn and edge the previous nodes, and check the pipeline example
+    __hpvm__bindIn(setAndFFT_RightNode, 17, 0, 0);
     __hpvm__bindIn(setAndFFT_RightNode, 18, 1, 0);
     __hpvm__bindIn(setAndFFT_RightNode, 2, 2, 0);
     __hpvm__edge(zoomProcessNode, setAndFFT_RightNode, 1, 1, 3, 0);
