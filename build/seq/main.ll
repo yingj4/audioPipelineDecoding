@@ -17345,7 +17345,7 @@ declare void @__hpvm__bindOut(i8*, i32, i32, i32) local_unnamed_addr #1
 define void @psychoFilter_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3) #3 {
 entry:
   tail call void @__hpvm__hint(i32 1) #20
-  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, i32 5, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, float** %channelpart1, float** %channelpart2, float** %channelpart3) #20
+  tail call void (i32, ...) @__hpvm__attributes(i32 5, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, float** %channelpart1, float** %channelpart2, float** %channelpart3, i32 5, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, float** %channelpart1, float** %channelpart2, float** %channelpart3) #20
   %0 = getelementptr inbounds %class.CAmbisonicProcessor, %class.CAmbisonicProcessor* %rotator, i64 0, i32 0, i32 5
   %1 = load i8, i8* %0, align 4, !tbaa !35, !range !36
   %tobool = icmp eq i8 %1, 0
@@ -17373,8 +17373,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx5 = getelementptr inbounds float, float* %6, i64 %call1
   %7 = bitcast float* %arrayidx5 to i32*
   store i32 %5, i32* %7, align 4, !tbaa !19
-  %arrayidx.i174 = getelementptr inbounds float*, float** %2, i64 1
-  %8 = load float*, float** %arrayidx.i174, align 8, !tbaa !12
+  %arrayidx.i177 = getelementptr inbounds float*, float** %2, i64 1
+  %8 = load float*, float** %arrayidx.i177, align 8, !tbaa !12
   %arrayidx8 = getelementptr inbounds float, float* %8, i64 %call1
   %9 = bitcast float* %arrayidx8 to i32*
   %10 = load i32, i32* %9, align 4, !tbaa !19
@@ -17383,8 +17383,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx10 = getelementptr inbounds float, float* %11, i64 %call1
   %12 = bitcast float* %arrayidx10 to i32*
   store i32 %10, i32* %12, align 4, !tbaa !19
-  %arrayidx.i172 = getelementptr inbounds float*, float** %2, i64 2
-  %13 = load float*, float** %arrayidx.i172, align 8, !tbaa !12
+  %arrayidx.i175 = getelementptr inbounds float*, float** %2, i64 2
+  %13 = load float*, float** %arrayidx.i175, align 8, !tbaa !12
   %arrayidx13 = getelementptr inbounds float, float* %13, i64 %call1
   %14 = bitcast float* %arrayidx13 to i32*
   %15 = load i32, i32* %14, align 4, !tbaa !19
@@ -17393,8 +17393,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx15 = getelementptr inbounds float, float* %16, i64 %call1
   %17 = bitcast float* %arrayidx15 to i32*
   store i32 %15, i32* %17, align 4, !tbaa !19
-  %arrayidx.i170 = getelementptr inbounds float*, float** %2, i64 6
-  %18 = load float*, float** %arrayidx.i170, align 8, !tbaa !12
+  %arrayidx.i173 = getelementptr inbounds float*, float** %2, i64 6
+  %18 = load float*, float** %arrayidx.i173, align 8, !tbaa !12
   %arrayidx18 = getelementptr inbounds float, float* %18, i64 %call1
   %19 = bitcast float* %arrayidx18 to i32*
   %20 = load i32, i32* %19, align 4, !tbaa !19
@@ -17402,8 +17402,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx20 = getelementptr inbounds float, float* %21, i64 %call1
   %22 = bitcast float* %arrayidx20 to i32*
   store i32 %20, i32* %22, align 4, !tbaa !19
-  %arrayidx.i168 = getelementptr inbounds float*, float** %2, i64 7
-  %23 = load float*, float** %arrayidx.i168, align 8, !tbaa !12
+  %arrayidx.i171 = getelementptr inbounds float*, float** %2, i64 7
+  %23 = load float*, float** %arrayidx.i171, align 8, !tbaa !12
   %arrayidx23 = getelementptr inbounds float, float* %23, i64 %call1
   %24 = bitcast float* %arrayidx23 to i32*
   %25 = load i32, i32* %24, align 4, !tbaa !19
@@ -17412,8 +17412,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx25 = getelementptr inbounds float, float* %26, i64 %call1
   %27 = bitcast float* %arrayidx25 to i32*
   store i32 %25, i32* %27, align 4, !tbaa !19
-  %arrayidx.i166 = getelementptr inbounds float*, float** %2, i64 5
-  %28 = load float*, float** %arrayidx.i166, align 8, !tbaa !12
+  %arrayidx.i169 = getelementptr inbounds float*, float** %2, i64 5
+  %28 = load float*, float** %arrayidx.i169, align 8, !tbaa !12
   %arrayidx28 = getelementptr inbounds float, float* %28, i64 %call1
   %29 = bitcast float* %arrayidx28 to i32*
   %30 = load i32, i32* %29, align 4, !tbaa !19
@@ -17422,8 +17422,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx30 = getelementptr inbounds float, float* %31, i64 %call1
   %32 = bitcast float* %arrayidx30 to i32*
   store i32 %30, i32* %32, align 4, !tbaa !19
-  %arrayidx.i164 = getelementptr inbounds float*, float** %2, i64 8
-  %33 = load float*, float** %arrayidx.i164, align 8, !tbaa !12
+  %arrayidx.i167 = getelementptr inbounds float*, float** %2, i64 8
+  %33 = load float*, float** %arrayidx.i167, align 8, !tbaa !12
   %arrayidx33 = getelementptr inbounds float, float* %33, i64 %call1
   %34 = bitcast float* %arrayidx33 to i32*
   %35 = load i32, i32* %34, align 4, !tbaa !19
@@ -17432,8 +17432,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx35 = getelementptr inbounds float, float* %36, i64 %call1
   %37 = bitcast float* %arrayidx35 to i32*
   store i32 %35, i32* %37, align 4, !tbaa !19
-  %arrayidx.i162 = getelementptr inbounds float*, float** %2, i64 4
-  %38 = load float*, float** %arrayidx.i162, align 8, !tbaa !12
+  %arrayidx.i165 = getelementptr inbounds float*, float** %2, i64 4
+  %38 = load float*, float** %arrayidx.i165, align 8, !tbaa !12
   %arrayidx38 = getelementptr inbounds float, float* %38, i64 %call1
   %39 = bitcast float* %arrayidx38 to i32*
   %40 = load i32, i32* %39, align 4, !tbaa !19
@@ -17442,8 +17442,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx40 = getelementptr inbounds float, float* %41, i64 %call1
   %42 = bitcast float* %arrayidx40 to i32*
   store i32 %40, i32* %42, align 4, !tbaa !19
-  %arrayidx.i160 = getelementptr inbounds float*, float** %2, i64 9
-  %43 = load float*, float** %arrayidx.i160, align 8, !tbaa !12
+  %arrayidx.i163 = getelementptr inbounds float*, float** %2, i64 9
+  %43 = load float*, float** %arrayidx.i163, align 8, !tbaa !12
   %arrayidx43 = getelementptr inbounds float, float* %43, i64 %call1
   %44 = bitcast float* %arrayidx43 to i32*
   %45 = load i32, i32* %44, align 4, !tbaa !19
@@ -17451,8 +17451,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx45 = getelementptr inbounds float, float* %46, i64 %call1
   %47 = bitcast float* %arrayidx45 to i32*
   store i32 %45, i32* %47, align 4, !tbaa !19
-  %arrayidx.i158 = getelementptr inbounds float*, float** %2, i64 10
-  %48 = load float*, float** %arrayidx.i158, align 8, !tbaa !12
+  %arrayidx.i161 = getelementptr inbounds float*, float** %2, i64 10
+  %48 = load float*, float** %arrayidx.i161, align 8, !tbaa !12
   %arrayidx48 = getelementptr inbounds float, float* %48, i64 %call1
   %49 = bitcast float* %arrayidx48 to i32*
   %50 = load i32, i32* %49, align 4, !tbaa !19
@@ -17461,8 +17461,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx50 = getelementptr inbounds float, float* %51, i64 %call1
   %52 = bitcast float* %arrayidx50 to i32*
   store i32 %50, i32* %52, align 4, !tbaa !19
-  %arrayidx.i156 = getelementptr inbounds float*, float** %2, i64 11
-  %53 = load float*, float** %arrayidx.i156, align 8, !tbaa !12
+  %arrayidx.i159 = getelementptr inbounds float*, float** %2, i64 11
+  %53 = load float*, float** %arrayidx.i159, align 8, !tbaa !12
   %arrayidx53 = getelementptr inbounds float, float* %53, i64 %call1
   %54 = bitcast float* %arrayidx53 to i32*
   %55 = load i32, i32* %54, align 4, !tbaa !19
@@ -17471,8 +17471,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx55 = getelementptr inbounds float, float* %56, i64 %call1
   %57 = bitcast float* %arrayidx55 to i32*
   store i32 %55, i32* %57, align 4, !tbaa !19
-  %arrayidx.i154 = getelementptr inbounds float*, float** %2, i64 12
-  %58 = load float*, float** %arrayidx.i154, align 8, !tbaa !12
+  %arrayidx.i157 = getelementptr inbounds float*, float** %2, i64 12
+  %58 = load float*, float** %arrayidx.i157, align 8, !tbaa !12
   %arrayidx58 = getelementptr inbounds float, float* %58, i64 %call1
   %59 = bitcast float* %arrayidx58 to i32*
   %60 = load i32, i32* %59, align 4, !tbaa !19
@@ -17481,8 +17481,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx60 = getelementptr inbounds float, float* %61, i64 %call1
   %62 = bitcast float* %arrayidx60 to i32*
   store i32 %60, i32* %62, align 4, !tbaa !19
-  %arrayidx.i152 = getelementptr inbounds float*, float** %2, i64 13
-  %63 = load float*, float** %arrayidx.i152, align 8, !tbaa !12
+  %arrayidx.i155 = getelementptr inbounds float*, float** %2, i64 13
+  %63 = load float*, float** %arrayidx.i155, align 8, !tbaa !12
   %arrayidx63 = getelementptr inbounds float, float* %63, i64 %call1
   %64 = bitcast float* %arrayidx63 to i32*
   %65 = load i32, i32* %64, align 4, !tbaa !19
@@ -17491,8 +17491,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx65 = getelementptr inbounds float, float* %66, i64 %call1
   %67 = bitcast float* %arrayidx65 to i32*
   store i32 %65, i32* %67, align 4, !tbaa !19
-  %arrayidx.i150 = getelementptr inbounds float*, float** %2, i64 14
-  %68 = load float*, float** %arrayidx.i150, align 8, !tbaa !12
+  %arrayidx.i153 = getelementptr inbounds float*, float** %2, i64 14
+  %68 = load float*, float** %arrayidx.i153, align 8, !tbaa !12
   %arrayidx68 = getelementptr inbounds float, float* %68, i64 %call1
   %69 = bitcast float* %arrayidx68 to i32*
   %70 = load i32, i32* %69, align 4, !tbaa !19
@@ -17501,8 +17501,8 @@ if.then2:                                         ; preds = %if.end
   %arrayidx70 = getelementptr inbounds float, float* %71, i64 %call1
   %72 = bitcast float* %arrayidx70 to i32*
   store i32 %70, i32* %72, align 4, !tbaa !19
-  %arrayidx.i148 = getelementptr inbounds float*, float** %2, i64 15
-  %73 = load float*, float** %arrayidx.i148, align 8, !tbaa !12
+  %arrayidx.i151 = getelementptr inbounds float*, float** %2, i64 15
+  %73 = load float*, float** %arrayidx.i151, align 8, !tbaa !12
   %arrayidx73 = getelementptr inbounds float, float* %73, i64 %call1
   %74 = bitcast float* %arrayidx73 to i32*
   %75 = load i32, i32* %74, align 4, !tbaa !19
@@ -17528,7 +17528,7 @@ declare i64 @__hpvm__getNodeInstanceID_x(i8*) local_unnamed_addr #1
 define void @wrapperPsychoFilter_fxp(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3) #7 {
 entry:
   tail call void @__hpvm__hint(i32 1) #20
-  tail call void (i32, ...) @__hpvm__attributes(i32 2, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, i32 5, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, float** %channelpart1, float** %channelpart2, float** %channelpart3) #20
+  tail call void (i32, ...) @__hpvm__attributes(i32 5, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, float** %channelpart1, float** %channelpart2, float** %channelpart3, i32 5, %class.CAmbisonicProcessor* %rotator, %class.CBFormat* %sumBF, float** %channelpart1, float** %channelpart2, float** %channelpart3) #20
   %call = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 1, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i64, float**, i64, float**, i64, float**, i64)* nonnull @psychoFilter_fxp, i64 %nSample) #20
   tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #20
   tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #20

@@ -2289,7 +2289,7 @@ void wrapperRotatorSet_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t byte
 
 void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ long nSample, /*5*/ float** channelpart1, /*6*/ size_t bytes_channelpart1, /*7*/ float** channelpart2, /*8*/ size_t bytes_channelpart2, /*9*/ float** channelpart3, /*10*/ size_t bytes_channelpart3) {
     __hpvm__hint(hpvm::DEVICE);
-    __hpvm__attributes(2, rotator, sumBF, 5, rotator, sumBF, channelpart1, channelpart2, channelpart3);
+    __hpvm__attributes(5, rotator, sumBF, channelpart1, channelpart2, channelpart3, 5, rotator, sumBF, channelpart1, channelpart2, channelpart3);
 
     // printf("psychoFilter starts\n");
     if (rotator->m_bOpt) {
@@ -2349,7 +2349,7 @@ void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
 
 void wrapperPsychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ long nSample, /*5*/ float** channelpart1, /*6*/ size_t bytes_channelpart1, /*7*/ float** channelpart2, /*8*/ size_t bytes_channelpart2, /*9*/ float** channelpart3, /*10*/ size_t bytes_channelpart3) {
     __hpvm__hint(hpvm::DEVICE);
-    __hpvm__attributes(2, rotator, sumBF, 5, rotator, sumBF, channelpart1, channelpart2, channelpart3);
+    __hpvm__attributes(5, rotator, sumBF, channelpart1, channelpart2, channelpart3, 5, rotator, sumBF, channelpart1, channelpart2, channelpart3);
 
     void* psychoNode = __hpvm__createNodeND(1, psychoFilter_fxp, nSample);
     // void* psychoNode = __hpvm__createNodeND(0, psychoFilter_fxp);
