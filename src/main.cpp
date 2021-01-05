@@ -2213,7 +2213,6 @@ struct __attribute__((__packed__)) RootArg {
     /*8*/ float* resultSample0;
     /*9*/ size_t bytes_resultSample0;
     /*10*/ long nSample;
-    // /*11*/ unsigned channelCount;
     /*11*/ float** channelpart1;
     /*12*/ size_t bytes_channelpart1;
     /*13*/ float** channelpart2;
@@ -2224,6 +2223,10 @@ struct __attribute__((__packed__)) RootArg {
     /*18*/ size_t bytes_decoder1;
     /*19*/ float* resultSample1;
     /*20*/ size_t bytes_resultSample1;
+    /*21*/ long decoder0ChannelCount;
+    /*22*/ long decoder0FFTBins;
+    /*23*/ long decoder1ChannelCount;
+    /*24*/ long decoder1FFTBins;
 };
 
 // A leaf node for the rotator
@@ -2563,8 +2566,8 @@ void wrapperRotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t by
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(2, rotator, channelpart2, 1, channelpart2);
 
-    // void* ro2Node = __hpvm__createNodeND(1, rotateOrder2_fxp, nSample);
-    void* ro2Node = __hpvm__createNodeND(0, rotateOrder2_fxp);
+    void* ro2Node = __hpvm__createNodeND(1, rotateOrder2_fxp, nSample);
+    // void* ro2Node = __hpvm__createNodeND(0, rotateOrder2_fxp);
 
     __hpvm__bindIn(ro2Node, 0, 0, 0);
     __hpvm__bindIn(ro2Node, 1, 1, 0);
@@ -2693,7 +2696,8 @@ void wrapperRotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t by
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(2, rotator, channelpart3, 1, channelpart3);
 
-    void* ro3Node = __hpvm__createNodeND(0, rotateOrder3_fxp);
+    void* ro3Node = __hpvm__createNodeND(1, rotateOrder3_fxp, nSample);
+    // void* ro3Node = __hpvm__createNodeND(0, rotateOrder3_fxp);
 
     __hpvm__bindIn(ro3Node, 0, 0, 0);
     __hpvm__bindIn(ro3Node, 1, 1, 0);
@@ -2889,62 +2893,100 @@ void wrapperSetAndFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ siz
 // }
 
 // FIR Filter
-void FIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+void FIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder0ChannelCount, /*3*/ long decoder0FFTBins) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(1, decoder, 1, decoder);
 
     // printf("FIR_left starts\n");
-    kiss_fft_cpx cpTemp;
-    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
-        for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
-            cpTemp.r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
-            cpTemp.i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
-            decoder->m_pcpScratch[ni] = cpTemp;
-        }
+    kiss_fft_cpx cpTemp[decoder->m_nFFTBins];
+
+    // This is the non-parallel version
+    // for (unsigned niChannel = 0; niChannel < decoder0ChannelCount; niChannel++) {
+    //     for (int ni = 0; ni < decoder0FFTBins; ni++) {
+    //         cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
+    //         cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
+    //         decoder->m_pcpScratch[ni] = cpTemp[ni];
+    //     }
+    // }
+
+    // This is the parallel version
+    void* thisNode = __hpvm__getNode();
+    long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
+    long ni = __hpvm__getNodeInstanceID_y(thisNode);
+
+    if (niChannel < decoder0ChannelCount && ni < decoder0FFTBins) {
+        cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
+        cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
+        decoder->m_pcpScratch[ni] = cpTemp[ni];
     }
+
+
     // printf("FIR_left ends\n");
 
     __hpvm__return(1, bytes_decoder);
 }
 
-void wrapperFIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+void wrapperFIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder0ChannelCount, /*3*/ long decoder0FFTBins) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(1, decoder, 1, decoder);
 
-    void* firlNode = __hpvm__createNodeND(0, FIR_left_fxp);
+
+    void* firlNode = __hpvm__createNodeND(2, FIR_left_fxp, decoder0ChannelCount, decoder0FFTBins);
+    // void* firlNode = __hpvm__createNodeND(0, FIR_left_fxp);
 
     __hpvm__bindIn(firlNode, 0, 0, 0);
     __hpvm__bindIn(firlNode, 1, 1, 0);
+    __hpvm__bindIn(firlNode, 2, 2, 0);
+    __hpvm__bindIn(firlNode, 3, 3, 0);
 
     __hpvm__bindOut(firlNode, 0, 0, 0);
 }
 
-void FIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+void FIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder1ChannelCount, /*3*/ long decoder1FFTBins) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(1, decoder, 1, decoder);
 
     // printf("FIR_right starts\n");
-    kiss_fft_cpx cpTemp;
-    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
-        for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
-            cpTemp.r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
-            cpTemp.i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
-            decoder->m_pcpScratch[ni] = cpTemp;
-        }
+    kiss_fft_cpx cpTemp[decoder->m_nFFTBins];
+
+    // This is the non-parallel version
+    // for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+    //     for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
+    //         cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
+    //         cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
+    //         decoder->m_pcpScratch[ni] = cpTemp[ni];
+    //     }
+    // }
+
+    // This is the parallel version
+    void* thisNode = __hpvm__getNode();
+    long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
+    long ni = __hpvm__getNodeInstanceID_y(thisNode);
+
+    if (niChannel < decoder1ChannelCount && ni < decoder1FFTBins) {
+        cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
+        cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
+        decoder->m_pcpScratch[ni] = cpTemp[ni];
     }
+
+
+
     // printf("FIR_right ends\n");
 
     __hpvm__return(1, bytes_decoder);
 }
 
-void wrapperFIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+void wrapperFIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder1ChannelCount, /*3*/ long decoder1FFTBins) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(1, decoder, 1, decoder);
 
-    void* firrNode = __hpvm__createNodeND(0, FIR_right_fxp);
+    void* firrNode = __hpvm__createNodeND(2, FIR_right_fxp, decoder1ChannelCount, decoder1FFTBins);
+    // void* firrNode = __hpvm__createNodeND(0, FIR_right_fxp);
 
     __hpvm__bindIn(firrNode, 0, 0, 0);
     __hpvm__bindIn(firrNode, 1, 1, 0);
+    __hpvm__bindIn(firrNode, 2, 2, 0);
+    __hpvm__bindIn(firrNode, 3, 3, 0);
 
     __hpvm__bindOut(firrNode, 0, 0, 0);
 }
@@ -3104,7 +3146,8 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
                     /*5*/ size_t bytes_zoomer, /*6*/ CAmbisonicBinauralizer* decoder0, /*7*/ size_t bytes_decoder0, /*8*/ float* resultSample0, \
                     /*9*/ size_t bytes_resultSample0, /*10*/ long nSample, /*11*/ float** channelpart1, /*12*/ size_t bytes_channelpart1, /*13*/ float** channelpart2, \
                     /*14*/ size_t bytes_channelpart2, /*15*/ float** channelpart3, /*16*/ size_t bytes_channelpart3, /*17*/ CAmbisonicBinauralizer* decoder1, \
-                    /*18*/ size_t bytes_decoder1, /*19*/ float* resultSample1, /*20*/ size_t bytes_resultSample1) {
+                    /*18*/ size_t bytes_decoder1, /*19*/ float* resultSample1, /*20*/ size_t bytes_resultSample1, /*21*/ long decoder0ChannelCount, /*22*/ long decoder0FFTBins, \
+                    /*23*/ long decoder1ChannelCount, /*24*/ long decoder1FFTBins) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(7, rotator, sumBF, zoomer, decoder0, decoder1, resultSample0, resultSample1, 6, sumBF, zoomer, decoder0, decoder1, resultSample0, resultSample1);
 
@@ -3240,9 +3283,13 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
     
     __hpvm__bindIn(FIR_LeftNode, 6, 0, 0);
     __hpvm__edge(setAndFFT_LeftNode, FIR_LeftNode, 1, 0, 1, 0);
+    __hpvm__bindIn(FIR_LeftNode, 21, 2, 0);
+    __hpvm__bindIn(FIR_LeftNode, 22, 3, 0);
     
     __hpvm__bindIn(FIR_RightNode, 17, 0, 0);
     __hpvm__edge(setAndFFT_RightNode, FIR_RightNode, 1, 0, 1, 0);
+    __hpvm__bindIn(FIR_RightNode, 23, 2, 0);
+    __hpvm__bindIn(FIR_RightNode, 24, 3, 0);
 
     __hpvm__bindIn(IFFT_LeftNode, 6, 0, 0);
     __hpvm__edge(FIR_LeftNode, IFFT_LeftNode, 1, 0, 1, 0);
@@ -3375,6 +3422,10 @@ int main(int argc, char const *argv[])
     arg->bytes_decoder1 = bytes_decoder1;
     arg->resultSample1 = resultSample1;
     arg->bytes_resultSample1 = bytes_resultSample1;
+    arg->decoder0ChannelCount = audioAddr->decoder0->m_nChannelCount;
+    arg->decoder0FFTBins = audioAddr->decoder0->m_nFFTBins;
+    arg->decoder1ChannelCount = audioAddr->decoder1->m_nChannelCount;
+    arg->decoder1FFTBins = audioAddr->decoder1->m_nFFTBins;
 
     // ABAudio* audioAddr = &audio;
     for (int i = 0; i < numBlocks; ++i){
