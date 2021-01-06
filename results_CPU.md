@@ -13,10 +13,10 @@
 
 ### Result Tables and Remarks
 
-| Version | Block Size | Average CPU Time (s) | psychoFilter | FFT | IFFT | zoomerProcess | rotateOrder3 |
-|---------|------------|----------------------|--------------|-----|------|---------------|--------------|
-| Basic | 500 | 0.585 | 21.3% | 23.9% | 28.7% | 8.3% | 15.0% |
-| Basic | 1000 | 1.174 | 26.4% | 23.0% | 28.7% | 5.1% | 7.6% |
+| Version | Block Size | Average CPU Time (s) | psychoFilter | FFT_left | FFT_right | IFFT_left | IFFT_right | rotateOrder3 | FIR_left | FIR_right | llvm_hpvm_cpu_dstack_push | llvm_hpvm_cpu_dstack_pop | rotateOrder2 | zoomProcess |
+|---------|------------|----------------------|--------------|----------|-----------|-----------|------------|--------------|----------|-----------|---------------------------|--------------------------|--------------|-------------|
+| Basic | 500 | 0.647 | 27.89% | 16.1% | 11.27% | 10.17% | 10.3% | 8.27% | 6.43% | 6.47% | - | - | - | - |
+| Basic | 1000 | 1.250 | 28.47% | 9.4% | 9.5% | 11.83% | 10.97% | 11.8% | 3.2% | 5.77% | - | - | - | - |
 
 Remarks
 1. The reason I am using percentage instead of the absolute value is that we care about the functions that are taking the largest portion of the time. Unlike audio encoding, audio decoding has more dominant functions.
