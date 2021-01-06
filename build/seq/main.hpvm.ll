@@ -19372,12 +19372,6 @@ entry:
   ret %struct.out.wrapperRotatorSet_fxp undef
 }
 
-; Function Attrs: nounwind readnone
-declare i8* @llvm.hpvm.getNode() #25
-
-; Function Attrs: nounwind readnone
-declare i64 @llvm.hpvm.getNodeInstanceID.x(i8*) #25
-
 ; Function Attrs: uwtable
 define %struct.out.psychoFilter_fxp @psychoFilter_fxp_cloned(%class.CAmbisonicProcessor* in out %rotator, i64 %bytes_rotator, %class.CBFormat* in out %sumBF, i64 %bytes_sumBF, i64 %nSample, float** in out %channelpart1, i64 %bytes_channelpart1, float** in out %channelpart2, i64 %bytes_channelpart2, float** in out %channelpart3, i64 %bytes_channelpart3) #3 {
 entry:
@@ -19391,181 +19385,182 @@ if.then:                                          ; preds = %entry
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %entry
-  %call2 = call i8* @llvm.hpvm.getNode()
-  %call13 = call i64 @llvm.hpvm.getNodeInstanceID.x(i8* %call2)
-  %cmp = icmp slt i64 %call13, %nSample
-  br i1 %cmp, label %if.then2, label %if.end76
+  %cmp204 = icmp sgt i64 %nSample, 0
+  br i1 %cmp204, label %for.body.lr.ph, label %for.cond.cleanup
 
-if.then2:                                         ; preds = %if.end
+for.body.lr.ph:                                   ; preds = %if.end
   %_M_head_impl.i.i.i.i.i.i = getelementptr inbounds %class.CBFormat, %class.CBFormat* %sumBF, i64 0, i32 4, i32 0, i32 0, i32 0, i32 0
   %2 = load float**, float*** %_M_head_impl.i.i.i.i.i.i, align 8, !tbaa !43
   %arrayidx.i = getelementptr inbounds float*, float** %2, i64 3
   %3 = load float*, float** %arrayidx.i, align 8, !tbaa !43
-  %arrayidx = getelementptr inbounds float, float* %3, i64 %call13
-  %4 = bitcast float* %arrayidx to i32*
-  %5 = load i32, i32* %4, align 4, !tbaa !50
-  %6 = load float*, float** %channelpart1, align 8, !tbaa !43
-  %arrayidx5 = getelementptr inbounds float, float* %6, i64 %call13
-  %7 = bitcast float* %arrayidx5 to i32*
-  store i32 %5, i32* %7, align 4, !tbaa !50
-  %arrayidx.i177 = getelementptr inbounds float*, float** %2, i64 1
-  %8 = load float*, float** %arrayidx.i177, align 8, !tbaa !43
-  %arrayidx8 = getelementptr inbounds float, float* %8, i64 %call13
-  %9 = bitcast float* %arrayidx8 to i32*
-  %10 = load i32, i32* %9, align 4, !tbaa !50
+  %4 = load float*, float** %channelpart1, align 8, !tbaa !43
+  %arrayidx.i203 = getelementptr inbounds float*, float** %2, i64 1
+  %5 = load float*, float** %arrayidx.i203, align 8, !tbaa !43
   %arrayidx9 = getelementptr inbounds float*, float** %channelpart1, i64 1
-  %11 = load float*, float** %arrayidx9, align 8, !tbaa !43
-  %arrayidx10 = getelementptr inbounds float, float* %11, i64 %call13
-  %12 = bitcast float* %arrayidx10 to i32*
-  store i32 %10, i32* %12, align 4, !tbaa !50
-  %arrayidx.i175 = getelementptr inbounds float*, float** %2, i64 2
-  %13 = load float*, float** %arrayidx.i175, align 8, !tbaa !43
-  %arrayidx13 = getelementptr inbounds float, float* %13, i64 %call13
-  %14 = bitcast float* %arrayidx13 to i32*
-  %15 = load i32, i32* %14, align 4, !tbaa !50
-  %arrayidx14 = getelementptr inbounds float*, float** %channelpart1, i64 2
-  %16 = load float*, float** %arrayidx14, align 8, !tbaa !43
-  %arrayidx15 = getelementptr inbounds float, float* %16, i64 %call13
-  %17 = bitcast float* %arrayidx15 to i32*
-  store i32 %15, i32* %17, align 4, !tbaa !50
-  %arrayidx.i173 = getelementptr inbounds float*, float** %2, i64 6
-  %18 = load float*, float** %arrayidx.i173, align 8, !tbaa !43
-  %arrayidx18 = getelementptr inbounds float, float* %18, i64 %call13
-  %19 = bitcast float* %arrayidx18 to i32*
-  %20 = load i32, i32* %19, align 4, !tbaa !50
-  %21 = load float*, float** %channelpart2, align 8, !tbaa !43
-  %arrayidx20 = getelementptr inbounds float, float* %21, i64 %call13
-  %22 = bitcast float* %arrayidx20 to i32*
-  store i32 %20, i32* %22, align 4, !tbaa !50
-  %arrayidx.i171 = getelementptr inbounds float*, float** %2, i64 7
-  %23 = load float*, float** %arrayidx.i171, align 8, !tbaa !43
-  %arrayidx23 = getelementptr inbounds float, float* %23, i64 %call13
-  %24 = bitcast float* %arrayidx23 to i32*
-  %25 = load i32, i32* %24, align 4, !tbaa !50
-  %arrayidx24 = getelementptr inbounds float*, float** %channelpart2, i64 1
-  %26 = load float*, float** %arrayidx24, align 8, !tbaa !43
-  %arrayidx25 = getelementptr inbounds float, float* %26, i64 %call13
-  %27 = bitcast float* %arrayidx25 to i32*
-  store i32 %25, i32* %27, align 4, !tbaa !50
-  %arrayidx.i169 = getelementptr inbounds float*, float** %2, i64 5
-  %28 = load float*, float** %arrayidx.i169, align 8, !tbaa !43
-  %arrayidx28 = getelementptr inbounds float, float* %28, i64 %call13
-  %29 = bitcast float* %arrayidx28 to i32*
-  %30 = load i32, i32* %29, align 4, !tbaa !50
-  %arrayidx29 = getelementptr inbounds float*, float** %channelpart2, i64 2
-  %31 = load float*, float** %arrayidx29, align 8, !tbaa !43
-  %arrayidx30 = getelementptr inbounds float, float* %31, i64 %call13
-  %32 = bitcast float* %arrayidx30 to i32*
-  store i32 %30, i32* %32, align 4, !tbaa !50
-  %arrayidx.i167 = getelementptr inbounds float*, float** %2, i64 8
-  %33 = load float*, float** %arrayidx.i167, align 8, !tbaa !43
-  %arrayidx33 = getelementptr inbounds float, float* %33, i64 %call13
-  %34 = bitcast float* %arrayidx33 to i32*
-  %35 = load i32, i32* %34, align 4, !tbaa !50
-  %arrayidx34 = getelementptr inbounds float*, float** %channelpart2, i64 3
-  %36 = load float*, float** %arrayidx34, align 8, !tbaa !43
-  %arrayidx35 = getelementptr inbounds float, float* %36, i64 %call13
-  %37 = bitcast float* %arrayidx35 to i32*
-  store i32 %35, i32* %37, align 4, !tbaa !50
-  %arrayidx.i165 = getelementptr inbounds float*, float** %2, i64 4
-  %38 = load float*, float** %arrayidx.i165, align 8, !tbaa !43
-  %arrayidx38 = getelementptr inbounds float, float* %38, i64 %call13
-  %39 = bitcast float* %arrayidx38 to i32*
-  %40 = load i32, i32* %39, align 4, !tbaa !50
-  %arrayidx39 = getelementptr inbounds float*, float** %channelpart2, i64 4
-  %41 = load float*, float** %arrayidx39, align 8, !tbaa !43
-  %arrayidx40 = getelementptr inbounds float, float* %41, i64 %call13
-  %42 = bitcast float* %arrayidx40 to i32*
-  store i32 %40, i32* %42, align 4, !tbaa !50
-  %arrayidx.i163 = getelementptr inbounds float*, float** %2, i64 9
-  %43 = load float*, float** %arrayidx.i163, align 8, !tbaa !43
-  %arrayidx43 = getelementptr inbounds float, float* %43, i64 %call13
-  %44 = bitcast float* %arrayidx43 to i32*
-  %45 = load i32, i32* %44, align 4, !tbaa !50
-  %46 = load float*, float** %channelpart3, align 8, !tbaa !43
-  %arrayidx45 = getelementptr inbounds float, float* %46, i64 %call13
-  %47 = bitcast float* %arrayidx45 to i32*
-  store i32 %45, i32* %47, align 4, !tbaa !50
-  %arrayidx.i161 = getelementptr inbounds float*, float** %2, i64 10
-  %48 = load float*, float** %arrayidx.i161, align 8, !tbaa !43
-  %arrayidx48 = getelementptr inbounds float, float* %48, i64 %call13
-  %49 = bitcast float* %arrayidx48 to i32*
-  %50 = load i32, i32* %49, align 4, !tbaa !50
-  %arrayidx49 = getelementptr inbounds float*, float** %channelpart3, i64 1
-  %51 = load float*, float** %arrayidx49, align 8, !tbaa !43
-  %arrayidx50 = getelementptr inbounds float, float* %51, i64 %call13
-  %52 = bitcast float* %arrayidx50 to i32*
-  store i32 %50, i32* %52, align 4, !tbaa !50
-  %arrayidx.i159 = getelementptr inbounds float*, float** %2, i64 11
-  %53 = load float*, float** %arrayidx.i159, align 8, !tbaa !43
-  %arrayidx53 = getelementptr inbounds float, float* %53, i64 %call13
-  %54 = bitcast float* %arrayidx53 to i32*
-  %55 = load i32, i32* %54, align 4, !tbaa !50
-  %arrayidx54 = getelementptr inbounds float*, float** %channelpart3, i64 2
-  %56 = load float*, float** %arrayidx54, align 8, !tbaa !43
-  %arrayidx55 = getelementptr inbounds float, float* %56, i64 %call13
-  %57 = bitcast float* %arrayidx55 to i32*
-  store i32 %55, i32* %57, align 4, !tbaa !50
-  %arrayidx.i157 = getelementptr inbounds float*, float** %2, i64 12
-  %58 = load float*, float** %arrayidx.i157, align 8, !tbaa !43
-  %arrayidx58 = getelementptr inbounds float, float* %58, i64 %call13
-  %59 = bitcast float* %arrayidx58 to i32*
-  %60 = load i32, i32* %59, align 4, !tbaa !50
-  %arrayidx59 = getelementptr inbounds float*, float** %channelpart3, i64 3
-  %61 = load float*, float** %arrayidx59, align 8, !tbaa !43
-  %arrayidx60 = getelementptr inbounds float, float* %61, i64 %call13
-  %62 = bitcast float* %arrayidx60 to i32*
-  store i32 %60, i32* %62, align 4, !tbaa !50
-  %arrayidx.i155 = getelementptr inbounds float*, float** %2, i64 13
-  %63 = load float*, float** %arrayidx.i155, align 8, !tbaa !43
-  %arrayidx63 = getelementptr inbounds float, float* %63, i64 %call13
-  %64 = bitcast float* %arrayidx63 to i32*
-  %65 = load i32, i32* %64, align 4, !tbaa !50
-  %arrayidx64 = getelementptr inbounds float*, float** %channelpart3, i64 4
-  %66 = load float*, float** %arrayidx64, align 8, !tbaa !43
-  %arrayidx65 = getelementptr inbounds float, float* %66, i64 %call13
-  %67 = bitcast float* %arrayidx65 to i32*
-  store i32 %65, i32* %67, align 4, !tbaa !50
-  %arrayidx.i153 = getelementptr inbounds float*, float** %2, i64 14
-  %68 = load float*, float** %arrayidx.i153, align 8, !tbaa !43
-  %arrayidx68 = getelementptr inbounds float, float* %68, i64 %call13
-  %69 = bitcast float* %arrayidx68 to i32*
-  %70 = load i32, i32* %69, align 4, !tbaa !50
-  %arrayidx69 = getelementptr inbounds float*, float** %channelpart3, i64 5
-  %71 = load float*, float** %arrayidx69, align 8, !tbaa !43
-  %arrayidx70 = getelementptr inbounds float, float* %71, i64 %call13
-  %72 = bitcast float* %arrayidx70 to i32*
-  store i32 %70, i32* %72, align 4, !tbaa !50
-  %arrayidx.i151 = getelementptr inbounds float*, float** %2, i64 15
-  %73 = load float*, float** %arrayidx.i151, align 8, !tbaa !43
-  %arrayidx73 = getelementptr inbounds float, float* %73, i64 %call13
-  %74 = bitcast float* %arrayidx73 to i32*
-  %75 = load i32, i32* %74, align 4, !tbaa !50
-  %arrayidx74 = getelementptr inbounds float*, float** %channelpart3, i64 6
-  %76 = load float*, float** %arrayidx74, align 8, !tbaa !43
-  %arrayidx75 = getelementptr inbounds float, float* %76, i64 %call13
-  %77 = bitcast float* %arrayidx75 to i32*
-  store i32 %75, i32* %77, align 4, !tbaa !50
-  br label %if.end76
+  %6 = load float*, float** %arrayidx9, align 8, !tbaa !43
+  %arrayidx.i201 = getelementptr inbounds float*, float** %2, i64 2
+  %7 = load float*, float** %arrayidx.i201, align 8, !tbaa !43
+  %arrayidx16 = getelementptr inbounds float*, float** %channelpart1, i64 2
+  %8 = load float*, float** %arrayidx16, align 8, !tbaa !43
+  %arrayidx.i199 = getelementptr inbounds float*, float** %2, i64 6
+  %9 = load float*, float** %arrayidx.i199, align 8, !tbaa !43
+  %10 = load float*, float** %channelpart2, align 8, !tbaa !43
+  %arrayidx.i197 = getelementptr inbounds float*, float** %2, i64 7
+  %11 = load float*, float** %arrayidx.i197, align 8, !tbaa !43
+  %arrayidx30 = getelementptr inbounds float*, float** %channelpart2, i64 1
+  %12 = load float*, float** %arrayidx30, align 8, !tbaa !43
+  %arrayidx.i195 = getelementptr inbounds float*, float** %2, i64 5
+  %13 = load float*, float** %arrayidx.i195, align 8, !tbaa !43
+  %arrayidx37 = getelementptr inbounds float*, float** %channelpart2, i64 2
+  %14 = load float*, float** %arrayidx37, align 8, !tbaa !43
+  %arrayidx.i193 = getelementptr inbounds float*, float** %2, i64 8
+  %15 = load float*, float** %arrayidx.i193, align 8, !tbaa !43
+  %arrayidx44 = getelementptr inbounds float*, float** %channelpart2, i64 3
+  %16 = load float*, float** %arrayidx44, align 8, !tbaa !43
+  %arrayidx.i191 = getelementptr inbounds float*, float** %2, i64 4
+  %17 = load float*, float** %arrayidx.i191, align 8, !tbaa !43
+  %arrayidx51 = getelementptr inbounds float*, float** %channelpart2, i64 4
+  %18 = load float*, float** %arrayidx51, align 8, !tbaa !43
+  %arrayidx.i189 = getelementptr inbounds float*, float** %2, i64 9
+  %19 = load float*, float** %arrayidx.i189, align 8, !tbaa !43
+  %20 = load float*, float** %channelpart3, align 8, !tbaa !43
+  %arrayidx.i187 = getelementptr inbounds float*, float** %2, i64 10
+  %21 = load float*, float** %arrayidx.i187, align 8, !tbaa !43
+  %arrayidx65 = getelementptr inbounds float*, float** %channelpart3, i64 1
+  %22 = load float*, float** %arrayidx65, align 8, !tbaa !43
+  %arrayidx.i185 = getelementptr inbounds float*, float** %2, i64 11
+  %23 = load float*, float** %arrayidx.i185, align 8, !tbaa !43
+  %arrayidx72 = getelementptr inbounds float*, float** %channelpart3, i64 2
+  %24 = load float*, float** %arrayidx72, align 8, !tbaa !43
+  %arrayidx.i183 = getelementptr inbounds float*, float** %2, i64 12
+  %25 = load float*, float** %arrayidx.i183, align 8, !tbaa !43
+  %arrayidx79 = getelementptr inbounds float*, float** %channelpart3, i64 3
+  %26 = load float*, float** %arrayidx79, align 8, !tbaa !43
+  %arrayidx.i181 = getelementptr inbounds float*, float** %2, i64 13
+  %27 = load float*, float** %arrayidx.i181, align 8, !tbaa !43
+  %arrayidx86 = getelementptr inbounds float*, float** %channelpart3, i64 4
+  %28 = load float*, float** %arrayidx86, align 8, !tbaa !43
+  %arrayidx.i179 = getelementptr inbounds float*, float** %2, i64 14
+  %29 = load float*, float** %arrayidx.i179, align 8, !tbaa !43
+  %arrayidx93 = getelementptr inbounds float*, float** %channelpart3, i64 5
+  %30 = load float*, float** %arrayidx93, align 8, !tbaa !43
+  %arrayidx.i177 = getelementptr inbounds float*, float** %2, i64 15
+  %31 = load float*, float** %arrayidx.i177, align 8, !tbaa !43
+  %arrayidx100 = getelementptr inbounds float*, float** %channelpart3, i64 6
+  %32 = load float*, float** %arrayidx100, align 8, !tbaa !43
+  br label %for.body
 
-if.end76:                                         ; preds = %if.then2, %if.end
+for.cond.cleanup:                                 ; preds = %for.body, %if.end
   %returnStruct = insertvalue %struct.out.psychoFilter_fxp undef, i64 %bytes_rotator, 0
-  %returnStruct4 = insertvalue %struct.out.psychoFilter_fxp %returnStruct, i64 %bytes_rotator, 1
-  %returnStruct45 = insertvalue %struct.out.psychoFilter_fxp %returnStruct4, i64 %bytes_rotator, 2
-  %returnStruct456 = insertvalue %struct.out.psychoFilter_fxp %returnStruct45, i64 %bytes_sumBF, 3
-  %returnStruct4567 = insertvalue %struct.out.psychoFilter_fxp %returnStruct456, i64 %bytes_channelpart1, 4
-  %returnStruct45678 = insertvalue %struct.out.psychoFilter_fxp %returnStruct4567, i64 %bytes_channelpart2, 5
-  %returnStruct456789 = insertvalue %struct.out.psychoFilter_fxp %returnStruct45678, i64 %bytes_channelpart3, 6
-  ret %struct.out.psychoFilter_fxp %returnStruct456789
-}
+  %returnStruct1 = insertvalue %struct.out.psychoFilter_fxp %returnStruct, i64 %bytes_rotator, 1
+  %returnStruct12 = insertvalue %struct.out.psychoFilter_fxp %returnStruct1, i64 %bytes_rotator, 2
+  %returnStruct123 = insertvalue %struct.out.psychoFilter_fxp %returnStruct12, i64 %bytes_sumBF, 3
+  %returnStruct1234 = insertvalue %struct.out.psychoFilter_fxp %returnStruct123, i64 %bytes_channelpart1, 4
+  %returnStruct12345 = insertvalue %struct.out.psychoFilter_fxp %returnStruct1234, i64 %bytes_channelpart2, 5
+  %returnStruct123456 = insertvalue %struct.out.psychoFilter_fxp %returnStruct12345, i64 %bytes_channelpart3, 6
+  ret %struct.out.psychoFilter_fxp %returnStruct123456
 
-; Function Attrs: nounwind
-declare i8* @llvm.hpvm.createNode1D(i8*, i64) #20
+for.body:                                         ; preds = %for.body, %for.body.lr.ph
+  %indvars.iv = phi i64 [ 0, %for.body.lr.ph ], [ %indvars.iv.next, %for.body ]
+  %arrayidx = getelementptr inbounds float, float* %3, i64 %indvars.iv
+  %33 = bitcast float* %arrayidx to i32*
+  %34 = load i32, i32* %33, align 4, !tbaa !50
+  %arrayidx4 = getelementptr inbounds float, float* %4, i64 %indvars.iv
+  %35 = bitcast float* %arrayidx4 to i32*
+  store i32 %34, i32* %35, align 4, !tbaa !50
+  %arrayidx8 = getelementptr inbounds float, float* %5, i64 %indvars.iv
+  %36 = bitcast float* %arrayidx8 to i32*
+  %37 = load i32, i32* %36, align 4, !tbaa !50
+  %arrayidx11 = getelementptr inbounds float, float* %6, i64 %indvars.iv
+  %38 = bitcast float* %arrayidx11 to i32*
+  store i32 %37, i32* %38, align 4, !tbaa !50
+  %arrayidx15 = getelementptr inbounds float, float* %7, i64 %indvars.iv
+  %39 = bitcast float* %arrayidx15 to i32*
+  %40 = load i32, i32* %39, align 4, !tbaa !50
+  %arrayidx18 = getelementptr inbounds float, float* %8, i64 %indvars.iv
+  %41 = bitcast float* %arrayidx18 to i32*
+  store i32 %40, i32* %41, align 4, !tbaa !50
+  %arrayidx22 = getelementptr inbounds float, float* %9, i64 %indvars.iv
+  %42 = bitcast float* %arrayidx22 to i32*
+  %43 = load i32, i32* %42, align 4, !tbaa !50
+  %arrayidx25 = getelementptr inbounds float, float* %10, i64 %indvars.iv
+  %44 = bitcast float* %arrayidx25 to i32*
+  store i32 %43, i32* %44, align 4, !tbaa !50
+  %arrayidx29 = getelementptr inbounds float, float* %11, i64 %indvars.iv
+  %45 = bitcast float* %arrayidx29 to i32*
+  %46 = load i32, i32* %45, align 4, !tbaa !50
+  %arrayidx32 = getelementptr inbounds float, float* %12, i64 %indvars.iv
+  %47 = bitcast float* %arrayidx32 to i32*
+  store i32 %46, i32* %47, align 4, !tbaa !50
+  %arrayidx36 = getelementptr inbounds float, float* %13, i64 %indvars.iv
+  %48 = bitcast float* %arrayidx36 to i32*
+  %49 = load i32, i32* %48, align 4, !tbaa !50
+  %arrayidx39 = getelementptr inbounds float, float* %14, i64 %indvars.iv
+  %50 = bitcast float* %arrayidx39 to i32*
+  store i32 %49, i32* %50, align 4, !tbaa !50
+  %arrayidx43 = getelementptr inbounds float, float* %15, i64 %indvars.iv
+  %51 = bitcast float* %arrayidx43 to i32*
+  %52 = load i32, i32* %51, align 4, !tbaa !50
+  %arrayidx46 = getelementptr inbounds float, float* %16, i64 %indvars.iv
+  %53 = bitcast float* %arrayidx46 to i32*
+  store i32 %52, i32* %53, align 4, !tbaa !50
+  %arrayidx50 = getelementptr inbounds float, float* %17, i64 %indvars.iv
+  %54 = bitcast float* %arrayidx50 to i32*
+  %55 = load i32, i32* %54, align 4, !tbaa !50
+  %arrayidx53 = getelementptr inbounds float, float* %18, i64 %indvars.iv
+  %56 = bitcast float* %arrayidx53 to i32*
+  store i32 %55, i32* %56, align 4, !tbaa !50
+  %arrayidx57 = getelementptr inbounds float, float* %19, i64 %indvars.iv
+  %57 = bitcast float* %arrayidx57 to i32*
+  %58 = load i32, i32* %57, align 4, !tbaa !50
+  %arrayidx60 = getelementptr inbounds float, float* %20, i64 %indvars.iv
+  %59 = bitcast float* %arrayidx60 to i32*
+  store i32 %58, i32* %59, align 4, !tbaa !50
+  %arrayidx64 = getelementptr inbounds float, float* %21, i64 %indvars.iv
+  %60 = bitcast float* %arrayidx64 to i32*
+  %61 = load i32, i32* %60, align 4, !tbaa !50
+  %arrayidx67 = getelementptr inbounds float, float* %22, i64 %indvars.iv
+  %62 = bitcast float* %arrayidx67 to i32*
+  store i32 %61, i32* %62, align 4, !tbaa !50
+  %arrayidx71 = getelementptr inbounds float, float* %23, i64 %indvars.iv
+  %63 = bitcast float* %arrayidx71 to i32*
+  %64 = load i32, i32* %63, align 4, !tbaa !50
+  %arrayidx74 = getelementptr inbounds float, float* %24, i64 %indvars.iv
+  %65 = bitcast float* %arrayidx74 to i32*
+  store i32 %64, i32* %65, align 4, !tbaa !50
+  %arrayidx78 = getelementptr inbounds float, float* %25, i64 %indvars.iv
+  %66 = bitcast float* %arrayidx78 to i32*
+  %67 = load i32, i32* %66, align 4, !tbaa !50
+  %arrayidx81 = getelementptr inbounds float, float* %26, i64 %indvars.iv
+  %68 = bitcast float* %arrayidx81 to i32*
+  store i32 %67, i32* %68, align 4, !tbaa !50
+  %arrayidx85 = getelementptr inbounds float, float* %27, i64 %indvars.iv
+  %69 = bitcast float* %arrayidx85 to i32*
+  %70 = load i32, i32* %69, align 4, !tbaa !50
+  %arrayidx88 = getelementptr inbounds float, float* %28, i64 %indvars.iv
+  %71 = bitcast float* %arrayidx88 to i32*
+  store i32 %70, i32* %71, align 4, !tbaa !50
+  %arrayidx92 = getelementptr inbounds float, float* %29, i64 %indvars.iv
+  %72 = bitcast float* %arrayidx92 to i32*
+  %73 = load i32, i32* %72, align 4, !tbaa !50
+  %arrayidx95 = getelementptr inbounds float, float* %30, i64 %indvars.iv
+  %74 = bitcast float* %arrayidx95 to i32*
+  store i32 %73, i32* %74, align 4, !tbaa !50
+  %arrayidx99 = getelementptr inbounds float, float* %31, i64 %indvars.iv
+  %75 = bitcast float* %arrayidx99 to i32*
+  %76 = load i32, i32* %75, align 4, !tbaa !50
+  %arrayidx102 = getelementptr inbounds float, float* %32, i64 %indvars.iv
+  %77 = bitcast float* %arrayidx102 to i32*
+  store i32 %76, i32* %77, align 4, !tbaa !50
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
+  %exitcond = icmp eq i64 %indvars.iv.next, %nSample
+  br i1 %exitcond, label %for.cond.cleanup, label %for.body
+}
 
 ; Function Attrs: nounwind uwtable
 define %struct.out.wrapperPsychoFilter_fxp @wrapperPsychoFilter_fxp_cloned(%class.CAmbisonicProcessor* in out %rotator, i64 %bytes_rotator, %class.CBFormat* in out %sumBF, i64 %bytes_sumBF, i64 %nSample, float** in out %channelpart1, i64 %bytes_channelpart1, float** in out %channelpart2, i64 %bytes_channelpart2, float** in out %channelpart3, i64 %bytes_channelpart3) #7 {
 entry:
-  %psychoFilter_fxp_cloned.node = call i8* @llvm.hpvm.createNode1D(i8* bitcast (%struct.out.psychoFilter_fxp (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i64, float**, i64, float**, i64, float**, i64)* @psychoFilter_fxp_cloned to i8*), i64 %nSample)
+  %psychoFilter_fxp_cloned.node = call i8* @llvm.hpvm.createNode(i8* bitcast (%struct.out.psychoFilter_fxp (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, i64, float**, i64, float**, i64, float**, i64)* @psychoFilter_fxp_cloned to i8*))
   call void @llvm.hpvm.bind.input(i8* %psychoFilter_fxp_cloned.node, i32 0, i32 0, i1 false)
   call void @llvm.hpvm.bind.input(i8* %psychoFilter_fxp_cloned.node, i32 1, i32 1, i1 false)
   call void @llvm.hpvm.bind.input(i8* %psychoFilter_fxp_cloned.node, i32 2, i32 2, i1 false)
@@ -19586,6 +19581,12 @@ entry:
   call void @llvm.hpvm.bind.output(i8* %psychoFilter_fxp_cloned.node, i32 6, i32 6, i1 false)
   ret %struct.out.wrapperPsychoFilter_fxp undef
 }
+
+; Function Attrs: nounwind readnone
+declare i8* @llvm.hpvm.getNode() #25
+
+; Function Attrs: nounwind readnone
+declare i64 @llvm.hpvm.getNodeInstanceID.x(i8*) #25
 
 ; Function Attrs: nounwind uwtable
 define %struct.out.rotateOrder1_fxp @rotateOrder1_fxp_cloned(%class.CAmbisonicProcessor* in %rotator, i64 %bytes_rotator, i64 %nSample, float** in out %channelpart1, i64 %bytes_channelpart1) #7 {
@@ -19665,6 +19666,9 @@ if.end74:                                         ; preds = %if.end, %entry
   %returnStruct = insertvalue %struct.out.rotateOrder1_fxp undef, i64 %bytes_channelpart1, 0
   ret %struct.out.rotateOrder1_fxp %returnStruct
 }
+
+; Function Attrs: nounwind
+declare i8* @llvm.hpvm.createNode1D(i8*, i64) #20
 
 ; Function Attrs: nounwind uwtable
 define %struct.out.wrapperRotateOrder1_fxp @wrapperRotateOrder1_fxp_cloned(%class.CAmbisonicProcessor* in %rotator, i64 %bytes_rotator, i64 %nSample, float** in out %channelpart1, i64 %bytes_channelpart1) #7 {

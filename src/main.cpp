@@ -2299,31 +2299,7 @@ void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
     // printf("psychoFilter ends\n");
 
     // This is the non-parallel version
-    // for (int i = 0; i < nSample; ++i) {
-    //     channelpart1[0][i] = sumBF->m_ppfChannels[kX][i];
-    //     channelpart1[1][i] = sumBF->m_ppfChannels[kY][i];
-    //     channelpart1[2][i] = sumBF->m_ppfChannels[kZ][i];
-
-    //     channelpart2[0][i] = sumBF->m_ppfChannels[kR][i];
-    //     channelpart2[1][i] = sumBF->m_ppfChannels[kS][i];
-    //     channelpart2[2][i] = sumBF->m_ppfChannels[kT][i];
-    //     channelpart2[3][i] = sumBF->m_ppfChannels[kU][i];
-    //     channelpart2[4][i] = sumBF->m_ppfChannels[kV][i];
-
-    //     channelpart3[0][i] = sumBF->m_ppfChannels[kQ][i];
-    //     channelpart3[1][i] = sumBF->m_ppfChannels[kO][i];
-    //     channelpart3[2][i] = sumBF->m_ppfChannels[kM][i];
-    //     channelpart3[3][i] = sumBF->m_ppfChannels[kK][i];
-    //     channelpart3[4][i] = sumBF->m_ppfChannels[kL][i];
-    //     channelpart3[5][i] = sumBF->m_ppfChannels[kN][i];
-    //     channelpart3[6][i] = sumBF->m_ppfChannels[kP][i];
-    // }
-
-    // This is the parallel version
-    void* thisNode = __hpvm__getNode();
-    long i = __hpvm__getNodeInstanceID_x(thisNode);
-
-    if (i < nSample) {
+    for (int i = 0; i < nSample; ++i) {
         channelpart1[0][i] = sumBF->m_ppfChannels[kX][i];
         channelpart1[1][i] = sumBF->m_ppfChannels[kY][i];
         channelpart1[2][i] = sumBF->m_ppfChannels[kZ][i];
@@ -2342,6 +2318,30 @@ void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         channelpart3[5][i] = sumBF->m_ppfChannels[kN][i];
         channelpart3[6][i] = sumBF->m_ppfChannels[kP][i];
     }
+
+    // This is the parallel version
+    // void* thisNode = __hpvm__getNode();
+    // long i = __hpvm__getNodeInstanceID_x(thisNode);
+
+    // if (i < nSample) {
+    //     channelpart1[0][i] = sumBF->m_ppfChannels[kX][i];
+    //     channelpart1[1][i] = sumBF->m_ppfChannels[kY][i];
+    //     channelpart1[2][i] = sumBF->m_ppfChannels[kZ][i];
+
+    //     channelpart2[0][i] = sumBF->m_ppfChannels[kR][i];
+    //     channelpart2[1][i] = sumBF->m_ppfChannels[kS][i];
+    //     channelpart2[2][i] = sumBF->m_ppfChannels[kT][i];
+    //     channelpart2[3][i] = sumBF->m_ppfChannels[kU][i];
+    //     channelpart2[4][i] = sumBF->m_ppfChannels[kV][i];
+
+    //     channelpart3[0][i] = sumBF->m_ppfChannels[kQ][i];
+    //     channelpart3[1][i] = sumBF->m_ppfChannels[kO][i];
+    //     channelpart3[2][i] = sumBF->m_ppfChannels[kM][i];
+    //     channelpart3[3][i] = sumBF->m_ppfChannels[kK][i];
+    //     channelpart3[4][i] = sumBF->m_ppfChannels[kL][i];
+    //     channelpart3[5][i] = sumBF->m_ppfChannels[kN][i];
+    //     channelpart3[6][i] = sumBF->m_ppfChannels[kP][i];
+    // }
     
 
     __hpvm__return(7, bytes_rotator, bytes_rotator, bytes_rotator, bytes_sumBF, bytes_channelpart1, bytes_channelpart2, bytes_channelpart3);
@@ -2351,8 +2351,8 @@ void wrapperPsychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t by
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(5, rotator, sumBF, channelpart1, channelpart2, channelpart3, 5, rotator, sumBF, channelpart1, channelpart2, channelpart3);
 
-    void* psychoNode = __hpvm__createNodeND(1, psychoFilter_fxp, nSample);
-    // void* psychoNode = __hpvm__createNodeND(0, psychoFilter_fxp);
+    // void* psychoNode = __hpvm__createNodeND(1, psychoFilter_fxp, nSample);
+    void* psychoNode = __hpvm__createNodeND(0, psychoFilter_fxp);
 
     __hpvm__bindIn(psychoNode, 0, 0, 0);
     __hpvm__bindIn(psychoNode, 1, 1, 0);

@@ -7,9 +7,9 @@
 ## Profiling Results from Intel VTune
 
 ### General Information
-1. Up to now, we only have the test results for the basic (non-streaming and non-parallel) HPVM version of audio decoding. It was tested with 500 and 1000 blocks, and there were 3 runs with each block size.
-2. Since this is the basic version, there is only a negligible portion of the HPVM runtime (less than 1%). The dominant functions are the `psychoFilter()`, `FFT()`, `IFFT()`, `zoomerProcess()`, and `rotateOrder3()`. `FFT()` and `IFFT()` include the timing portion for both the left ear and the right ear.
-3. The test is based on the modification of updating the `std::map` to `std::unordered_map` in the HPVM runtime.
+1. The test is based on the modification of updating the `std::map` to `std::unordered_map` in the HPVM runtime.
+2. For the binauralization pipeline, sometimes the left function (e.g. `FFT_left`) is faster than the corresponding right function (e.g. `FFT_right`), while sometimes the results are inversed.
+3. The extra CPU time in the parallel version is caused by the HPVM runtime. Functions including `pthread_mutext_lock`, `pthread_mutex_unlock`, and `std::unordered_map::find` are causing this extra overhead.
 
 ### Result Tables and Remarks
 
@@ -21,4 +21,4 @@
 Remarks
 1. The reason I am using percentage instead of the absolute value is that we care about the functions that are taking the largest portion of the time. Unlike audio encoding, audio decoding has more dominant functions.
 2. As show in the table, the average CPU time doubles when the block size changes from 500 to 1000.
-3. The three most time-consuming functions (`psychoFilter`, `FFT`, and `IFFT`) are all calling a function called `kf_work`. According to the profiling results, `kf_work` is the function that is taking the most portion of the time.
+3. In the Basic version, the three most time-consuming functions (`psychoFilter`, `FFT`, and `IFFT`) are all calling a function called `kf_work`. According to the profiling results, `kf_work` is the function that is taking the most portion of the time.
