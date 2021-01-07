@@ -2229,6 +2229,10 @@ struct __attribute__((__packed__)) RootArg {
     /*24*/ long decoder1FFTBins;
 };
 
+struct __attribute__((__packed__)) RootOut {
+    size_t result;
+};
+
 // A leaf node for the rotator
 // void rotator_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotator, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF, /*4*/ unsigned nSample) {
 //     __hpvm__hint(hpvm::DEVICE);
@@ -2299,6 +2303,7 @@ void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
     // printf("psychoFilter ends\n");
 
     // This is the non-parallel version
+    // But we cannot convert this into a parallel version unless we separate the following part into a separate leaf node
     for (int i = 0; i < nSample; ++i) {
         channelpart1[0][i] = sumBF->m_ppfChannels[kX][i];
         channelpart1[1][i] = sumBF->m_ppfChannels[kY][i];
@@ -2405,29 +2410,7 @@ void rotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         float valueX[nSample];
 
         // This is the non-parallel version
-        // for(unsigned niSample = 0; niSample < nSample; niSample++) {
-        //     valueY[niSample] = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
-        //     valueZ[niSample] = channelpart1[2][niSample];
-        //     valueX[niSample] = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
-
-        //     channelpart1[1][niSample] = valueY[niSample];
-        //     channelpart1[2][niSample] = valueZ[niSample] * rotator->m_fCosBeta + valueX[niSample] * rotator->m_fSinBeta;
-        //     channelpart1[0][niSample] = valueX[niSample] * rotator->m_fCosBeta + valueZ[niSample] * rotator->m_fSinBeta;
-
-        //     valueY[niSample] = -channelpart1[0][niSample] * rotator->m_fSinGamma + channelpart1[1][niSample] * rotator->m_fCosGamma;
-        //     valueZ[niSample] = channelpart1[2][niSample];
-        //     valueX[niSample] = channelpart1[0][niSample] * rotator->m_fCosGamma + channelpart1[1][niSample] * rotator->m_fSinGamma;
-
-        //     channelpart1[0][niSample] = valueX[niSample];
-        //     channelpart1[1][niSample] = valueY[niSample];
-        //     channelpart1[2][niSample] = valueZ[niSample];
-        // }
-
-        // This is the parallel version
-        void* thisNode = __hpvm__getNode();
-        long niSample = __hpvm__getNodeInstanceID_x(thisNode);
-
-        if (niSample < nSample) {
+        for(unsigned niSample = 0; niSample < nSample; niSample++) {
             valueY[niSample] = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
             valueZ[niSample] = channelpart1[2][niSample];
             valueX[niSample] = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
@@ -2444,6 +2427,28 @@ void rotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
             channelpart1[1][niSample] = valueY[niSample];
             channelpart1[2][niSample] = valueZ[niSample];
         }
+
+        // This is the parallel version
+        // void* thisNode = __hpvm__getNode();
+        // long niSample = __hpvm__getNodeInstanceID_x(thisNode);
+
+        // if (niSample < nSample) {
+        //     valueY[niSample] = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
+        //     valueZ[niSample] = channelpart1[2][niSample];
+        //     valueX[niSample] = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
+
+        //     channelpart1[1][niSample] = valueY[niSample];
+        //     channelpart1[2][niSample] = valueZ[niSample] * rotator->m_fCosBeta + valueX[niSample] * rotator->m_fSinBeta;
+        //     channelpart1[0][niSample] = valueX[niSample] * rotator->m_fCosBeta + valueZ[niSample] * rotator->m_fSinBeta;
+
+        //     valueY[niSample] = -channelpart1[0][niSample] * rotator->m_fSinGamma + channelpart1[1][niSample] * rotator->m_fCosGamma;
+        //     valueZ[niSample] = channelpart1[2][niSample];
+        //     valueX[niSample] = channelpart1[0][niSample] * rotator->m_fCosGamma + channelpart1[1][niSample] * rotator->m_fSinGamma;
+
+        //     channelpart1[0][niSample] = valueX[niSample];
+        //     channelpart1[1][niSample] = valueY[niSample];
+        //     channelpart1[2][niSample] = valueZ[niSample];
+        // }
 
 
     }
@@ -2499,31 +2504,31 @@ void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         float valueU[nSample];
 
         // This is the non-parallel version
-        // for (unsigned niSample = 0; niSample < nSample; niSample++) {  // R-0 S-1 T-2 U-3 V-4
-        //     valueV[niSample] = -channelpart2[3][niSample] * rotator->m_fSin2Alpha + channelpart2[4][niSample] * rotator->m_fCos2Alpha;
-        //     valueT[niSample] = -channelpart2[1][niSample] * rotator->m_fSinAlpha + channelpart2[2][niSample] * rotator->m_fCosAlpha;
-        //     valueR[niSample] = channelpart2[0][niSample];
-        //     valueS[niSample] = channelpart2[1][niSample] * rotator->m_fCosAlpha + channelpart2[2][niSample] * rotator->m_fSinAlpha;
-        //     valueU[niSample] = channelpart2[3][niSample] * rotator->m_fCos2Alpha + channelpart2[4][niSample] * rotator->m_fSin2Alpha;
+        for (unsigned niSample = 0; niSample < nSample; niSample++) {  // R-0 S-1 T-2 U-3 V-4
+            valueV[niSample] = -channelpart2[3][niSample] * rotator->m_fSin2Alpha + channelpart2[4][niSample] * rotator->m_fCos2Alpha;
+            valueT[niSample] = -channelpart2[1][niSample] * rotator->m_fSinAlpha + channelpart2[2][niSample] * rotator->m_fCosAlpha;
+            valueR[niSample] = channelpart2[0][niSample];
+            valueS[niSample] = channelpart2[1][niSample] * rotator->m_fCosAlpha + channelpart2[2][niSample] * rotator->m_fSinAlpha;
+            valueU[niSample] = channelpart2[3][niSample] * rotator->m_fCos2Alpha + channelpart2[4][niSample] * rotator->m_fSin2Alpha;
 
-        //     channelpart2[4][niSample] = -rotator->m_fSinBeta * valueT[niSample] + rotator->m_fCosBeta * valueV[niSample];
-        //     channelpart2[2][niSample] = -rotator->m_fCosBeta * valueT[niSample] + rotator->m_fSinBeta * valueV[niSample];
-        //     channelpart2[0][niSample] = (0.75f * rotator->m_fCos2Beta + 0.25f) * valueR[niSample] + (0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0)) * valueU[niSample] + (fSqrt3 * rotator->m_fSinBeta * rotator->m_fCosBeta) * valueS[niSample];
-        //     channelpart2[1][niSample] = rotator->m_fCos2Beta * valueS[niSample] - fSqrt3 * rotator->m_fCosBeta * rotator->m_fSinBeta * valueR[niSample] + rotator->m_fCosBeta * rotator->m_fSinBeta * valueU[niSample];
-        //     channelpart2[3][niSample] = (0.25f * rotator->m_fCos2Beta + 0.75f) * valueU[niSample] - rotator->m_fCosBeta * rotator->m_fSinBeta * valueS[niSample] + 0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0) * valueR[niSample];
+            channelpart2[4][niSample] = -rotator->m_fSinBeta * valueT[niSample] + rotator->m_fCosBeta * valueV[niSample];
+            channelpart2[2][niSample] = -rotator->m_fCosBeta * valueT[niSample] + rotator->m_fSinBeta * valueV[niSample];
+            channelpart2[0][niSample] = (0.75f * rotator->m_fCos2Beta + 0.25f) * valueR[niSample] + (0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0)) * valueU[niSample] + (fSqrt3 * rotator->m_fSinBeta * rotator->m_fCosBeta) * valueS[niSample];
+            channelpart2[1][niSample] = rotator->m_fCos2Beta * valueS[niSample] - fSqrt3 * rotator->m_fCosBeta * rotator->m_fSinBeta * valueR[niSample] + rotator->m_fCosBeta * rotator->m_fSinBeta * valueU[niSample];
+            channelpart2[3][niSample] = (0.25f * rotator->m_fCos2Beta + 0.75f) * valueU[niSample] - rotator->m_fCosBeta * rotator->m_fSinBeta * valueS[niSample] + 0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0) * valueR[niSample];
 
-        //     valueV[niSample] = -channelpart2[3][niSample] * rotator->m_fSin2Gamma + channelpart2[4][niSample] * rotator->m_fCos2Gamma;
-        //     valueT[niSample] = -channelpart2[1][niSample] * rotator->m_fSinGamma + channelpart2[2][niSample] * rotator->m_fCosGamma;
-        //     valueR[niSample] = channelpart2[0][niSample];
-        //     valueS[niSample] = channelpart2[1][niSample] * rotator->m_fCosGamma + channelpart2[2][niSample] * rotator->m_fSinGamma;
-        //     valueU[niSample] = channelpart2[3][niSample] * rotator->m_fCos2Gamma + channelpart2[4][niSample] * rotator->m_fSin2Gamma;
+            valueV[niSample] = -channelpart2[3][niSample] * rotator->m_fSin2Gamma + channelpart2[4][niSample] * rotator->m_fCos2Gamma;
+            valueT[niSample] = -channelpart2[1][niSample] * rotator->m_fSinGamma + channelpart2[2][niSample] * rotator->m_fCosGamma;
+            valueR[niSample] = channelpart2[0][niSample];
+            valueS[niSample] = channelpart2[1][niSample] * rotator->m_fCosGamma + channelpart2[2][niSample] * rotator->m_fSinGamma;
+            valueU[niSample] = channelpart2[3][niSample] * rotator->m_fCos2Gamma + channelpart2[4][niSample] * rotator->m_fSin2Gamma;
 
-        //     channelpart2[0][niSample] = valueR[niSample];
-        //     channelpart2[1][niSample] = valueS[niSample];
-        //     channelpart2[2][niSample] = valueT[niSample];
-        //     channelpart2[3][niSample] = valueU[niSample];
-        //     channelpart2[4][niSample] = valueV[niSample];
-        // }
+            channelpart2[0][niSample] = valueR[niSample];
+            channelpart2[1][niSample] = valueS[niSample];
+            channelpart2[2][niSample] = valueT[niSample];
+            channelpart2[3][niSample] = valueU[niSample];
+            channelpart2[4][niSample] = valueV[niSample];
+        }
 
         // This is the parallel version
         void* thisNode = __hpvm__getNode();
@@ -2613,45 +2618,7 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         float valueP[nSample];
 
         // This is the non-parallel version
-        // for (unsigned niSample = 0; niSample < nSample; niSample++) {  // Q-0 O-1 M-2 K-3 L-4 N-5 P-6
-        //     valueQ[niSample] = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
-        //     valueO[niSample] = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
-        //     valueM[niSample] = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
-        //     valueK[niSample] = channelpart3[3][niSample];
-        //     valueL[niSample] = channelpart3[4][niSample] * rotator->m_fCosAlpha + channelpart3[2][niSample] * rotator->m_fSinAlpha;
-        //     valueN[niSample] = channelpart3[5][niSample] * rotator->m_fCos2Alpha + channelpart3[1][niSample] * rotator->m_fSin2Alpha;
-        //     valueP[niSample] = channelpart3[6][niSample] * rotator->m_fCos3Alpha + channelpart3[0][niSample] * rotator->m_fSin3Alpha;
-
-        //     channelpart3[0][niSample] = 0.125f * valueQ[niSample] * (5.f + 3.f * rotator->m_fCos2Beta) - fSqrt3_2 * valueO[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueM[niSample] * pow(rotator->m_fSinBeta, 2.0f);
-        //     channelpart3[1][niSample] = valueO[niSample] * rotator->m_fCos2Beta - fSqrt5_2 * valueM[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] = 
-        //     channelpart3[2][niSample] = 0.125f * valueM[niSample] * (3.f + 5.f * rotator->m_fCos2Beta) - fSqrt5_2 * valueO[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueQ[niSample] * pow(rotator->m_fSinBeta, 2.0f);
-        //     channelpart3[3][niSample] = 0.25f * valueK[niSample] * rotator->m_fCosBeta * (-1.f + 15.f * rotator->m_fCos2Beta) + 0.5f * fSqrt15 * valueN[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.5f * fSqrt5_2 * valueP[niSample] * pow(rotator->m_fSinBeta, 3.f) + 0.125f * fSqrt3_2 * valueL[niSample] * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
-        //     channelpart3[4][niSample] = 0.0625f * valueL[niSample] * (rotator->m_fCosBeta + 15.f * rotator->m_fCos3Beta) + 0.25f * fSqrt5_2 * valueN[niSample] * (1.f + 3.f * rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueP[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.125 * fSqrt3_2 * valueK[niSample] * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
-        //     channelpart3[5][niSample] = 0.125f * valueN[niSample] * (5.f * rotator->m_fCosBeta + 3.f * rotator->m_fCos3Beta) + 0.25f * fSqrt3_2 * valueP[niSample] * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.5f * fSqrt15 * valueK[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.125 * fSqrt5_2 * valueL[niSample] * (rotator->m_fSinBeta - 3.f * rotator->m_fSin3Beta);
-        //     channelpart3[6][niSample] = 0.0625f * valueP[niSample] * (15.f * rotator->m_fCosBeta + rotator->m_fCos3Beta) - 0.25f * fSqrt3_2 * valueN[niSample] * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueL[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.5 * fSqrt5_2 * valueK[niSample] * pow(rotator->m_fSinBeta, 3.f);
-
-        //     valueQ[niSample] = -channelpart3[6][niSample] * rotator->m_fSin3Gamma + channelpart3[0][niSample] * rotator->m_fCos3Gamma;
-        //     valueO[niSample] = -channelpart3[5][niSample] * rotator->m_fSin2Gamma + channelpart3[1][niSample] * rotator->m_fCos2Gamma;
-        //     valueM[niSample] = -channelpart3[4][niSample] * rotator->m_fSinGamma + channelpart3[2][niSample] * rotator->m_fCosGamma;
-        //     valueK[niSample] = channelpart3[3][niSample];
-        //     valueL[niSample] = channelpart3[4][niSample] * rotator->m_fCosGamma + channelpart3[2][niSample] * rotator->m_fSinGamma;
-        //     valueN[niSample] = channelpart3[5][niSample] * rotator->m_fCos2Gamma + channelpart3[1][niSample] * rotator->m_fSin2Gamma;
-        //     valueP[niSample] = channelpart3[6][niSample] * rotator->m_fCos3Gamma + channelpart3[0][niSample] * rotator->m_fSin3Gamma;
-            
-        //     channelpart3[0][niSample] = valueQ[niSample];
-        //     channelpart3[1][niSample] = valueO[niSample];
-        //     channelpart3[2][niSample] = valueM[niSample];
-        //     channelpart3[3][niSample] = valueK[niSample];
-        //     channelpart3[4][niSample] = valueL[niSample];
-        //     channelpart3[5][niSample] = valueN[niSample];
-        //     channelpart3[6][niSample] = valueP[niSample];
-        // }
-
-        // This is the parallel version
-        void* thisNode = __hpvm__getNode();
-        long niSample = __hpvm__getNodeInstanceID_x(thisNode);
-
-        if (niSample < nSample) {
+        for (unsigned niSample = 0; niSample < nSample; niSample++) {  // Q-0 O-1 M-2 K-3 L-4 N-5 P-6
             valueQ[niSample] = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
             valueO[niSample] = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
             valueM[niSample] = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
@@ -2684,6 +2651,44 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
             channelpart3[5][niSample] = valueN[niSample];
             channelpart3[6][niSample] = valueP[niSample];
         }
+
+        // This is the parallel version
+        // void* thisNode = __hpvm__getNode();
+        // long niSample = __hpvm__getNodeInstanceID_x(thisNode);
+
+        // if (niSample < nSample) {
+        //     valueQ[niSample] = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
+        //     valueO[niSample] = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
+        //     valueM[niSample] = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
+        //     valueK[niSample] = channelpart3[3][niSample];
+        //     valueL[niSample] = channelpart3[4][niSample] * rotator->m_fCosAlpha + channelpart3[2][niSample] * rotator->m_fSinAlpha;
+        //     valueN[niSample] = channelpart3[5][niSample] * rotator->m_fCos2Alpha + channelpart3[1][niSample] * rotator->m_fSin2Alpha;
+        //     valueP[niSample] = channelpart3[6][niSample] * rotator->m_fCos3Alpha + channelpart3[0][niSample] * rotator->m_fSin3Alpha;
+
+        //     channelpart3[0][niSample] = 0.125f * valueQ[niSample] * (5.f + 3.f * rotator->m_fCos2Beta) - fSqrt3_2 * valueO[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueM[niSample] * pow(rotator->m_fSinBeta, 2.0f);
+        //     channelpart3[1][niSample] = valueO[niSample] * rotator->m_fCos2Beta - fSqrt5_2 * valueM[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] = 
+        //     channelpart3[2][niSample] = 0.125f * valueM[niSample] * (3.f + 5.f * rotator->m_fCos2Beta) - fSqrt5_2 * valueO[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueQ[niSample] * pow(rotator->m_fSinBeta, 2.0f);
+        //     channelpart3[3][niSample] = 0.25f * valueK[niSample] * rotator->m_fCosBeta * (-1.f + 15.f * rotator->m_fCos2Beta) + 0.5f * fSqrt15 * valueN[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.5f * fSqrt5_2 * valueP[niSample] * pow(rotator->m_fSinBeta, 3.f) + 0.125f * fSqrt3_2 * valueL[niSample] * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
+        //     channelpart3[4][niSample] = 0.0625f * valueL[niSample] * (rotator->m_fCosBeta + 15.f * rotator->m_fCos3Beta) + 0.25f * fSqrt5_2 * valueN[niSample] * (1.f + 3.f * rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueP[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.125 * fSqrt3_2 * valueK[niSample] * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
+        //     channelpart3[5][niSample] = 0.125f * valueN[niSample] * (5.f * rotator->m_fCosBeta + 3.f * rotator->m_fCos3Beta) + 0.25f * fSqrt3_2 * valueP[niSample] * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.5f * fSqrt15 * valueK[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.125 * fSqrt5_2 * valueL[niSample] * (rotator->m_fSinBeta - 3.f * rotator->m_fSin3Beta);
+        //     channelpart3[6][niSample] = 0.0625f * valueP[niSample] * (15.f * rotator->m_fCosBeta + rotator->m_fCos3Beta) - 0.25f * fSqrt3_2 * valueN[niSample] * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueL[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.5 * fSqrt5_2 * valueK[niSample] * pow(rotator->m_fSinBeta, 3.f);
+
+        //     valueQ[niSample] = -channelpart3[6][niSample] * rotator->m_fSin3Gamma + channelpart3[0][niSample] * rotator->m_fCos3Gamma;
+        //     valueO[niSample] = -channelpart3[5][niSample] * rotator->m_fSin2Gamma + channelpart3[1][niSample] * rotator->m_fCos2Gamma;
+        //     valueM[niSample] = -channelpart3[4][niSample] * rotator->m_fSinGamma + channelpart3[2][niSample] * rotator->m_fCosGamma;
+        //     valueK[niSample] = channelpart3[3][niSample];
+        //     valueL[niSample] = channelpart3[4][niSample] * rotator->m_fCosGamma + channelpart3[2][niSample] * rotator->m_fSinGamma;
+        //     valueN[niSample] = channelpart3[5][niSample] * rotator->m_fCos2Gamma + channelpart3[1][niSample] * rotator->m_fSin2Gamma;
+        //     valueP[niSample] = channelpart3[6][niSample] * rotator->m_fCos3Gamma + channelpart3[0][niSample] * rotator->m_fSin3Gamma;
+            
+        //     channelpart3[0][niSample] = valueQ[niSample];
+        //     channelpart3[1][niSample] = valueO[niSample];
+        //     channelpart3[2][niSample] = valueM[niSample];
+        //     channelpart3[3][niSample] = valueK[niSample];
+        //     channelpart3[4][niSample] = valueL[niSample];
+        //     channelpart3[5][niSample] = valueN[niSample];
+        //     channelpart3[6][niSample] = valueP[niSample];
+        // }
 
         
     }
@@ -2901,24 +2906,24 @@ void FIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_deco
     kiss_fft_cpx cpTemp[decoder->m_nFFTBins];
 
     // This is the non-parallel version
-    // for (unsigned niChannel = 0; niChannel < decoder0ChannelCount; niChannel++) {
-    //     for (int ni = 0; ni < decoder0FFTBins; ni++) {
-    //         cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
-    //         cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
-    //         decoder->m_pcpScratch[ni] = cpTemp[ni];
-    //     }
-    // }
+    for (unsigned niChannel = 0; niChannel < decoder0ChannelCount; niChannel++) {
+        for (int ni = 0; ni < decoder0FFTBins; ni++) {
+            cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
+            cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
+            decoder->m_pcpScratch[ni] = cpTemp[ni];
+        }
+    }
 
     // This is the parallel version
-    void* thisNode = __hpvm__getNode();
-    long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
-    long ni = __hpvm__getNodeInstanceID_y(thisNode);
+    // void* thisNode = __hpvm__getNode();
+    // long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
+    // long ni = __hpvm__getNodeInstanceID_y(thisNode);
 
-    if (niChannel < decoder0ChannelCount && ni < decoder0FFTBins) {
-        cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
-        cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
-        decoder->m_pcpScratch[ni] = cpTemp[ni];
-    }
+    // if (niChannel < decoder0ChannelCount && ni < decoder0FFTBins) {
+    //     cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
+    //     cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
+    //     decoder->m_pcpScratch[ni] = cpTemp[ni];
+    // }
 
 
     // printf("FIR_left ends\n");
@@ -2950,24 +2955,24 @@ void FIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_dec
     kiss_fft_cpx cpTemp[decoder->m_nFFTBins];
 
     // This is the non-parallel version
-    // for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
-    //     for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
-    //         cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
-    //         cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
-    //         decoder->m_pcpScratch[ni] = cpTemp[ni];
-    //     }
-    // }
+    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+        for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
+            cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
+            cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
+            decoder->m_pcpScratch[ni] = cpTemp[ni];
+        }
+    }
 
     // This is the parallel version
-    void* thisNode = __hpvm__getNode();
-    long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
-    long ni = __hpvm__getNodeInstanceID_y(thisNode);
+    // void* thisNode = __hpvm__getNode();
+    // long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
+    // long ni = __hpvm__getNodeInstanceID_y(thisNode);
 
-    if (niChannel < decoder1ChannelCount && ni < decoder1FFTBins) {
-        cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
-        cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
-        decoder->m_pcpScratch[ni] = cpTemp[ni];
-    }
+    // if (niChannel < decoder1ChannelCount && ni < decoder1FFTBins) {
+    //     cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
+    //     cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
+    //     decoder->m_pcpScratch[ni] = cpTemp[ni];
+    // }
 
 
 
@@ -3200,20 +3205,20 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
     // __hpvm__bindIn(rotatorNode, 3, 3, 0);
     // __hpvm__bindIn(rotatorNode, 10, 4, 0);
 
-    __hpvm__bindIn(rotatorSetNode, 0, 0, 0);
-    __hpvm__bindIn(rotatorSetNode, 1, 1, 0);
+    __hpvm__bindIn(rotatorSetNode, 0, 0, 1);
+    __hpvm__bindIn(rotatorSetNode, 1, 1, 1);
 
-    __hpvm__bindIn(psychoFilterNode, 0, 0, 0);
-    __hpvm__edge(rotatorSetNode, psychoFilterNode, 1, 0, 1, 0);
-    __hpvm__bindIn(psychoFilterNode, 2, 2, 0);
-    __hpvm__bindIn(psychoFilterNode, 3, 3, 0);
-    __hpvm__bindIn(psychoFilterNode, 10, 4, 0);
-    __hpvm__bindIn(psychoFilterNode, 11, 5, 0);
-    __hpvm__bindIn(psychoFilterNode, 12, 6, 0);
-    __hpvm__bindIn(psychoFilterNode, 13, 7, 0);
-    __hpvm__bindIn(psychoFilterNode, 14, 8, 0);
-    __hpvm__bindIn(psychoFilterNode, 15, 9, 0);
-    __hpvm__bindIn(psychoFilterNode, 16, 10, 0);
+    __hpvm__bindIn(psychoFilterNode, 0, 0, 1);
+    __hpvm__edge(rotatorSetNode, psychoFilterNode, 1, 0, 1, 1);
+    __hpvm__bindIn(psychoFilterNode, 2, 2, 1);
+    __hpvm__bindIn(psychoFilterNode, 3, 3, 1);
+    __hpvm__bindIn(psychoFilterNode, 10, 4, 1);
+    __hpvm__bindIn(psychoFilterNode, 11, 5, 1);
+    __hpvm__bindIn(psychoFilterNode, 12, 6, 1);
+    __hpvm__bindIn(psychoFilterNode, 13, 7, 1);
+    __hpvm__bindIn(psychoFilterNode, 14, 8, 1);
+    __hpvm__bindIn(psychoFilterNode, 15, 9, 1);
+    __hpvm__bindIn(psychoFilterNode, 16, 10, 1);
 
     // __hpvm__bindIn(rotateOrder1Node, 0, 0, 0);
     // __hpvm__edge(psychoFilterNode, rotateOrder1Node, 1, 0, 1, 0);
@@ -3233,79 +3238,82 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
     // __hpvm__edge(rotateOrder2Node, rotateOrder3Node, 1, 1, 3, 0);
     // __hpvm__bindIn(rotateOrder3Node, 10, 4, 0);
 
-    __hpvm__bindIn(rotateOrder1Node, 0, 0, 0);
-    __hpvm__edge(psychoFilterNode, rotateOrder1Node, 1, 0, 1, 0);
-    __hpvm__bindIn(rotateOrder1Node, 10, 2, 0);
-    __hpvm__bindIn(rotateOrder1Node, 11, 3, 0);
-    __hpvm__edge(psychoFilterNode, rotateOrder1Node, 1, 4, 4, 0);
+    __hpvm__bindIn(rotateOrder1Node, 0, 0, 1);
+    __hpvm__edge(psychoFilterNode, rotateOrder1Node, 1, 0, 1, 1);
+    __hpvm__bindIn(rotateOrder1Node, 10, 2, 1);
+    __hpvm__bindIn(rotateOrder1Node, 11, 3, 1);
+    __hpvm__edge(psychoFilterNode, rotateOrder1Node, 1, 4, 4, 1);
 
-    __hpvm__bindIn(rotateOrder2Node, 0, 0, 0);
-    __hpvm__edge(psychoFilterNode, rotateOrder2Node, 1, 1, 1, 0);
-    __hpvm__bindIn(rotateOrder2Node, 10, 2, 0);
-    __hpvm__bindIn(rotateOrder2Node, 13, 3, 0);
-    __hpvm__edge(psychoFilterNode, rotateOrder2Node, 1, 5, 4, 0);
+    __hpvm__bindIn(rotateOrder2Node, 0, 0, 1);
+    __hpvm__edge(psychoFilterNode, rotateOrder2Node, 1, 1, 1, 1);
+    __hpvm__bindIn(rotateOrder2Node, 10, 2, 1);
+    __hpvm__bindIn(rotateOrder2Node, 13, 3, 1);
+    __hpvm__edge(psychoFilterNode, rotateOrder2Node, 1, 5, 4, 1);
 
-    __hpvm__bindIn(rotateOrder3Node, 0, 0, 0);
-    __hpvm__edge(psychoFilterNode, rotateOrder3Node, 1, 2, 1, 0);
-    __hpvm__bindIn(rotateOrder3Node, 10, 2, 0);
-    __hpvm__bindIn(rotateOrder3Node, 15, 3, 0);
-    __hpvm__edge(psychoFilterNode, rotateOrder3Node, 1, 6, 4, 0);
+    __hpvm__bindIn(rotateOrder3Node, 0, 0, 1);
+    __hpvm__edge(psychoFilterNode, rotateOrder3Node, 1, 2, 1, 1);
+    __hpvm__bindIn(rotateOrder3Node, 10, 2, 1);
+    __hpvm__bindIn(rotateOrder3Node, 15, 3, 1);
+    __hpvm__edge(psychoFilterNode, rotateOrder3Node, 1, 6, 4, 1);
 
-    __hpvm__bindIn(zoomSetNode, 4, 0, 0);
-    __hpvm__bindIn(zoomSetNode, 5, 1, 0);
+    __hpvm__bindIn(zoomSetNode, 4, 0, 1);
+    __hpvm__bindIn(zoomSetNode, 5, 1, 1);
 
-    __hpvm__bindIn(zoomProcessNode, 4, 0, 0);
-    __hpvm__edge(zoomSetNode, zoomProcessNode, 1, 0, 1, 0);
-    __hpvm__bindIn(zoomProcessNode, 2, 2, 0);
+    __hpvm__bindIn(zoomProcessNode, 4, 0, 1);
+    __hpvm__edge(zoomSetNode, zoomProcessNode, 1, 0, 1, 1);
+    __hpvm__bindIn(zoomProcessNode, 2, 2, 1);
     // __hpvm__edge(rotateOrder3Node, zoomProcessNode, 1, 0, 3, 0);
     // __hpvm__bindIn(zoomProcessNode, 10, 4, 0);
-    __hpvm__edge(psychoFilterNode, zoomProcessNode, 1, 3, 3, 0);
-    __hpvm__bindIn(zoomProcessNode, 10, 4, 0);
-    __hpvm__bindIn(zoomProcessNode, 11, 5, 0);
-    __hpvm__edge(rotateOrder1Node, zoomProcessNode, 1, 0, 6, 0);
-    __hpvm__bindIn(zoomProcessNode, 13, 7, 0);
-    __hpvm__edge(rotateOrder2Node, zoomProcessNode, 1, 0, 8, 0);
-    __hpvm__bindIn(zoomProcessNode, 15, 9, 0);
-    __hpvm__edge(rotateOrder3Node, zoomProcessNode, 1, 0, 10, 0);
+    __hpvm__edge(psychoFilterNode, zoomProcessNode, 1, 3, 3, 1);
+    __hpvm__bindIn(zoomProcessNode, 10, 4, 1);
+    __hpvm__bindIn(zoomProcessNode, 11, 5, 1);
+    __hpvm__edge(rotateOrder1Node, zoomProcessNode, 1, 0, 6, 1);
+    __hpvm__bindIn(zoomProcessNode, 13, 7, 1);
+    __hpvm__edge(rotateOrder2Node, zoomProcessNode, 1, 0, 8, 1);
+    __hpvm__bindIn(zoomProcessNode, 15, 9, 1);
+    __hpvm__edge(rotateOrder3Node, zoomProcessNode, 1, 0, 10, 1);
 
     // __hpvm__bindIn(decodeProcessSetNode, 6, 0, 0);
     // __hpvm__bindIn(decodeProcessSetNode, 7, 1, 0);
 
-    __hpvm__bindIn(setAndFFT_LeftNode, 6, 0, 0);
-    __hpvm__bindIn(setAndFFT_LeftNode, 7, 1, 0);
-    __hpvm__bindIn(setAndFFT_LeftNode, 2, 2, 0);
-    __hpvm__edge(zoomProcessNode, setAndFFT_LeftNode, 1, 0, 3, 0);
+    __hpvm__bindIn(setAndFFT_LeftNode, 6, 0, 1);
+    __hpvm__bindIn(setAndFFT_LeftNode, 7, 1, 1);
+    __hpvm__bindIn(setAndFFT_LeftNode, 2, 2, 1);
+    __hpvm__edge(zoomProcessNode, setAndFFT_LeftNode, 1, 0, 3, 1);
 
-    __hpvm__bindIn(setAndFFT_RightNode, 17, 0, 0);
-    __hpvm__bindIn(setAndFFT_RightNode, 18, 1, 0);
-    __hpvm__bindIn(setAndFFT_RightNode, 2, 2, 0);
-    __hpvm__edge(zoomProcessNode, setAndFFT_RightNode, 1, 1, 3, 0);
+    __hpvm__bindIn(setAndFFT_RightNode, 17, 0, 1);
+    __hpvm__bindIn(setAndFFT_RightNode, 18, 1, 1);
+    __hpvm__bindIn(setAndFFT_RightNode, 2, 2, 1);
+    __hpvm__edge(zoomProcessNode, setAndFFT_RightNode, 1, 1, 3, 1);
     
-    __hpvm__bindIn(FIR_LeftNode, 6, 0, 0);
-    __hpvm__edge(setAndFFT_LeftNode, FIR_LeftNode, 1, 0, 1, 0);
-    __hpvm__bindIn(FIR_LeftNode, 21, 2, 0);
-    __hpvm__bindIn(FIR_LeftNode, 22, 3, 0);
+    __hpvm__bindIn(FIR_LeftNode, 6, 0, 1);
+    __hpvm__edge(setAndFFT_LeftNode, FIR_LeftNode, 1, 0, 1, 1);
+    __hpvm__bindIn(FIR_LeftNode, 21, 2, 1);
+    __hpvm__bindIn(FIR_LeftNode, 22, 3, 1);
     
-    __hpvm__bindIn(FIR_RightNode, 17, 0, 0);
-    __hpvm__edge(setAndFFT_RightNode, FIR_RightNode, 1, 0, 1, 0);
-    __hpvm__bindIn(FIR_RightNode, 23, 2, 0);
-    __hpvm__bindIn(FIR_RightNode, 24, 3, 0);
+    __hpvm__bindIn(FIR_RightNode, 17, 0, 1);
+    __hpvm__edge(setAndFFT_RightNode, FIR_RightNode, 1, 0, 1, 1);
+    __hpvm__bindIn(FIR_RightNode, 23, 2, 1);
+    __hpvm__bindIn(FIR_RightNode, 24, 3, 1);
 
-    __hpvm__bindIn(IFFT_LeftNode, 6, 0, 0);
-    __hpvm__edge(FIR_LeftNode, IFFT_LeftNode, 1, 0, 1, 0);
+    __hpvm__bindIn(IFFT_LeftNode, 6, 0, 1);
+    __hpvm__edge(FIR_LeftNode, IFFT_LeftNode, 1, 0, 1, 1);
 
-    __hpvm__bindIn(IFFT_RightNode, 17, 0, 0);
-    __hpvm__edge(FIR_RightNode, IFFT_RightNode, 1, 0, 1, 0);
+    __hpvm__bindIn(IFFT_RightNode, 17, 0, 1);
+    __hpvm__edge(FIR_RightNode, IFFT_RightNode, 1, 0, 1, 1);
 
-    __hpvm__bindIn(overlap_LeftNode, 6, 0, 0);
-    __hpvm__edge(IFFT_LeftNode, overlap_LeftNode, 1, 0, 1, 0);
-    __hpvm__bindIn(overlap_LeftNode, 8, 2, 0);
-    __hpvm__bindIn(overlap_LeftNode, 9, 3, 0);
+    __hpvm__bindIn(overlap_LeftNode, 6, 0, 1);
+    __hpvm__edge(IFFT_LeftNode, overlap_LeftNode, 1, 0, 1, 1);
+    __hpvm__bindIn(overlap_LeftNode, 8, 2, 1);
+    __hpvm__bindIn(overlap_LeftNode, 9, 3, 1);
 
-    __hpvm__bindIn(overlap_RightNode, 17, 0, 0);
-    __hpvm__edge(IFFT_RightNode, overlap_RightNode, 1, 0, 1, 0);
-    __hpvm__bindIn(overlap_RightNode, 19, 2, 0);
-    __hpvm__bindIn(overlap_RightNode, 20, 3, 0);
+    __hpvm__bindIn(overlap_RightNode, 17, 0, 1);
+    __hpvm__edge(IFFT_RightNode, overlap_RightNode, 1, 0, 1, 1);
+    __hpvm__bindIn(overlap_RightNode, 19, 2, 1);
+    __hpvm__bindIn(overlap_RightNode, 20, 3, 1);
+
+    __hpvm__bindOut(overlap_LeftNode, 0, 0, 1);
+    __hpvm__bindOut(overlap_RightNode, 0, 0, 1);
 
     // __hpvm__bindIn(bufferBCpyNSetNode, 6, 0, 0);
     // __hpvm__edge(decodeProcessSetNode, bufferBCpyNSetNode, 1, 0, 1, 0);
@@ -3427,56 +3435,127 @@ int main(int argc, char const *argv[])
     arg->decoder1ChannelCount = audioAddr->decoder1->m_nChannelCount;
     arg->decoder1FFTBins = audioAddr->decoder1->m_nFFTBins;
 
-    // ABAudio* audioAddr = &audio;
-    for (int i = 0; i < numBlocks; ++i){
-        // audio.processBlock();
-        // printf("\nTracking!\nrotator\n");
-        llvm_hpvm_track_mem(audioAddr->rotator, bytes_rotator);
-        // printf("sumBF\n");
-        llvm_hpvm_track_mem(sumBF, bytes_sumBF);
-        // printf("zoomer\n");
-        llvm_hpvm_track_mem(audioAddr->zoomer, bytes_zoomer);
-        // printf("decoder\n");
-        llvm_hpvm_track_mem(audioAddr->decoder0, bytes_decoder0);
-        llvm_hpvm_track_mem(audioAddr->decoder1, bytes_decoder1);
-        // printf("resultSample\n");
-        llvm_hpvm_track_mem(resultSample0, bytes_resultSample0);
-        llvm_hpvm_track_mem(resultSample1, bytes_resultSample1);
-        llvm_hpvm_track_mem(channelpart1, bytes_channelpart1);
-        llvm_hpvm_track_mem(channelpart2, bytes_channelpart2);
-        llvm_hpvm_track_mem(channelpart3, bytes_channelpart3);
-        // printf("Done with Tracking\n");
+    // // ABAudio* audioAddr = &audio;
+    // for (int i = 0; i < numBlocks; ++i){
+    //     // audio.processBlock();
+    //     // printf("\nTracking!\nrotator\n");
+    //     llvm_hpvm_track_mem(audioAddr->rotator, bytes_rotator);
+    //     // printf("sumBF\n");
+    //     llvm_hpvm_track_mem(sumBF, bytes_sumBF);
+    //     // printf("zoomer\n");
+    //     llvm_hpvm_track_mem(audioAddr->zoomer, bytes_zoomer);
+    //     // printf("decoder\n");
+    //     llvm_hpvm_track_mem(audioAddr->decoder0, bytes_decoder0);
+    //     llvm_hpvm_track_mem(audioAddr->decoder1, bytes_decoder1);
+    //     // printf("resultSample\n");
+    //     llvm_hpvm_track_mem(resultSample0, bytes_resultSample0);
+    //     llvm_hpvm_track_mem(resultSample1, bytes_resultSample1);
+    //     llvm_hpvm_track_mem(channelpart1, bytes_channelpart1);
+    //     llvm_hpvm_track_mem(channelpart2, bytes_channelpart2);
+    //     llvm_hpvm_track_mem(channelpart3, bytes_channelpart3);
+    //     // printf("Done with Tracking\n");
 
-        void* DFG = __hpvm__launch(0, audioDecoding, (void*) arg);
-        __hpvm__wait(DFG);
-        // printf("Execution complete");
+    //     void* DFG = __hpvm__launch(0, audioDecoding, (void*) arg);
+    //     __hpvm__wait(DFG);
+    //     // printf("Execution complete");
 
-        // printf("\nRequesting Memory\n");
-        llvm_hpvm_request_mem(audioAddr->rotator, bytes_rotator);
-        llvm_hpvm_request_mem(sumBF, bytes_sumBF);
-        llvm_hpvm_request_mem(audioAddr->zoomer, bytes_zoomer);
-        llvm_hpvm_request_mem(audioAddr->decoder0, bytes_decoder0);
-        llvm_hpvm_request_mem(audioAddr->decoder1, bytes_decoder1);
-        llvm_hpvm_request_mem(resultSample0, bytes_resultSample0);
-        llvm_hpvm_request_mem(resultSample1, bytes_resultSample1);
-        llvm_hpvm_request_mem(channelpart1, bytes_channelpart1);
-        llvm_hpvm_request_mem(channelpart2, bytes_channelpart2);
-        llvm_hpvm_request_mem(channelpart3, bytes_channelpart3);
-        // printf("\nDone requesting Memory\n");
+    //     // printf("\nRequesting Memory\n");
+    //     llvm_hpvm_request_mem(audioAddr->rotator, bytes_rotator);
+    //     llvm_hpvm_request_mem(sumBF, bytes_sumBF);
+    //     llvm_hpvm_request_mem(audioAddr->zoomer, bytes_zoomer);
+    //     llvm_hpvm_request_mem(audioAddr->decoder0, bytes_decoder0);
+    //     llvm_hpvm_request_mem(audioAddr->decoder1, bytes_decoder1);
+    //     llvm_hpvm_request_mem(resultSample0, bytes_resultSample0);
+    //     llvm_hpvm_request_mem(resultSample1, bytes_resultSample1);
+    //     llvm_hpvm_request_mem(channelpart1, bytes_channelpart1);
+    //     llvm_hpvm_request_mem(channelpart2, bytes_channelpart2);
+    //     llvm_hpvm_request_mem(channelpart3, bytes_channelpart3);
+    //     // printf("\nDone requesting Memory\n");
 
-        // printf("Untracking\n");
-        llvm_hpvm_untrack_mem(audioAddr->rotator);
-        llvm_hpvm_untrack_mem(sumBF);
-        llvm_hpvm_untrack_mem(audioAddr->zoomer);
-        llvm_hpvm_untrack_mem(audioAddr->decoder0);
-        llvm_hpvm_untrack_mem(audioAddr->decoder1);
-        llvm_hpvm_untrack_mem(resultSample0);
-        llvm_hpvm_untrack_mem(resultSample1);
-        llvm_hpvm_untrack_mem(channelpart1);
-        llvm_hpvm_untrack_mem(channelpart2);
-        llvm_hpvm_untrack_mem(channelpart3);
-        // printf("Done with Untracking\n");
+    //     // printf("Untracking\n");
+    //     llvm_hpvm_untrack_mem(audioAddr->rotator);
+    //     llvm_hpvm_untrack_mem(sumBF);
+    //     llvm_hpvm_untrack_mem(audioAddr->zoomer);
+    //     llvm_hpvm_untrack_mem(audioAddr->decoder0);
+    //     llvm_hpvm_untrack_mem(audioAddr->decoder1);
+    //     llvm_hpvm_untrack_mem(resultSample0);
+    //     llvm_hpvm_untrack_mem(resultSample1);
+    //     llvm_hpvm_untrack_mem(channelpart1);
+    //     llvm_hpvm_untrack_mem(channelpart2);
+    //     llvm_hpvm_untrack_mem(channelpart3);
+    //     // printf("Done with Untracking\n");
+    // }
+
+    void* DFG = __hpvm__launch(1, audioDecoding, (void*) arg);
+
+    if (numBlocks >= 2) {
+        for (int i = 0; i < numBlocks; ++i) {
+            arg->rotator = audioAddr->rotator;
+            arg->sumBF = sumBF;
+            arg->zoomer = audioAddr->zoomer;
+            arg->decoder0 = audioAddr->decoder0;
+            arg->resultSample0 = resultSample0;
+            arg->channelpart1 = channelpart1;
+            arg->channelpart2 = channelpart2;
+            arg->channelpart3 = channelpart3;
+            arg->decoder1 = audioAddr->decoder1;
+            arg->resultSample1 = resultSample1;
+
+            llvm_hpvm_track_mem(audioAddr->rotator, bytes_rotator);
+            // printf("sumBF\n");
+            llvm_hpvm_track_mem(sumBF, bytes_sumBF);
+            // printf("zoomer\n");
+            llvm_hpvm_track_mem(audioAddr->zoomer, bytes_zoomer);
+            // printf("decoder\n");
+            llvm_hpvm_track_mem(audioAddr->decoder0, bytes_decoder0);
+            llvm_hpvm_track_mem(audioAddr->decoder1, bytes_decoder1);
+            // printf("resultSample\n");
+            llvm_hpvm_track_mem(resultSample0, bytes_resultSample0);
+            llvm_hpvm_track_mem(resultSample1, bytes_resultSample1);
+            llvm_hpvm_track_mem(channelpart1, bytes_channelpart1);
+            llvm_hpvm_track_mem(channelpart2, bytes_channelpart2);
+            llvm_hpvm_track_mem(channelpart3, bytes_channelpart3);
+            // printf("Done with Tracking\n");
+
+            // printf("Launching DFG\n")
+            __hpvm__push(DFG, arg);
+            void* ret = __hpvm__pop(DFG);
+            size_t outSize = ((RootOut*) ret)->result;
+            // printf("\n\nPipeline execution completed!\n");
+            // printf("\n\nRequesting memory!\n");
+
+            llvm_hpvm_request_mem(audioAddr->rotator, bytes_rotator);
+            llvm_hpvm_request_mem(sumBF, bytes_sumBF);
+            llvm_hpvm_request_mem(audioAddr->zoomer, bytes_zoomer);
+            llvm_hpvm_request_mem(audioAddr->decoder0, bytes_decoder0);
+            llvm_hpvm_request_mem(audioAddr->decoder1, bytes_decoder1);
+            llvm_hpvm_request_mem(resultSample0, bytes_resultSample0);
+            llvm_hpvm_request_mem(resultSample1, bytes_resultSample1);
+            llvm_hpvm_request_mem(channelpart1, bytes_channelpart1);
+            llvm_hpvm_request_mem(channelpart2, bytes_channelpart2);
+            llvm_hpvm_request_mem(channelpart3, bytes_channelpart3);
+            // printf("\nDone requesting Memory\n");
+
+            // printf("Untracking\n");
+            llvm_hpvm_untrack_mem(audioAddr->rotator);
+            llvm_hpvm_untrack_mem(sumBF);
+            llvm_hpvm_untrack_mem(audioAddr->zoomer);
+            llvm_hpvm_untrack_mem(audioAddr->decoder0);
+            llvm_hpvm_untrack_mem(audioAddr->decoder1);
+            llvm_hpvm_untrack_mem(resultSample0);
+            llvm_hpvm_untrack_mem(resultSample1);
+            llvm_hpvm_untrack_mem(channelpart1);
+            llvm_hpvm_untrack_mem(channelpart2);
+            llvm_hpvm_untrack_mem(channelpart3);
+            // printf("Done with Untracking\n");
+        }
     }
+    else {
+        __hpvm__push(DFG, arg);
+        __hpvm__pop(DFG);
+    }
+
+    __hpvm__wait(DFG);
 
     __hpvm__cleanup();
 

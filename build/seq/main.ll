@@ -19840,75 +19840,77 @@ entry:
   %call12 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64)* nonnull @wrapperIFFT_right_fxp) #20
   %call13 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, float*, i64)* nonnull @wrapperOverlap_left_fxp) #20
   %call14 = tail call i8* (i32, ...) @__hpvm__createNodeND(i32 0, void (%class.CAmbisonicBinauralizer*, i64, float*, i64)* nonnull @wrapperOverlap_right_fxp) #20
-  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call1, i32 0, i32 0, i32 0) #20
-  %call15 = tail call i8* @__hpvm__edge(i8* %call, i8* %call1, i32 1, i32 0, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call1, i32 2, i32 2, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call1, i32 3, i32 3, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call1, i32 10, i32 4, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call1, i32 11, i32 5, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call1, i32 12, i32 6, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call1, i32 13, i32 7, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call1, i32 14, i32 8, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call1, i32 15, i32 9, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call1, i32 16, i32 10, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call2, i32 0, i32 0, i32 0) #20
-  %call16 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call2, i32 1, i32 0, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call2, i32 10, i32 2, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call2, i32 11, i32 3, i32 0) #20
-  %call17 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call2, i32 1, i32 4, i32 4, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call3, i32 0, i32 0, i32 0) #20
-  %call18 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call3, i32 1, i32 1, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call3, i32 10, i32 2, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call3, i32 13, i32 3, i32 0) #20
-  %call19 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call3, i32 1, i32 5, i32 4, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call4, i32 0, i32 0, i32 0) #20
-  %call20 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call4, i32 1, i32 2, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call4, i32 10, i32 2, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call4, i32 15, i32 3, i32 0) #20
-  %call21 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call4, i32 1, i32 6, i32 4, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call5, i32 4, i32 0, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call5, i32 5, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call6, i32 4, i32 0, i32 0) #20
-  %call22 = tail call i8* @__hpvm__edge(i8* %call5, i8* %call6, i32 1, i32 0, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call6, i32 2, i32 2, i32 0) #20
-  %call23 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call6, i32 1, i32 3, i32 3, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call6, i32 10, i32 4, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call6, i32 11, i32 5, i32 0) #20
-  %call24 = tail call i8* @__hpvm__edge(i8* %call2, i8* %call6, i32 1, i32 0, i32 6, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call6, i32 13, i32 7, i32 0) #20
-  %call25 = tail call i8* @__hpvm__edge(i8* %call3, i8* %call6, i32 1, i32 0, i32 8, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call6, i32 15, i32 9, i32 0) #20
-  %call26 = tail call i8* @__hpvm__edge(i8* %call4, i8* %call6, i32 1, i32 0, i32 10, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call7, i32 6, i32 0, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call7, i32 7, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call7, i32 2, i32 2, i32 0) #20
-  %call27 = tail call i8* @__hpvm__edge(i8* %call6, i8* %call7, i32 1, i32 0, i32 3, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call8, i32 17, i32 0, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call8, i32 18, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call8, i32 2, i32 2, i32 0) #20
-  %call28 = tail call i8* @__hpvm__edge(i8* %call6, i8* %call8, i32 1, i32 1, i32 3, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call9, i32 6, i32 0, i32 0) #20
-  %call29 = tail call i8* @__hpvm__edge(i8* %call7, i8* %call9, i32 1, i32 0, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call9, i32 21, i32 2, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call9, i32 22, i32 3, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call10, i32 17, i32 0, i32 0) #20
-  %call30 = tail call i8* @__hpvm__edge(i8* %call8, i8* %call10, i32 1, i32 0, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call10, i32 23, i32 2, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call10, i32 24, i32 3, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call11, i32 6, i32 0, i32 0) #20
-  %call31 = tail call i8* @__hpvm__edge(i8* %call9, i8* %call11, i32 1, i32 0, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call12, i32 17, i32 0, i32 0) #20
-  %call32 = tail call i8* @__hpvm__edge(i8* %call10, i8* %call12, i32 1, i32 0, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call13, i32 6, i32 0, i32 0) #20
-  %call33 = tail call i8* @__hpvm__edge(i8* %call11, i8* %call13, i32 1, i32 0, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call13, i32 8, i32 2, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call13, i32 9, i32 3, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call14, i32 17, i32 0, i32 0) #20
-  %call34 = tail call i8* @__hpvm__edge(i8* %call12, i8* %call14, i32 1, i32 0, i32 1, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call14, i32 19, i32 2, i32 0) #20
-  tail call void @__hpvm__bindIn(i8* %call14, i32 20, i32 3, i32 0) #20
+  tail call void @__hpvm__bindIn(i8* %call, i32 0, i32 0, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call, i32 1, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call1, i32 0, i32 0, i32 1) #20
+  %call15 = tail call i8* @__hpvm__edge(i8* %call, i8* %call1, i32 1, i32 0, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call1, i32 2, i32 2, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call1, i32 3, i32 3, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call1, i32 10, i32 4, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call1, i32 11, i32 5, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call1, i32 12, i32 6, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call1, i32 13, i32 7, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call1, i32 14, i32 8, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call1, i32 15, i32 9, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call1, i32 16, i32 10, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call2, i32 0, i32 0, i32 1) #20
+  %call16 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call2, i32 1, i32 0, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call2, i32 10, i32 2, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call2, i32 11, i32 3, i32 1) #20
+  %call17 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call2, i32 1, i32 4, i32 4, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call3, i32 0, i32 0, i32 1) #20
+  %call18 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call3, i32 1, i32 1, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call3, i32 10, i32 2, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call3, i32 13, i32 3, i32 1) #20
+  %call19 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call3, i32 1, i32 5, i32 4, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call4, i32 0, i32 0, i32 1) #20
+  %call20 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call4, i32 1, i32 2, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call4, i32 10, i32 2, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call4, i32 15, i32 3, i32 1) #20
+  %call21 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call4, i32 1, i32 6, i32 4, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call5, i32 4, i32 0, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call5, i32 5, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call6, i32 4, i32 0, i32 1) #20
+  %call22 = tail call i8* @__hpvm__edge(i8* %call5, i8* %call6, i32 1, i32 0, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call6, i32 2, i32 2, i32 1) #20
+  %call23 = tail call i8* @__hpvm__edge(i8* %call1, i8* %call6, i32 1, i32 3, i32 3, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call6, i32 10, i32 4, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call6, i32 11, i32 5, i32 1) #20
+  %call24 = tail call i8* @__hpvm__edge(i8* %call2, i8* %call6, i32 1, i32 0, i32 6, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call6, i32 13, i32 7, i32 1) #20
+  %call25 = tail call i8* @__hpvm__edge(i8* %call3, i8* %call6, i32 1, i32 0, i32 8, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call6, i32 15, i32 9, i32 1) #20
+  %call26 = tail call i8* @__hpvm__edge(i8* %call4, i8* %call6, i32 1, i32 0, i32 10, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call7, i32 6, i32 0, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call7, i32 7, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call7, i32 2, i32 2, i32 1) #20
+  %call27 = tail call i8* @__hpvm__edge(i8* %call6, i8* %call7, i32 1, i32 0, i32 3, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call8, i32 17, i32 0, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call8, i32 18, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call8, i32 2, i32 2, i32 1) #20
+  %call28 = tail call i8* @__hpvm__edge(i8* %call6, i8* %call8, i32 1, i32 1, i32 3, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call9, i32 6, i32 0, i32 1) #20
+  %call29 = tail call i8* @__hpvm__edge(i8* %call7, i8* %call9, i32 1, i32 0, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call9, i32 21, i32 2, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call9, i32 22, i32 3, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call10, i32 17, i32 0, i32 1) #20
+  %call30 = tail call i8* @__hpvm__edge(i8* %call8, i8* %call10, i32 1, i32 0, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call10, i32 23, i32 2, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call10, i32 24, i32 3, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call11, i32 6, i32 0, i32 1) #20
+  %call31 = tail call i8* @__hpvm__edge(i8* %call9, i8* %call11, i32 1, i32 0, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call12, i32 17, i32 0, i32 1) #20
+  %call32 = tail call i8* @__hpvm__edge(i8* %call10, i8* %call12, i32 1, i32 0, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call13, i32 6, i32 0, i32 1) #20
+  %call33 = tail call i8* @__hpvm__edge(i8* %call11, i8* %call13, i32 1, i32 0, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call13, i32 8, i32 2, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call13, i32 9, i32 3, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call14, i32 17, i32 0, i32 1) #20
+  %call34 = tail call i8* @__hpvm__edge(i8* %call12, i8* %call14, i32 1, i32 0, i32 1, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call14, i32 19, i32 2, i32 1) #20
+  tail call void @__hpvm__bindIn(i8* %call14, i32 20, i32 3, i32 1) #20
+  tail call void @__hpvm__bindOut(i8* %call13, i32 0, i32 0, i32 1) #20
+  tail call void @__hpvm__bindOut(i8* %call14, i32 0, i32 0, i32 1) #20
   ret void
 }
 
@@ -19944,14 +19946,14 @@ if.then.i:                                        ; preds = %if.then
   br label %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
 
 if.else.i:                                        ; preds = %if.then
-  %call.i.i264 = tail call i64 @strlen(i8* nonnull %0) #20
-  %call1.i265 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull %0, i64 %call.i.i264)
+  %call.i.i312 = tail call i64 @strlen(i8* nonnull %0) #20
+  %call1.i313 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull %0, i64 %call.i.i312)
   br label %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
 
 _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit: ; preds = %if.then.i, %if.else.i
-  %call1.i267 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([42 x i8], [42 x i8]* @.str.7, i64 0, i64 0), i64 41)
-  %call1.i270 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([27 x i8], [27 x i8]* @.str.8, i64 0, i64 0), i64 26)
-  %call1.i273 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([122 x i8], [122 x i8]* @.str.9, i64 0, i64 0), i64 121)
+  %call1.i315 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([42 x i8], [42 x i8]* @.str.7, i64 0, i64 0), i64 41)
+  %call1.i318 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([27 x i8], [27 x i8]* @.str.8, i64 0, i64 0), i64 26)
+  %call1.i321 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([122 x i8], [122 x i8]* @.str.9, i64 0, i64 0), i64 121)
   br label %return
 
 if.end:                                           ; preds = %entry
@@ -20234,22 +20236,17 @@ invoke.cont77:                                    ; preds = %invoke.cont74
   %decoder1FFTBins = getelementptr inbounds i8, i8* %call80, i64 192
   %74 = bitcast i8* %decoder1FFTBins to i64*
   store i64 %conv109, i64* %74, align 1, !tbaa !476
-  %cmp110282 = icmp sgt i32 %conv.i, 0
+  %call110 = call i8* (i32, ...) @__hpvm__launch(i32 1, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, %class.CAmbisonicZoomer*, i64, %class.CAmbisonicBinauralizer*, i64, float*, i64, i64, float**, i64, float**, i64, float**, i64, %class.CAmbisonicBinauralizer*, i64, float*, i64, i64, i64, i64, i64)* nonnull @audioDecoding, i8* %call80) #20
+  %cmp111 = icmp sgt i32 %conv.i, 1
   %75 = inttoptr i64 %42 to i8*
   %76 = inttoptr i64 %46 to i8*
   %77 = inttoptr i64 %58 to i8*
-  br i1 %cmp110282, label %for.body.lr.ph, label %for.cond.cleanup
+  br i1 %cmp111, label %for.body.lr.ph, label %if.else
 
 for.body.lr.ph:                                   ; preds = %invoke.cont77
   %78 = bitcast %class.CAmbisonicProcessor** %rotator to i8**
   %79 = load i8*, i8** %78, align 8, !tbaa !394
   br label %for.body
-
-for.cond.cleanup:                                 ; preds = %for.body, %invoke.cont77
-  call void @__hpvm__cleanup() #20
-  call void @_ZN12ILLIXR_AUDIO7ABAudioD2Ev(%"class.ILLIXR_AUDIO::ABAudio"* nonnull %audio) #20
-  call void @llvm.lifetime.end.p0i8(i64 56, i8* nonnull %6) #20
-  br label %return
 
 lpad7:                                            ; preds = %if.end
   %80 = landingpad { i8*, i32 }
@@ -20257,50 +20254,60 @@ lpad7:                                            ; preds = %if.end
   %81 = extractvalue { i8*, i32 } %80, 0
   %82 = extractvalue { i8*, i32 } %80, 1
   %83 = load i8*, i8** %_M_p.i.i.i.i.i, align 8, !tbaa !258
-  %cmp.i.i.i279 = icmp eq i8* %83, %9
-  br i1 %cmp.i.i.i279, label %ehcleanup132, label %if.then.i.i280
+  %cmp.i.i.i327 = icmp eq i8* %83, %9
+  br i1 %cmp.i.i.i327, label %ehcleanup151, label %if.then.i.i328
 
-if.then.i.i280:                                   ; preds = %lpad7
+if.then.i.i328:                                   ; preds = %lpad7
   call void @_ZdlPv(i8* %83) #20
-  br label %ehcleanup132
+  br label %ehcleanup151
 
 lpad10:                                           ; preds = %_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED2Ev.exit
   %84 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad12:                                           ; preds = %invoke.cont11
   %85 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad15:                                           ; preds = %invoke.cont13
   %86 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad18:                                           ; preds = %invoke.cont19, %invoke.cont16
   %87 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad26:                                           ; preds = %invoke.cont32, %invoke.cont29, %invoke.cont27, %invoke.cont24
   %88 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad38:                                           ; preds = %invoke.cont50, %invoke.cont47, %invoke.cont44, %invoke.cont41, %invoke.cont39, %invoke.cont35
   %89 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad56:                                           ; preds = %invoke.cont74, %invoke.cont71, %invoke.cont68, %invoke.cont65, %invoke.cont62, %invoke.cont59, %invoke.cont57, %invoke.cont53
   %90 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 for.body:                                         ; preds = %for.body, %for.body.lr.ph
-  %i.0283 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ]
+  %i.0331 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ]
+  store i64 %36, i64* %37, align 1, !tbaa !453
+  store i8* %call20, i8** %39, align 1, !tbaa !456
+  store i64 %42, i64* %43, align 1, !tbaa !458
+  store i64 %46, i64* %47, align 1, !tbaa !460
+  store i8* %call14, i8** %49, align 1, !tbaa !462
+  store i8* %call28, i8** %51, align 1, !tbaa !463
+  store i8* %call40, i8** %53, align 1, !tbaa !465
+  store i8* %call58, i8** %55, align 1, !tbaa !467
+  store i64 %58, i64* %59, align 1, !tbaa !469
+  store i8* %call17, i8** %61, align 1, !tbaa !471
   call void @llvm_hpvm_track_mem(i8* %79, i64 200) #20
   call void @llvm_hpvm_track_mem(i8* nonnull %call20, i64 64) #20
   call void @llvm_hpvm_track_mem(i8* %75, i64 104) #20
@@ -20311,8 +20318,8 @@ for.body:                                         ; preds = %for.body, %for.body
   call void @llvm_hpvm_track_mem(i8* nonnull %call28, i64 12288) #20
   call void @llvm_hpvm_track_mem(i8* nonnull %call40, i64 20480) #20
   call void @llvm_hpvm_track_mem(i8* nonnull %call58, i64 28672) #20
-  %call115 = call i8* (i32, ...) @__hpvm__launch(i32 0, void (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, %class.CAmbisonicZoomer*, i64, %class.CAmbisonicBinauralizer*, i64, float*, i64, i64, float**, i64, float**, i64, float**, i64, %class.CAmbisonicBinauralizer*, i64, float*, i64, i64, i64, i64, i64)* nonnull @audioDecoding, i8* %call80) #20
-  call void @__hpvm__wait(i8* %call115) #20
+  call void @__hpvm__push(i8* %call110, i8* %call80) #20
+  %call132 = call i8* @__hpvm__pop(i8* %call110) #20
   call void @llvm_hpvm_request_mem(i8* %79, i64 200) #20
   call void @llvm_hpvm_request_mem(i8* nonnull %call20, i64 64) #20
   call void @llvm_hpvm_request_mem(i8* %75, i64 104) #20
@@ -20333,27 +20340,39 @@ for.body:                                         ; preds = %for.body, %for.body
   call void @llvm_hpvm_untrack_mem(i8* nonnull %call28) #20
   call void @llvm_hpvm_untrack_mem(i8* nonnull %call40) #20
   call void @llvm_hpvm_untrack_mem(i8* nonnull %call58) #20
-  %inc = add nuw nsw i32 %i.0283, 1
+  %inc = add nuw nsw i32 %i.0331, 1
   %exitcond = icmp eq i32 %inc, %conv.i
-  br i1 %exitcond, label %for.cond.cleanup, label %for.body
+  br i1 %exitcond, label %if.end142, label %for.body
 
-ehcleanup131:                                     ; preds = %lpad12, %lpad18, %lpad38, %lpad56, %lpad26, %lpad15, %lpad10
-  %.sink284 = phi { i8*, i32 } [ %85, %lpad12 ], [ %87, %lpad18 ], [ %89, %lpad38 ], [ %90, %lpad56 ], [ %88, %lpad26 ], [ %86, %lpad15 ], [ %84, %lpad10 ]
-  %91 = extractvalue { i8*, i32 } %.sink284, 0
-  %92 = extractvalue { i8*, i32 } %.sink284, 1
+if.else:                                          ; preds = %invoke.cont77
+  call void @__hpvm__push(i8* %call110, i8* %call80) #20
+  %call141 = call i8* @__hpvm__pop(i8* %call110) #20
+  br label %if.end142
+
+if.end142:                                        ; preds = %for.body, %if.else
+  call void @__hpvm__wait(i8* %call110) #20
+  call void @__hpvm__cleanup() #20
   call void @_ZN12ILLIXR_AUDIO7ABAudioD2Ev(%"class.ILLIXR_AUDIO::ABAudio"* nonnull %audio) #20
-  br label %ehcleanup132
+  call void @llvm.lifetime.end.p0i8(i64 56, i8* nonnull %6) #20
+  br label %return
 
-ehcleanup132:                                     ; preds = %lpad7, %if.then.i.i280, %ehcleanup131
-  %ehselector.slot.7 = phi i32 [ %92, %ehcleanup131 ], [ %82, %lpad7 ], [ %82, %if.then.i.i280 ]
-  %exn.slot.7 = phi i8* [ %91, %ehcleanup131 ], [ %81, %lpad7 ], [ %81, %if.then.i.i280 ]
+ehcleanup150:                                     ; preds = %lpad12, %lpad18, %lpad38, %lpad56, %lpad26, %lpad15, %lpad10
+  %.sink332 = phi { i8*, i32 } [ %85, %lpad12 ], [ %87, %lpad18 ], [ %89, %lpad38 ], [ %90, %lpad56 ], [ %88, %lpad26 ], [ %86, %lpad15 ], [ %84, %lpad10 ]
+  %91 = extractvalue { i8*, i32 } %.sink332, 0
+  %92 = extractvalue { i8*, i32 } %.sink332, 1
+  call void @_ZN12ILLIXR_AUDIO7ABAudioD2Ev(%"class.ILLIXR_AUDIO::ABAudio"* nonnull %audio) #20
+  br label %ehcleanup151
+
+ehcleanup151:                                     ; preds = %lpad7, %if.then.i.i328, %ehcleanup150
+  %ehselector.slot.7 = phi i32 [ %92, %ehcleanup150 ], [ %82, %lpad7 ], [ %82, %if.then.i.i328 ]
+  %exn.slot.7 = phi i8* [ %91, %ehcleanup150 ], [ %81, %lpad7 ], [ %81, %if.then.i.i328 ]
   call void @llvm.lifetime.end.p0i8(i64 56, i8* nonnull %6) #20
   %lpad.val = insertvalue { i8*, i32 } undef, i8* %exn.slot.7, 0
-  %lpad.val134 = insertvalue { i8*, i32 } %lpad.val, i32 %ehselector.slot.7, 1
-  resume { i8*, i32 } %lpad.val134
+  %lpad.val153 = insertvalue { i8*, i32 } %lpad.val, i32 %ehselector.slot.7, 1
+  resume { i8*, i32 } %lpad.val153
 
-return:                                           ; preds = %for.cond.cleanup, %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
-  %retval.0 = phi i32 [ 1, %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit ], [ 0, %for.cond.cleanup ]
+return:                                           ; preds = %if.end142, %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
+  %retval.0 = phi i32 [ 1, %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit ], [ 0, %if.end142 ]
   ret i32 %retval.0
 }
 
@@ -20364,19 +20383,25 @@ declare void @__hpvm__init() local_unnamed_addr #1
 declare noalias i8* @malloc(i64) local_unnamed_addr #10
 
 ; Function Attrs: nounwind
-declare void @llvm_hpvm_track_mem(i8*, i64) local_unnamed_addr #1
-
-; Function Attrs: nounwind
 declare i8* @__hpvm__launch(i32, ...) local_unnamed_addr #1
 
 ; Function Attrs: nounwind
-declare void @__hpvm__wait(i8*) local_unnamed_addr #1
+declare void @llvm_hpvm_track_mem(i8*, i64) local_unnamed_addr #1
+
+; Function Attrs: nounwind
+declare void @__hpvm__push(i8*, i8*) local_unnamed_addr #1
+
+; Function Attrs: nounwind
+declare i8* @__hpvm__pop(i8*) local_unnamed_addr #1
 
 ; Function Attrs: nounwind
 declare void @llvm_hpvm_request_mem(i8*, i64) local_unnamed_addr #1
 
 ; Function Attrs: nounwind
 declare void @llvm_hpvm_untrack_mem(i8*) local_unnamed_addr #1
+
+; Function Attrs: nounwind
+declare void @__hpvm__wait(i8*) local_unnamed_addr #1
 
 ; Function Attrs: nounwind
 declare void @__hpvm__cleanup() local_unnamed_addr #1

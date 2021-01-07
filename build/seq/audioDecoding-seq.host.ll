@@ -112,11 +112,26 @@ target triple = "x86_64-unknown-linux-gnu"
 %struct.out.wrapperIFFT_left_fxp = type <{ i64 }>
 %struct.out.IFFT_right_fxp = type <{ i64 }>
 %struct.out.wrapperIFFT_right_fxp = type <{ i64 }>
-%struct.out.overlap_left_fxp = type <{ i64 }>
-%struct.out.wrapperOverlap_left_fxp = type <{ i64 }>
 %struct.out.overlap_right_fxp = type <{ i64 }>
 %struct.out.wrapperOverlap_right_fxp = type <{ i64 }>
-%emptyStruct = type <{}>
+%struct.out.overlap_left_fxp = type <{ i64 }>
+%struct.out.wrapperOverlap_left_fxp = type <{ i64 }>
+%struct.thread.wrapperRotatorSet_fxp_cloned = type <{ i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperZoomSet_fxp_cloned = type <{ i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperPsychoFilter_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperRotateOrder1_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperRotateOrder2_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperRotateOrder3_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperZoomProcess_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperSetAndFFT_left_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperSetAndFFT_right_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperFIR_left_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperFIR_right_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperIFFT_left_fxp_cloned = type <{ i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperIFFT_right_fxp_cloned = type <{ i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperOverlap_right_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.thread.wrapperOverlap_left_fxp_cloned = type <{ i8*, i8*, i8*, i8*, i8*, i8* }>
+%struct.out.audioDecoding = type <{ i64, i64 }>
 
 $_ZN11OrientationC2Efff = comdat any
 
@@ -17347,14 +17362,14 @@ if.then.i:                                        ; preds = %if.then
   br label %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
 
 if.else.i:                                        ; preds = %if.then
-  %call.i.i264 = tail call i64 @strlen(i8* nonnull %0) #20
-  %call1.i265 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull %0, i64 %call.i.i264)
+  %call.i.i312 = tail call i64 @strlen(i8* nonnull %0) #20
+  %call1.i313 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull %0, i64 %call.i.i312)
   br label %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
 
 _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit: ; preds = %if.else.i, %if.then.i
-  %call1.i267 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([42 x i8], [42 x i8]* @.str.7, i64 0, i64 0), i64 41)
-  %call1.i270 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([27 x i8], [27 x i8]* @.str.8, i64 0, i64 0), i64 26)
-  %call1.i273 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([122 x i8], [122 x i8]* @.str.9, i64 0, i64 0), i64 121)
+  %call1.i315 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([42 x i8], [42 x i8]* @.str.7, i64 0, i64 0), i64 41)
+  %call1.i318 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([27 x i8], [27 x i8]* @.str.8, i64 0, i64 0), i64 26)
+  %call1.i321 = tail call dereferenceable(272) %"class.std::basic_ostream"* @_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l(%"class.std::basic_ostream"* nonnull dereferenceable(272) @_ZSt4cout, i8* nonnull getelementptr inbounds ([122 x i8], [122 x i8]* @.str.9, i64 0, i64 0), i64 121)
   br label %return
 
 if.end:                                           ; preds = %entry
@@ -17636,21 +17651,17 @@ invoke.cont77:                                    ; preds = %invoke.cont74
   %decoder1FFTBins = getelementptr inbounds i8, i8* %call80, i64 192
   %74 = bitcast i8* %decoder1FFTBins to i64*
   store i64 %conv109, i64* %74, align 1, !tbaa !464
-  %cmp110282 = icmp sgt i32 %conv.i, 0
+  %graphaudioDecoding_cloned = call i8* @llvm_hpvm_streamLaunch(void (i8*, i8*)* @audioDecoding_cloned.LaunchFunction, i8* %call80)
+  %cmp111 = icmp sgt i32 %conv.i, 1
   %75 = inttoptr i64 %42 to i8*
   %76 = inttoptr i64 %46 to i8*
   %77 = inttoptr i64 %58 to i8*
-  br i1 %cmp110282, label %for.body.lr.ph, label %for.cond.cleanup
+  br i1 %cmp111, label %for.body.lr.ph, label %if.else
 
 for.body.lr.ph:                                   ; preds = %invoke.cont77
   %78 = bitcast %class.CAmbisonicProcessor** %rotator to i8**
   %79 = load i8*, i8** %78, align 8, !tbaa !425
   br label %for.body
-
-for.cond.cleanup:                                 ; preds = %for.body, %invoke.cont77
-  call void @_ZN12ILLIXR_AUDIO7ABAudioD2Ev(%"class.ILLIXR_AUDIO::ABAudio"* nonnull %audio) #20
-  call void @llvm.lifetime.end.p0i8(i64 56, i8* nonnull %6) #20
-  br label %return
 
 lpad7:                                            ; preds = %if.end
   %80 = landingpad { i8*, i32 }
@@ -17658,50 +17669,60 @@ lpad7:                                            ; preds = %if.end
   %81 = extractvalue { i8*, i32 } %80, 0
   %82 = extractvalue { i8*, i32 } %80, 1
   %83 = load i8*, i8** %_M_p.i.i.i.i.i, align 8, !tbaa !289
-  %cmp.i.i.i279 = icmp eq i8* %83, %9
-  br i1 %cmp.i.i.i279, label %ehcleanup132, label %if.then.i.i280
+  %cmp.i.i.i327 = icmp eq i8* %83, %9
+  br i1 %cmp.i.i.i327, label %ehcleanup151, label %if.then.i.i328
 
-if.then.i.i280:                                   ; preds = %lpad7
+if.then.i.i328:                                   ; preds = %lpad7
   call void @_ZdlPv(i8* %83) #20
-  br label %ehcleanup132
+  br label %ehcleanup151
 
 lpad10:                                           ; preds = %_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED2Ev.exit
   %84 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad12:                                           ; preds = %invoke.cont11
   %85 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad15:                                           ; preds = %invoke.cont13
   %86 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad18:                                           ; preds = %invoke.cont19, %invoke.cont16
   %87 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad26:                                           ; preds = %invoke.cont32, %invoke.cont29, %invoke.cont27, %invoke.cont24
   %88 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad38:                                           ; preds = %invoke.cont50, %invoke.cont47, %invoke.cont44, %invoke.cont41, %invoke.cont39, %invoke.cont35
   %89 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 lpad56:                                           ; preds = %invoke.cont74, %invoke.cont71, %invoke.cont68, %invoke.cont65, %invoke.cont62, %invoke.cont59, %invoke.cont57, %invoke.cont53
   %90 = landingpad { i8*, i32 }
           cleanup
-  br label %ehcleanup131
+  br label %ehcleanup150
 
 for.body:                                         ; preds = %for.body, %for.body.lr.ph
-  %i.0283 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ]
+  %i.0331 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ]
+  store i64 %36, i64* %37, align 1, !tbaa !441
+  store i8* %call20, i8** %39, align 1, !tbaa !444
+  store i64 %42, i64* %43, align 1, !tbaa !446
+  store i64 %46, i64* %47, align 1, !tbaa !448
+  store i8* %call14, i8** %49, align 1, !tbaa !450
+  store i8* %call28, i8** %51, align 1, !tbaa !451
+  store i8* %call40, i8** %53, align 1, !tbaa !453
+  store i8* %call58, i8** %55, align 1, !tbaa !455
+  store i64 %58, i64* %59, align 1, !tbaa !457
+  store i8* %call17, i8** %61, align 1, !tbaa !459
   call void @llvm_hpvm_track_mem(i8* %79, i64 200) #20
   call void @llvm_hpvm_track_mem(i8* nonnull %call20, i64 64) #20
   call void @llvm_hpvm_track_mem(i8* %75, i64 104) #20
@@ -17712,8 +17733,8 @@ for.body:                                         ; preds = %for.body, %for.body
   call void @llvm_hpvm_track_mem(i8* nonnull %call28, i64 12288) #20
   call void @llvm_hpvm_track_mem(i8* nonnull %call40, i64 20480) #20
   call void @llvm_hpvm_track_mem(i8* nonnull %call58, i64 28672) #20
-  %graphaudioDecoding_cloned = call i8* @llvm_hpvm_cpu_launch(i8* (i8*)* @LaunchDataflowGraph, i8* %call80)
-  call void @llvm_hpvm_cpu_wait(i8* %graphaudioDecoding_cloned)
+  call void @llvm_hpvm_streamPush(i8* %graphaudioDecoding_cloned, i8* %call80)
+  %call1321 = call i8* @llvm_hpvm_streamPop(i8* %graphaudioDecoding_cloned)
   call void @llvm_hpvm_request_mem(i8* %79, i64 200) #20
   call void @llvm_hpvm_request_mem(i8* nonnull %call20, i64 64) #20
   call void @llvm_hpvm_request_mem(i8* %75, i64 104) #20
@@ -17734,27 +17755,38 @@ for.body:                                         ; preds = %for.body, %for.body
   call void @llvm_hpvm_untrack_mem(i8* nonnull %call28) #20
   call void @llvm_hpvm_untrack_mem(i8* nonnull %call40) #20
   call void @llvm_hpvm_untrack_mem(i8* nonnull %call58) #20
-  %inc = add nuw nsw i32 %i.0283, 1
+  %inc = add nuw nsw i32 %i.0331, 1
   %exitcond = icmp eq i32 %inc, %conv.i
-  br i1 %exitcond, label %for.cond.cleanup, label %for.body
+  br i1 %exitcond, label %if.end142, label %for.body
 
-ehcleanup131:                                     ; preds = %lpad56, %lpad38, %lpad26, %lpad18, %lpad15, %lpad12, %lpad10
-  %.sink284 = phi { i8*, i32 } [ %85, %lpad12 ], [ %87, %lpad18 ], [ %89, %lpad38 ], [ %90, %lpad56 ], [ %88, %lpad26 ], [ %86, %lpad15 ], [ %84, %lpad10 ]
-  %91 = extractvalue { i8*, i32 } %.sink284, 0
-  %92 = extractvalue { i8*, i32 } %.sink284, 1
+if.else:                                          ; preds = %invoke.cont77
+  call void @llvm_hpvm_streamPush(i8* %graphaudioDecoding_cloned, i8* %call80)
+  %call1412 = call i8* @llvm_hpvm_streamPop(i8* %graphaudioDecoding_cloned)
+  br label %if.end142
+
+if.end142:                                        ; preds = %if.else, %for.body
+  call void @llvm_hpvm_streamWait(i8* %graphaudioDecoding_cloned)
   call void @_ZN12ILLIXR_AUDIO7ABAudioD2Ev(%"class.ILLIXR_AUDIO::ABAudio"* nonnull %audio) #20
-  br label %ehcleanup132
+  call void @llvm.lifetime.end.p0i8(i64 56, i8* nonnull %6) #20
+  br label %return
 
-ehcleanup132:                                     ; preds = %ehcleanup131, %if.then.i.i280, %lpad7
-  %ehselector.slot.7 = phi i32 [ %92, %ehcleanup131 ], [ %82, %lpad7 ], [ %82, %if.then.i.i280 ]
-  %exn.slot.7 = phi i8* [ %91, %ehcleanup131 ], [ %81, %lpad7 ], [ %81, %if.then.i.i280 ]
+ehcleanup150:                                     ; preds = %lpad56, %lpad38, %lpad26, %lpad18, %lpad15, %lpad12, %lpad10
+  %.sink332 = phi { i8*, i32 } [ %85, %lpad12 ], [ %87, %lpad18 ], [ %89, %lpad38 ], [ %90, %lpad56 ], [ %88, %lpad26 ], [ %86, %lpad15 ], [ %84, %lpad10 ]
+  %91 = extractvalue { i8*, i32 } %.sink332, 0
+  %92 = extractvalue { i8*, i32 } %.sink332, 1
+  call void @_ZN12ILLIXR_AUDIO7ABAudioD2Ev(%"class.ILLIXR_AUDIO::ABAudio"* nonnull %audio) #20
+  br label %ehcleanup151
+
+ehcleanup151:                                     ; preds = %ehcleanup150, %if.then.i.i328, %lpad7
+  %ehselector.slot.7 = phi i32 [ %92, %ehcleanup150 ], [ %82, %lpad7 ], [ %82, %if.then.i.i328 ]
+  %exn.slot.7 = phi i8* [ %91, %ehcleanup150 ], [ %81, %lpad7 ], [ %81, %if.then.i.i328 ]
   call void @llvm.lifetime.end.p0i8(i64 56, i8* nonnull %6) #20
   %lpad.val = insertvalue { i8*, i32 } undef, i8* %exn.slot.7, 0
-  %lpad.val134 = insertvalue { i8*, i32 } %lpad.val, i32 %ehselector.slot.7, 1
-  resume { i8*, i32 } %lpad.val134
+  %lpad.val153 = insertvalue { i8*, i32 } %lpad.val, i32 %ehselector.slot.7, 1
+  resume { i8*, i32 } %lpad.val153
 
-return:                                           ; preds = %for.cond.cleanup, %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
-  %retval.0 = phi i32 [ 1, %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit ], [ 0, %for.cond.cleanup ]
+return:                                           ; preds = %if.end142, %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit
+  %retval.0 = phi i32 [ 1, %_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc.exit ], [ 0, %if.end142 ]
   ret i32 %retval.0
 }
 
@@ -19354,6 +19386,12 @@ declare i8* @llvm.hpvm.createEdge(i8*, i8*, i1, i32, i32, i1) #20
 declare i8* @llvm.hpvm.launch(i8*, i8*, i1) #20
 
 ; Function Attrs: nounwind
+declare void @llvm.hpvm.push(i8*, i8*) #20
+
+; Function Attrs: nounwind
+declare i8* @llvm.hpvm.pop(i8*) #20
+
+; Function Attrs: nounwind
 declare void @llvm.hpvm.wait(i8*) #20
 
 declare i8* @llvm_hpvm_cpu_launch(i8* (i8*)*, i8*)
@@ -19431,7 +19469,7 @@ entry:                                            ; preds = %getHPVMPtrArgs
   ret %struct.out.rotatorSet_fxp %returnStruct
 }
 
-define %struct.out.wrapperRotatorSet_fxp @wrapperRotatorSet_fxp_cloned.2_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperRotatorSet_fxp @wrapperRotatorSet_fxp_cloned.2(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator) {
 entry:
   call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
   %rotatorSet_fxp_cloned.1_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.rotatorSet_fxp @rotatorSet_fxp_cloned.1_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
@@ -19481,7 +19519,7 @@ entry:                                            ; preds = %getHPVMPtrArgs
   ret %struct.out.zoomSet_fxp %returnStruct
 }
 
-define %struct.out.wrapperZoomSet_fxp @wrapperZoomSet_fxp_cloned.4_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperZoomSet_fxp @wrapperZoomSet_fxp_cloned.4(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer) {
 entry:
   call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
   %zoomSet_fxp_cloned.3_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.zoomSet_fxp @zoomSet_fxp_cloned.3_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
@@ -19689,7 +19727,7 @@ for.body:                                         ; preds = %for.body, %for.body
   br i1 %exitcond, label %for.cond.cleanup, label %for.body
 }
 
-define %struct.out.wrapperPsychoFilter_fxp @wrapperPsychoFilter_fxp_cloned.6_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperPsychoFilter_fxp @wrapperPsychoFilter_fxp_cloned.6(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3) {
 entry:
   call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
   %psychoFilter_fxp_cloned.5_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.psychoFilter_fxp @psychoFilter_fxp_cloned.5_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
@@ -19795,7 +19833,7 @@ if.end74:                                         ; preds = %if.end, %entry
   ret %struct.out.rotateOrder1_fxp %returnStruct
 }
 
-define %struct.out.wrapperRotateOrder1_fxp @wrapperRotateOrder1_fxp_cloned.8_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperRotateOrder1_fxp @wrapperRotateOrder1_fxp_cloned.8(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1) {
 entry:
   br label %for.body
 
@@ -19977,7 +20015,7 @@ if.end189:                                        ; preds = %if.end, %entry
   ret %struct.out.rotateOrder2_fxp %returnStruct
 }
 
-define %struct.out.wrapperRotateOrder2_fxp @wrapperRotateOrder2_fxp_cloned.10_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i64 %nSample, float** %channelpart2, i64 %bytes_channelpart2, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperRotateOrder2_fxp @wrapperRotateOrder2_fxp_cloned.10(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i64 %nSample, float** %channelpart2, i64 %bytes_channelpart2) {
 entry:
   br label %for.body
 
@@ -20330,7 +20368,7 @@ if.end391:                                        ; preds = %if.end, %entry
   ret %struct.out.rotateOrder3_fxp %returnStruct
 }
 
-define %struct.out.wrapperRotateOrder3_fxp @wrapperRotateOrder3_fxp_cloned.12_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i64 %nSample, float** %channelpart3, i64 %bytes_channelpart3, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperRotateOrder3_fxp @wrapperRotateOrder3_fxp_cloned.12(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i64 %nSample, float** %channelpart3, i64 %bytes_channelpart3) {
 entry:
   br label %for.body
 
@@ -20688,7 +20726,7 @@ for.body:                                         ; preds = %for.body, %for.body
   br i1 %cmp, label %for.body, label %for.cond.cleanup
 }
 
-define %struct.out.wrapperZoomProcess_fxp @wrapperZoomProcess_fxp_cloned.14_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperZoomProcess_fxp @wrapperZoomProcess_fxp_cloned.14(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3) {
 entry:
   call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
   %zoomProcess_fxp_cloned.13_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.zoomProcess_fxp @zoomProcess_fxp_cloned.13_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
@@ -20768,7 +20806,7 @@ for.body:                                         ; preds = %for.body, %for.body
   br i1 %cmp, label %for.body, label %for.cond.cleanup
 }
 
-define %struct.out.wrapperSetAndFFT_left_fxp @wrapperSetAndFFT_left_fxp_cloned.16_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperSetAndFFT_left_fxp @wrapperSetAndFFT_left_fxp_cloned.16(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, %class.CBFormat* %sumBF, i64 %bytes_sumBF) {
 entry:
   call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
   %setAndFFT_left_fxp_cloned.15_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.setAndFFT_left_fxp @setAndFFT_left_fxp_cloned.15_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
@@ -20846,7 +20884,7 @@ for.body:                                         ; preds = %for.body, %for.body
   br i1 %cmp, label %for.body, label %for.cond.cleanup
 }
 
-define %struct.out.wrapperSetAndFFT_right_fxp @wrapperSetAndFFT_right_fxp_cloned.18_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperSetAndFFT_right_fxp @wrapperSetAndFFT_right_fxp_cloned.18(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, %class.CBFormat* %sumBF, i64 %bytes_sumBF) {
 entry:
   call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
   %setAndFFT_right_fxp_cloned.17_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.setAndFFT_right_fxp @setAndFFT_right_fxp_cloned.17_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
@@ -20911,7 +20949,7 @@ if.end:                                           ; preds = %if.then, %entry
   ret %struct.out.FIR_left_fxp %returnStruct
 }
 
-define %struct.out.wrapperFIR_left_fxp @wrapperFIR_left_fxp_cloned.20_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, i64 %decoder0ChannelCount, i64 %decoder0FFTBins, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperFIR_left_fxp @wrapperFIR_left_fxp_cloned.20(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, i64 %decoder0ChannelCount, i64 %decoder0FFTBins) {
 entry:
   br label %for.body
 
@@ -20994,7 +21032,7 @@ if.end:                                           ; preds = %if.then, %entry
   ret %struct.out.FIR_right_fxp %returnStruct
 }
 
-define %struct.out.wrapperFIR_right_fxp @wrapperFIR_right_fxp_cloned.22_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, i64 %decoder1ChannelCount, i64 %decoder1FFTBins, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperFIR_right_fxp @wrapperFIR_right_fxp_cloned.22(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, i64 %decoder1ChannelCount, i64 %decoder1FFTBins) {
 entry:
   br label %for.body
 
@@ -21183,7 +21221,7 @@ for.body6:                                        ; preds = %for.body6, %for.bod
   br i1 %cmp4, label %for.body6, label %for.cond.cleanup5, !llvm.loop !489
 }
 
-define %struct.out.wrapperIFFT_left_fxp @wrapperIFFT_left_fxp_cloned.24_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperIFFT_left_fxp @wrapperIFFT_left_fxp_cloned.24(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder) {
 entry:
   call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
   %IFFT_left_fxp_cloned.23_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.IFFT_left_fxp @IFFT_left_fxp_cloned.23_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
@@ -21354,7 +21392,7 @@ for.body6:                                        ; preds = %for.body6, %for.bod
   br i1 %cmp4, label %for.body6, label %for.cond.cleanup5, !llvm.loop !496
 }
 
-define %struct.out.wrapperIFFT_right_fxp @wrapperIFFT_right_fxp_cloned.26_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperIFFT_right_fxp @wrapperIFFT_right_fxp_cloned.26(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder) {
 entry:
   call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
   %IFFT_right_fxp_cloned.25_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.IFFT_right_fxp @IFFT_right_fxp_cloned.25_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
@@ -21365,7 +21403,310 @@ entry:
 }
 
 ; Function Attrs: nounwind uwtable
-define %struct.out.overlap_left_fxp @overlap_left_fxp_cloned.27_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* in %decoder, i64 %bytes_decoder, float* in out %resultSample0, i64 %bytes_resultSample0, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) #7 personality i32 (...)* @__gxx_personality_v0 {
+define %struct.out.overlap_right_fxp @overlap_right_fxp_cloned.27_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* in %decoder, i64 %bytes_decoder, float* in out %resultSample1, i64 %bytes_resultSample1, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) #7 personality i32 (...)* @__gxx_personality_v0 {
+getHPVMPtrArgs:
+  %decoder.i8ptr = bitcast %class.CAmbisonicBinauralizer* %decoder to i8*
+  %0 = call i8* @llvm_hpvm_cpu_argument_ptr(i8* %decoder.i8ptr, i64 %bytes_decoder)
+  %resultSample1.i8ptr = bitcast float* %resultSample1 to i8*
+  %1 = call i8* @llvm_hpvm_cpu_argument_ptr(i8* %resultSample1.i8ptr, i64 %bytes_resultSample1)
+  br label %entry
+
+entry:                                            ; preds = %getHPVMPtrArgs
+  %2 = bitcast float* %resultSample1 to i8*
+  %m_nFFTSize = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 4
+  %3 = load i32, i32* %m_nFFTSize, align 8, !tbaa !303
+  %cmp55 = icmp eq i32 %3, 0
+  br i1 %cmp55, label %entry.for.cond.cleanup_crit_edge, label %for.body.lr.ph
+
+entry.for.cond.cleanup_crit_edge:                 ; preds = %entry
+  %_M_start.i.phi.trans.insert = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 12, i32 0, i32 0, i32 0
+  %.phi.trans.insert = bitcast float** %_M_start.i.phi.trans.insert to i8**
+  %.pre = load i8*, i8** %.phi.trans.insert, align 8, !tbaa !76
+  br label %for.cond.cleanup
+
+for.body.lr.ph:                                   ; preds = %entry
+  %m_fFFTScaler = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 6
+  %_M_start.i51 = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 12, i32 0, i32 0, i32 0
+  %4 = load float*, float** %_M_start.i51, align 8, !tbaa !76
+  %5 = bitcast float* %4 to i8*
+  %6 = zext i32 %3 to i64
+  %min.iters.check = icmp ult i32 %3, 8
+  br i1 %min.iters.check, label %for.body.preheader, label %vector.memcheck
+
+for.body.preheader:                               ; preds = %middle.block, %vector.memcheck, %for.body.lr.ph
+  %indvars.iv57.ph = phi i64 [ 0, %vector.memcheck ], [ 0, %for.body.lr.ph ], [ %n.vec, %middle.block ]
+  br label %for.body
+
+vector.memcheck:                                  ; preds = %for.body.lr.ph
+  %scevgep = getelementptr float, float* %4, i64 %6
+  %scevgep62 = getelementptr %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 6
+  %scevgep6263 = bitcast float* %scevgep62 to i8*
+  %uglygep = getelementptr i8, i8* %scevgep6263, i64 1
+  %bound0 = icmp ugt i8* %uglygep, %5
+  %bound1 = icmp ult float* %m_fFFTScaler, %scevgep
+  %found.conflict = and i1 %bound0, %bound1
+  br i1 %found.conflict, label %for.body.preheader, label %vector.ph
+
+vector.ph:                                        ; preds = %vector.memcheck
+  %n.vec = and i64 %6, 4294967288
+  %7 = add nsw i64 %n.vec, -8
+  %8 = lshr exact i64 %7, 3
+  %9 = add nuw nsw i64 %8, 1
+  %xtraiter95 = and i64 %9, 1
+  %10 = icmp eq i64 %7, 0
+  br i1 %10, label %middle.block.unr-lcssa, label %vector.ph.new
+
+vector.ph.new:                                    ; preds = %vector.ph
+  %unroll_iter97 = sub nuw nsw i64 %9, %xtraiter95
+  %11 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !497
+  %12 = insertelement <4 x float> undef, float %11, i32 0
+  %13 = shufflevector <4 x float> %12, <4 x float> undef, <4 x i32> zeroinitializer
+  %14 = insertelement <4 x float> undef, float %11, i32 0
+  %15 = shufflevector <4 x float> %14, <4 x float> undef, <4 x i32> zeroinitializer
+  %16 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !497
+  %17 = insertelement <4 x float> undef, float %16, i32 0
+  %18 = shufflevector <4 x float> %17, <4 x float> undef, <4 x i32> zeroinitializer
+  %19 = insertelement <4 x float> undef, float %16, i32 0
+  %20 = shufflevector <4 x float> %19, <4 x float> undef, <4 x i32> zeroinitializer
+  br label %vector.body
+
+vector.body:                                      ; preds = %vector.body, %vector.ph.new
+  %index = phi i64 [ 0, %vector.ph.new ], [ %index.next.1, %vector.body ]
+  %niter98 = phi i64 [ %unroll_iter97, %vector.ph.new ], [ %niter98.nsub.1, %vector.body ]
+  %21 = getelementptr inbounds float, float* %4, i64 %index
+  %22 = bitcast float* %21 to <4 x float>*
+  %wide.load = load <4 x float>, <4 x float>* %22, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %23 = getelementptr inbounds float, float* %21, i64 4
+  %24 = bitcast float* %23 to <4 x float>*
+  %wide.load65 = load <4 x float>, <4 x float>* %24, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %25 = fmul <4 x float> %13, %wide.load
+  %26 = fmul <4 x float> %15, %wide.load65
+  %27 = bitcast float* %21 to <4 x float>*
+  store <4 x float> %25, <4 x float>* %27, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %28 = bitcast float* %23 to <4 x float>*
+  store <4 x float> %26, <4 x float>* %28, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %index.next = or i64 %index, 8
+  %29 = getelementptr inbounds float, float* %4, i64 %index.next
+  %30 = bitcast float* %29 to <4 x float>*
+  %wide.load.1 = load <4 x float>, <4 x float>* %30, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %31 = getelementptr inbounds float, float* %29, i64 4
+  %32 = bitcast float* %31 to <4 x float>*
+  %wide.load65.1 = load <4 x float>, <4 x float>* %32, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %33 = fmul <4 x float> %18, %wide.load.1
+  %34 = fmul <4 x float> %20, %wide.load65.1
+  %35 = bitcast float* %29 to <4 x float>*
+  store <4 x float> %33, <4 x float>* %35, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %36 = bitcast float* %31 to <4 x float>*
+  store <4 x float> %34, <4 x float>* %36, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %index.next.1 = add i64 %index, 16
+  %niter98.nsub.1 = add i64 %niter98, -2
+  %niter98.ncmp.1 = icmp eq i64 %niter98.nsub.1, 0
+  br i1 %niter98.ncmp.1, label %middle.block.unr-lcssa, label %vector.body, !llvm.loop !502
+
+middle.block.unr-lcssa:                           ; preds = %vector.body, %vector.ph
+  %index.unr = phi i64 [ 0, %vector.ph ], [ %index.next.1, %vector.body ]
+  %lcmp.mod96 = icmp eq i64 %xtraiter95, 0
+  br i1 %lcmp.mod96, label %middle.block, label %vector.body.epil
+
+vector.body.epil:                                 ; preds = %middle.block.unr-lcssa
+  %37 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !497
+  %38 = insertelement <4 x float> undef, float %37, i32 0
+  %39 = shufflevector <4 x float> %38, <4 x float> undef, <4 x i32> zeroinitializer
+  %40 = insertelement <4 x float> undef, float %37, i32 0
+  %41 = shufflevector <4 x float> %40, <4 x float> undef, <4 x i32> zeroinitializer
+  %42 = getelementptr inbounds float, float* %4, i64 %index.unr
+  %43 = bitcast float* %42 to <4 x float>*
+  %wide.load.epil = load <4 x float>, <4 x float>* %43, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %44 = getelementptr inbounds float, float* %42, i64 4
+  %45 = bitcast float* %44 to <4 x float>*
+  %wide.load65.epil = load <4 x float>, <4 x float>* %45, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %46 = fmul <4 x float> %39, %wide.load.epil
+  %47 = fmul <4 x float> %41, %wide.load65.epil
+  %48 = bitcast float* %42 to <4 x float>*
+  store <4 x float> %46, <4 x float>* %48, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %49 = bitcast float* %44 to <4 x float>*
+  store <4 x float> %47, <4 x float>* %49, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  br label %middle.block
+
+middle.block:                                     ; preds = %vector.body.epil, %middle.block.unr-lcssa
+  %cmp.n = icmp eq i64 %n.vec, %6
+  br i1 %cmp.n, label %for.cond.cleanup, label %for.body.preheader
+
+for.cond.cleanup:                                 ; preds = %for.body, %middle.block, %entry.for.cond.cleanup_crit_edge
+  %50 = phi i8* [ %.pre, %entry.for.cond.cleanup_crit_edge ], [ %5, %middle.block ], [ %5, %for.body ]
+  %_M_start.i = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 12, i32 0, i32 0, i32 0
+  %m_nBlockSize = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 2
+  %51 = load i32, i32* %m_nBlockSize, align 8, !tbaa !301
+  %conv3 = zext i32 %51 to i64
+  %mul4 = shl nuw nsw i64 %conv3, 2
+  tail call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 4 %2, i8* align 4 %50, i64 %mul4, i1 false)
+  %m_nOverlapLength = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 7
+  %52 = load i32, i32* %m_nOverlapLength, align 4, !tbaa !302
+  %cmp753 = icmp eq i32 %52, 0
+  br i1 %cmp753, label %for.cond.cleanup8, label %for.body9.lr.ph
+
+for.body9.lr.ph:                                  ; preds = %for.cond.cleanup
+  %_M_start.i47 = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 15, i64 0, i32 0, i32 0, i32 0
+  %53 = load float*, float** %_M_start.i47, align 8, !tbaa !76
+  %54 = zext i32 %52 to i64
+  %min.iters.check69 = icmp ult i32 %52, 8
+  br i1 %min.iters.check69, label %for.body9.preheader, label %vector.memcheck79
+
+for.body9.preheader:                              ; preds = %middle.block67, %vector.memcheck79, %for.body9.lr.ph
+  %indvars.iv.ph = phi i64 [ 0, %vector.memcheck79 ], [ 0, %for.body9.lr.ph ], [ %n.vec82, %middle.block67 ]
+  br label %for.body9
+
+vector.memcheck79:                                ; preds = %for.body9.lr.ph
+  %scevgep71 = getelementptr float, float* %resultSample1, i64 %54
+  %scevgep73 = getelementptr float, float* %53, i64 %54
+  %bound075 = icmp ugt float* %scevgep73, %resultSample1
+  %bound176 = icmp ult float* %53, %scevgep71
+  %found.conflict77 = and i1 %bound075, %bound176
+  br i1 %found.conflict77, label %for.body9.preheader, label %vector.ph80
+
+vector.ph80:                                      ; preds = %vector.memcheck79
+  %n.vec82 = and i64 %54, 4294967288
+  %55 = add nsw i64 %n.vec82, -8
+  %56 = lshr exact i64 %55, 3
+  %57 = add nuw nsw i64 %56, 1
+  %xtraiter = and i64 %57, 1
+  %58 = icmp eq i64 %55, 0
+  br i1 %58, label %middle.block67.unr-lcssa, label %vector.ph80.new
+
+vector.ph80.new:                                  ; preds = %vector.ph80
+  %unroll_iter = sub nuw nsw i64 %57, %xtraiter
+  br label %vector.body66
+
+vector.body66:                                    ; preds = %vector.body66, %vector.ph80.new
+  %index83 = phi i64 [ 0, %vector.ph80.new ], [ %index.next84.1, %vector.body66 ]
+  %niter = phi i64 [ %unroll_iter, %vector.ph80.new ], [ %niter.nsub.1, %vector.body66 ]
+  %59 = getelementptr inbounds float, float* %53, i64 %index83
+  %60 = bitcast float* %59 to <4 x float>*
+  %wide.load91 = load <4 x float>, <4 x float>* %60, align 4, !tbaa !50, !alias.scope !503
+  %61 = getelementptr inbounds float, float* %59, i64 4
+  %62 = bitcast float* %61 to <4 x float>*
+  %wide.load92 = load <4 x float>, <4 x float>* %62, align 4, !tbaa !50, !alias.scope !503
+  %63 = getelementptr inbounds float, float* %resultSample1, i64 %index83
+  %64 = bitcast float* %63 to <4 x float>*
+  %wide.load93 = load <4 x float>, <4 x float>* %64, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %65 = getelementptr inbounds float, float* %63, i64 4
+  %66 = bitcast float* %65 to <4 x float>*
+  %wide.load94 = load <4 x float>, <4 x float>* %66, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %67 = fadd <4 x float> %wide.load91, %wide.load93
+  %68 = fadd <4 x float> %wide.load92, %wide.load94
+  %69 = bitcast float* %63 to <4 x float>*
+  store <4 x float> %67, <4 x float>* %69, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %70 = bitcast float* %65 to <4 x float>*
+  store <4 x float> %68, <4 x float>* %70, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %index.next84 = or i64 %index83, 8
+  %71 = getelementptr inbounds float, float* %53, i64 %index.next84
+  %72 = bitcast float* %71 to <4 x float>*
+  %wide.load91.1 = load <4 x float>, <4 x float>* %72, align 4, !tbaa !50, !alias.scope !503
+  %73 = getelementptr inbounds float, float* %71, i64 4
+  %74 = bitcast float* %73 to <4 x float>*
+  %wide.load92.1 = load <4 x float>, <4 x float>* %74, align 4, !tbaa !50, !alias.scope !503
+  %75 = getelementptr inbounds float, float* %resultSample1, i64 %index.next84
+  %76 = bitcast float* %75 to <4 x float>*
+  %wide.load93.1 = load <4 x float>, <4 x float>* %76, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %77 = getelementptr inbounds float, float* %75, i64 4
+  %78 = bitcast float* %77 to <4 x float>*
+  %wide.load94.1 = load <4 x float>, <4 x float>* %78, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %79 = fadd <4 x float> %wide.load91.1, %wide.load93.1
+  %80 = fadd <4 x float> %wide.load92.1, %wide.load94.1
+  %81 = bitcast float* %75 to <4 x float>*
+  store <4 x float> %79, <4 x float>* %81, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %82 = bitcast float* %77 to <4 x float>*
+  store <4 x float> %80, <4 x float>* %82, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %index.next84.1 = add i64 %index83, 16
+  %niter.nsub.1 = add i64 %niter, -2
+  %niter.ncmp.1 = icmp eq i64 %niter.nsub.1, 0
+  br i1 %niter.ncmp.1, label %middle.block67.unr-lcssa, label %vector.body66, !llvm.loop !508
+
+middle.block67.unr-lcssa:                         ; preds = %vector.body66, %vector.ph80
+  %index83.unr = phi i64 [ 0, %vector.ph80 ], [ %index.next84.1, %vector.body66 ]
+  %lcmp.mod = icmp eq i64 %xtraiter, 0
+  br i1 %lcmp.mod, label %middle.block67, label %vector.body66.epil
+
+vector.body66.epil:                               ; preds = %middle.block67.unr-lcssa
+  %83 = getelementptr inbounds float, float* %53, i64 %index83.unr
+  %84 = bitcast float* %83 to <4 x float>*
+  %wide.load91.epil = load <4 x float>, <4 x float>* %84, align 4, !tbaa !50, !alias.scope !503
+  %85 = getelementptr inbounds float, float* %83, i64 4
+  %86 = bitcast float* %85 to <4 x float>*
+  %wide.load92.epil = load <4 x float>, <4 x float>* %86, align 4, !tbaa !50, !alias.scope !503
+  %87 = getelementptr inbounds float, float* %resultSample1, i64 %index83.unr
+  %88 = bitcast float* %87 to <4 x float>*
+  %wide.load93.epil = load <4 x float>, <4 x float>* %88, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %89 = getelementptr inbounds float, float* %87, i64 4
+  %90 = bitcast float* %89 to <4 x float>*
+  %wide.load94.epil = load <4 x float>, <4 x float>* %90, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %91 = fadd <4 x float> %wide.load91.epil, %wide.load93.epil
+  %92 = fadd <4 x float> %wide.load92.epil, %wide.load94.epil
+  %93 = bitcast float* %87 to <4 x float>*
+  store <4 x float> %91, <4 x float>* %93, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %94 = bitcast float* %89 to <4 x float>*
+  store <4 x float> %92, <4 x float>* %94, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  br label %middle.block67
+
+middle.block67:                                   ; preds = %vector.body66.epil, %middle.block67.unr-lcssa
+  %cmp.n86 = icmp eq i64 %n.vec82, %54
+  br i1 %cmp.n86, label %for.cond.cleanup8.loopexit, label %for.body9.preheader
+
+for.body:                                         ; preds = %for.body, %for.body.preheader
+  %indvars.iv57 = phi i64 [ %indvars.iv.next58, %for.body ], [ %indvars.iv57.ph, %for.body.preheader ]
+  %95 = load float, float* %m_fFFTScaler, align 8, !tbaa !305
+  %add.ptr.i52 = getelementptr inbounds float, float* %4, i64 %indvars.iv57
+  %96 = load float, float* %add.ptr.i52, align 4, !tbaa !50
+  %mul = fmul float %95, %96
+  store float %mul, float* %add.ptr.i52, align 4, !tbaa !50
+  %indvars.iv.next58 = add nuw nsw i64 %indvars.iv57, 1
+  %cmp = icmp ult i64 %indvars.iv.next58, %6
+  br i1 %cmp, label %for.body, label %for.cond.cleanup, !llvm.loop !509
+
+for.cond.cleanup8.loopexit:                       ; preds = %for.body9, %middle.block67
+  %phitmp = zext i32 %52 to i64
+  %phitmp60 = shl nuw nsw i64 %phitmp, 2
+  br label %for.cond.cleanup8
+
+for.cond.cleanup8:                                ; preds = %for.cond.cleanup8.loopexit, %for.cond.cleanup
+  %.lcssa = phi i64 [ %phitmp60, %for.cond.cleanup8.loopexit ], [ 0, %for.cond.cleanup ]
+  %_M_start.i50 = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 15, i64 1, i32 0, i32 0, i32 0
+  %97 = bitcast float** %_M_start.i50 to i8**
+  %98 = load i8*, i8** %97, align 8, !tbaa !76
+  %99 = load i32, i32* %m_nBlockSize, align 8, !tbaa !301
+  %conv21 = zext i32 %99 to i64
+  %100 = load float*, float** %_M_start.i, align 8, !tbaa !76
+  %add.ptr.i49 = getelementptr inbounds float, float* %100, i64 %conv21
+  %101 = bitcast float* %add.ptr.i49 to i8*
+  tail call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 4 %98, i8* nonnull align 4 %101, i64 %.lcssa, i1 false)
+  %returnStruct = insertvalue %struct.out.overlap_right_fxp undef, i64 %bytes_resultSample1, 0
+  ret %struct.out.overlap_right_fxp %returnStruct
+
+for.body9:                                        ; preds = %for.body9, %for.body9.preheader
+  %indvars.iv = phi i64 [ %indvars.iv.next, %for.body9 ], [ %indvars.iv.ph, %for.body9.preheader ]
+  %add.ptr.i = getelementptr inbounds float, float* %53, i64 %indvars.iv
+  %102 = load float, float* %add.ptr.i, align 4, !tbaa !50
+  %arrayidx12 = getelementptr inbounds float, float* %resultSample1, i64 %indvars.iv
+  %103 = load float, float* %arrayidx12, align 4, !tbaa !50
+  %add = fadd float %102, %103
+  store float %add, float* %arrayidx12, align 4, !tbaa !50
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
+  %cmp7 = icmp ult i64 %indvars.iv.next, %54
+  br i1 %cmp7, label %for.body9, label %for.cond.cleanup8.loopexit, !llvm.loop !510
+}
+
+define %struct.out.wrapperOverlap_right_fxp @wrapperOverlap_right_fxp_cloned.28(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample1, i64 %bytes_resultSample1) {
+entry:
+  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
+  %overlap_right_fxp_cloned.27_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.overlap_right_fxp @overlap_right_fxp_cloned.27_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample1, i64 %bytes_resultSample1, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
+  call void @llvm_hpvm_cpu_dstack_pop()
+  %0 = extractvalue %struct.out.overlap_right_fxp %overlap_right_fxp_cloned.27_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
+  %output = insertvalue %struct.out.wrapperOverlap_right_fxp undef, i64 %0, 0
+  ret %struct.out.wrapperOverlap_right_fxp %output
+}
+
+; Function Attrs: nounwind uwtable
+define %struct.out.overlap_left_fxp @overlap_left_fxp_cloned.29_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* in %decoder, i64 %bytes_decoder, float* in out %resultSample0, i64 %bytes_resultSample0, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) #7 personality i32 (...)* @__gxx_personality_v0 {
 getHPVMPtrArgs:
   %decoder.i8ptr = bitcast %class.CAmbisonicBinauralizer* %decoder to i8*
   %0 = call i8* @llvm_hpvm_cpu_argument_ptr(i8* %decoder.i8ptr, i64 %bytes_decoder)
@@ -21420,12 +21761,12 @@ vector.ph:                                        ; preds = %vector.memcheck
 
 vector.ph.new:                                    ; preds = %vector.ph
   %unroll_iter102 = sub nuw nsw i64 %9, %xtraiter100
-  %11 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !497
+  %11 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !511
   %12 = insertelement <4 x float> undef, float %11, i32 0
   %13 = shufflevector <4 x float> %12, <4 x float> undef, <4 x i32> zeroinitializer
   %14 = insertelement <4 x float> undef, float %11, i32 0
   %15 = shufflevector <4 x float> %14, <4 x float> undef, <4 x i32> zeroinitializer
-  %16 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !497
+  %16 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !511
   %17 = insertelement <4 x float> undef, float %16, i32 0
   %18 = shufflevector <4 x float> %17, <4 x float> undef, <4 x i32> zeroinitializer
   %19 = insertelement <4 x float> undef, float %16, i32 0
@@ -21437,33 +21778,33 @@ vector.body:                                      ; preds = %vector.body, %vecto
   %niter103 = phi i64 [ %unroll_iter102, %vector.ph.new ], [ %niter103.nsub.1, %vector.body ]
   %21 = getelementptr inbounds float, float* %4, i64 %index
   %22 = bitcast float* %21 to <4 x float>*
-  %wide.load = load <4 x float>, <4 x float>* %22, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %wide.load = load <4 x float>, <4 x float>* %22, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %23 = getelementptr inbounds float, float* %21, i64 4
   %24 = bitcast float* %23 to <4 x float>*
-  %wide.load70 = load <4 x float>, <4 x float>* %24, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %wide.load70 = load <4 x float>, <4 x float>* %24, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %25 = fmul <4 x float> %13, %wide.load
   %26 = fmul <4 x float> %15, %wide.load70
   %27 = bitcast float* %21 to <4 x float>*
-  store <4 x float> %25, <4 x float>* %27, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  store <4 x float> %25, <4 x float>* %27, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %28 = bitcast float* %23 to <4 x float>*
-  store <4 x float> %26, <4 x float>* %28, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  store <4 x float> %26, <4 x float>* %28, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %index.next = or i64 %index, 8
   %29 = getelementptr inbounds float, float* %4, i64 %index.next
   %30 = bitcast float* %29 to <4 x float>*
-  %wide.load.1 = load <4 x float>, <4 x float>* %30, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %wide.load.1 = load <4 x float>, <4 x float>* %30, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %31 = getelementptr inbounds float, float* %29, i64 4
   %32 = bitcast float* %31 to <4 x float>*
-  %wide.load70.1 = load <4 x float>, <4 x float>* %32, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %wide.load70.1 = load <4 x float>, <4 x float>* %32, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %33 = fmul <4 x float> %18, %wide.load.1
   %34 = fmul <4 x float> %20, %wide.load70.1
   %35 = bitcast float* %29 to <4 x float>*
-  store <4 x float> %33, <4 x float>* %35, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  store <4 x float> %33, <4 x float>* %35, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %36 = bitcast float* %31 to <4 x float>*
-  store <4 x float> %34, <4 x float>* %36, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  store <4 x float> %34, <4 x float>* %36, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %index.next.1 = add i64 %index, 16
   %niter103.nsub.1 = add i64 %niter103, -2
   %niter103.ncmp.1 = icmp eq i64 %niter103.nsub.1, 0
-  br i1 %niter103.ncmp.1, label %middle.block.unr-lcssa, label %vector.body, !llvm.loop !502
+  br i1 %niter103.ncmp.1, label %middle.block.unr-lcssa, label %vector.body, !llvm.loop !516
 
 middle.block.unr-lcssa:                           ; preds = %vector.body, %vector.ph
   %index.unr = phi i64 [ 0, %vector.ph ], [ %index.next.1, %vector.body ]
@@ -21471,23 +21812,23 @@ middle.block.unr-lcssa:                           ; preds = %vector.body, %vecto
   br i1 %lcmp.mod101, label %middle.block, label %vector.body.epil
 
 vector.body.epil:                                 ; preds = %middle.block.unr-lcssa
-  %37 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !497
+  %37 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !511
   %38 = insertelement <4 x float> undef, float %37, i32 0
   %39 = shufflevector <4 x float> %38, <4 x float> undef, <4 x i32> zeroinitializer
   %40 = insertelement <4 x float> undef, float %37, i32 0
   %41 = shufflevector <4 x float> %40, <4 x float> undef, <4 x i32> zeroinitializer
   %42 = getelementptr inbounds float, float* %4, i64 %index.unr
   %43 = bitcast float* %42 to <4 x float>*
-  %wide.load.epil = load <4 x float>, <4 x float>* %43, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %wide.load.epil = load <4 x float>, <4 x float>* %43, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %44 = getelementptr inbounds float, float* %42, i64 4
   %45 = bitcast float* %44 to <4 x float>*
-  %wide.load70.epil = load <4 x float>, <4 x float>* %45, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  %wide.load70.epil = load <4 x float>, <4 x float>* %45, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %46 = fmul <4 x float> %39, %wide.load.epil
   %47 = fmul <4 x float> %41, %wide.load70.epil
   %48 = bitcast float* %42 to <4 x float>*
-  store <4 x float> %46, <4 x float>* %48, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  store <4 x float> %46, <4 x float>* %48, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   %49 = bitcast float* %44 to <4 x float>*
-  store <4 x float> %47, <4 x float>* %49, align 4, !tbaa !50, !alias.scope !500, !noalias !497
+  store <4 x float> %47, <4 x float>* %49, align 4, !tbaa !50, !alias.scope !514, !noalias !511
   br label %middle.block
 
 middle.block:                                     ; preds = %vector.body.epil, %middle.block.unr-lcssa
@@ -21551,45 +21892,45 @@ vector.body71:                                    ; preds = %vector.body71, %vec
   %niter = phi i64 [ %unroll_iter, %vector.ph85.new ], [ %niter.nsub.1, %vector.body71 ]
   %60 = getelementptr inbounds float, float* %53, i64 %index88
   %61 = bitcast float* %60 to <4 x float>*
-  %wide.load96 = load <4 x float>, <4 x float>* %61, align 4, !tbaa !50, !alias.scope !503
+  %wide.load96 = load <4 x float>, <4 x float>* %61, align 4, !tbaa !50, !alias.scope !517
   %62 = getelementptr inbounds float, float* %60, i64 4
   %63 = bitcast float* %62 to <4 x float>*
-  %wide.load97 = load <4 x float>, <4 x float>* %63, align 4, !tbaa !50, !alias.scope !503
+  %wide.load97 = load <4 x float>, <4 x float>* %63, align 4, !tbaa !50, !alias.scope !517
   %64 = getelementptr inbounds float, float* %resultSample0, i64 %index88
   %65 = bitcast float* %64 to <4 x float>*
-  %wide.load98 = load <4 x float>, <4 x float>* %65, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %wide.load98 = load <4 x float>, <4 x float>* %65, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %66 = getelementptr inbounds float, float* %64, i64 4
   %67 = bitcast float* %66 to <4 x float>*
-  %wide.load99 = load <4 x float>, <4 x float>* %67, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %wide.load99 = load <4 x float>, <4 x float>* %67, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %68 = fadd <4 x float> %wide.load96, %wide.load98
   %69 = fadd <4 x float> %wide.load97, %wide.load99
   %70 = bitcast float* %64 to <4 x float>*
-  store <4 x float> %68, <4 x float>* %70, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  store <4 x float> %68, <4 x float>* %70, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %71 = bitcast float* %66 to <4 x float>*
-  store <4 x float> %69, <4 x float>* %71, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  store <4 x float> %69, <4 x float>* %71, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %index.next89 = or i64 %index88, 8
   %72 = getelementptr inbounds float, float* %53, i64 %index.next89
   %73 = bitcast float* %72 to <4 x float>*
-  %wide.load96.1 = load <4 x float>, <4 x float>* %73, align 4, !tbaa !50, !alias.scope !503
+  %wide.load96.1 = load <4 x float>, <4 x float>* %73, align 4, !tbaa !50, !alias.scope !517
   %74 = getelementptr inbounds float, float* %72, i64 4
   %75 = bitcast float* %74 to <4 x float>*
-  %wide.load97.1 = load <4 x float>, <4 x float>* %75, align 4, !tbaa !50, !alias.scope !503
+  %wide.load97.1 = load <4 x float>, <4 x float>* %75, align 4, !tbaa !50, !alias.scope !517
   %76 = getelementptr inbounds float, float* %resultSample0, i64 %index.next89
   %77 = bitcast float* %76 to <4 x float>*
-  %wide.load98.1 = load <4 x float>, <4 x float>* %77, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %wide.load98.1 = load <4 x float>, <4 x float>* %77, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %78 = getelementptr inbounds float, float* %76, i64 4
   %79 = bitcast float* %78 to <4 x float>*
-  %wide.load99.1 = load <4 x float>, <4 x float>* %79, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %wide.load99.1 = load <4 x float>, <4 x float>* %79, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %80 = fadd <4 x float> %wide.load96.1, %wide.load98.1
   %81 = fadd <4 x float> %wide.load97.1, %wide.load99.1
   %82 = bitcast float* %76 to <4 x float>*
-  store <4 x float> %80, <4 x float>* %82, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  store <4 x float> %80, <4 x float>* %82, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %83 = bitcast float* %78 to <4 x float>*
-  store <4 x float> %81, <4 x float>* %83, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  store <4 x float> %81, <4 x float>* %83, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %index.next89.1 = add i64 %index88, 16
   %niter.nsub.1 = add i64 %niter, -2
   %niter.ncmp.1 = icmp eq i64 %niter.nsub.1, 0
-  br i1 %niter.ncmp.1, label %middle.block72.unr-lcssa, label %vector.body71, !llvm.loop !508
+  br i1 %niter.ncmp.1, label %middle.block72.unr-lcssa, label %vector.body71, !llvm.loop !522
 
 middle.block72.unr-lcssa:                         ; preds = %vector.body71, %vector.ph85
   %index88.unr = phi i64 [ 0, %vector.ph85 ], [ %index.next89.1, %vector.body71 ]
@@ -21599,22 +21940,22 @@ middle.block72.unr-lcssa:                         ; preds = %vector.body71, %vec
 vector.body71.epil:                               ; preds = %middle.block72.unr-lcssa
   %84 = getelementptr inbounds float, float* %53, i64 %index88.unr
   %85 = bitcast float* %84 to <4 x float>*
-  %wide.load96.epil = load <4 x float>, <4 x float>* %85, align 4, !tbaa !50, !alias.scope !503
+  %wide.load96.epil = load <4 x float>, <4 x float>* %85, align 4, !tbaa !50, !alias.scope !517
   %86 = getelementptr inbounds float, float* %84, i64 4
   %87 = bitcast float* %86 to <4 x float>*
-  %wide.load97.epil = load <4 x float>, <4 x float>* %87, align 4, !tbaa !50, !alias.scope !503
+  %wide.load97.epil = load <4 x float>, <4 x float>* %87, align 4, !tbaa !50, !alias.scope !517
   %88 = getelementptr inbounds float, float* %resultSample0, i64 %index88.unr
   %89 = bitcast float* %88 to <4 x float>*
-  %wide.load98.epil = load <4 x float>, <4 x float>* %89, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %wide.load98.epil = load <4 x float>, <4 x float>* %89, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %90 = getelementptr inbounds float, float* %88, i64 4
   %91 = bitcast float* %90 to <4 x float>*
-  %wide.load99.epil = load <4 x float>, <4 x float>* %91, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  %wide.load99.epil = load <4 x float>, <4 x float>* %91, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %92 = fadd <4 x float> %wide.load96.epil, %wide.load98.epil
   %93 = fadd <4 x float> %wide.load97.epil, %wide.load99.epil
   %94 = bitcast float* %88 to <4 x float>*
-  store <4 x float> %92, <4 x float>* %94, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  store <4 x float> %92, <4 x float>* %94, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   %95 = bitcast float* %90 to <4 x float>*
-  store <4 x float> %93, <4 x float>* %95, align 4, !tbaa !50, !alias.scope !506, !noalias !503
+  store <4 x float> %93, <4 x float>* %95, align 4, !tbaa !50, !alias.scope !520, !noalias !517
   br label %middle.block72
 
 middle.block72:                                   ; preds = %vector.body71.epil, %middle.block72.unr-lcssa
@@ -21630,7 +21971,7 @@ for.body:                                         ; preds = %for.body, %for.body
   store float %mul, float* %add.ptr.i52, align 4, !tbaa !50
   %indvars.iv.next59 = add nuw nsw i64 %indvars.iv58, 1
   %cmp = icmp ult i64 %indvars.iv.next59, %6
-  br i1 %cmp, label %for.body, label %for.cond.cleanup, !llvm.loop !509
+  br i1 %cmp, label %for.body, label %for.cond.cleanup, !llvm.loop !523
 
 for.cond.cleanup8.loopexit:                       ; preds = %for.body9, %middle.block72
   %phitmp = zext i32 %52 to i64
@@ -21659,472 +22000,1231 @@ for.body9:                                        ; preds = %for.body9, %for.bod
   store float %add, float* %arrayidx12, align 4, !tbaa !50
   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
   %cmp7 = icmp ult i64 %indvars.iv.next, %55
-  br i1 %cmp7, label %for.body9, label %for.cond.cleanup8.loopexit, !llvm.loop !510
+  br i1 %cmp7, label %for.body9, label %for.cond.cleanup8.loopexit, !llvm.loop !524
 }
 
-define %struct.out.wrapperOverlap_left_fxp @wrapperOverlap_left_fxp_cloned.28_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample0, i64 %bytes_resultSample0, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define %struct.out.wrapperOverlap_left_fxp @wrapperOverlap_left_fxp_cloned.30(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample0, i64 %bytes_resultSample0) {
 entry:
   call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %overlap_left_fxp_cloned.27_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.overlap_left_fxp @overlap_left_fxp_cloned.27_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample0, i64 %bytes_resultSample0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
+  %overlap_left_fxp_cloned.29_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.overlap_left_fxp @overlap_left_fxp_cloned.29_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample0, i64 %bytes_resultSample0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
   call void @llvm_hpvm_cpu_dstack_pop()
-  %0 = extractvalue %struct.out.overlap_left_fxp %overlap_left_fxp_cloned.27_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
+  %0 = extractvalue %struct.out.overlap_left_fxp %overlap_left_fxp_cloned.29_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
   %output = insertvalue %struct.out.wrapperOverlap_left_fxp undef, i64 %0, 0
   ret %struct.out.wrapperOverlap_left_fxp %output
 }
 
-; Function Attrs: nounwind uwtable
-define %struct.out.overlap_right_fxp @overlap_right_fxp_cloned.29_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* in %decoder, i64 %bytes_decoder, float* in out %resultSample1, i64 %bytes_resultSample1, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) #7 personality i32 (...)* @__gxx_personality_v0 {
-getHPVMPtrArgs:
-  %decoder.i8ptr = bitcast %class.CAmbisonicBinauralizer* %decoder to i8*
-  %0 = call i8* @llvm_hpvm_cpu_argument_ptr(i8* %decoder.i8ptr, i64 %bytes_decoder)
-  %resultSample1.i8ptr = bitcast float* %resultSample1 to i8*
-  %1 = call i8* @llvm_hpvm_cpu_argument_ptr(i8* %resultSample1.i8ptr, i64 %bytes_resultSample1)
-  br label %entry
-
-entry:                                            ; preds = %getHPVMPtrArgs
-  %2 = bitcast float* %resultSample1 to i8*
-  %m_nFFTSize = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 4
-  %3 = load i32, i32* %m_nFFTSize, align 8, !tbaa !303
-  %cmp55 = icmp eq i32 %3, 0
-  br i1 %cmp55, label %entry.for.cond.cleanup_crit_edge, label %for.body.lr.ph
-
-entry.for.cond.cleanup_crit_edge:                 ; preds = %entry
-  %_M_start.i.phi.trans.insert = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 12, i32 0, i32 0, i32 0
-  %.phi.trans.insert = bitcast float** %_M_start.i.phi.trans.insert to i8**
-  %.pre = load i8*, i8** %.phi.trans.insert, align 8, !tbaa !76
-  br label %for.cond.cleanup
-
-for.body.lr.ph:                                   ; preds = %entry
-  %m_fFFTScaler = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 6
-  %_M_start.i51 = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 12, i32 0, i32 0, i32 0
-  %4 = load float*, float** %_M_start.i51, align 8, !tbaa !76
-  %5 = bitcast float* %4 to i8*
-  %6 = zext i32 %3 to i64
-  %min.iters.check = icmp ult i32 %3, 8
-  br i1 %min.iters.check, label %for.body.preheader, label %vector.memcheck
-
-for.body.preheader:                               ; preds = %middle.block, %vector.memcheck, %for.body.lr.ph
-  %indvars.iv57.ph = phi i64 [ 0, %vector.memcheck ], [ 0, %for.body.lr.ph ], [ %n.vec, %middle.block ]
-  br label %for.body
-
-vector.memcheck:                                  ; preds = %for.body.lr.ph
-  %scevgep = getelementptr float, float* %4, i64 %6
-  %scevgep62 = getelementptr %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 6
-  %scevgep6263 = bitcast float* %scevgep62 to i8*
-  %uglygep = getelementptr i8, i8* %scevgep6263, i64 1
-  %bound0 = icmp ugt i8* %uglygep, %5
-  %bound1 = icmp ult float* %m_fFFTScaler, %scevgep
-  %found.conflict = and i1 %bound0, %bound1
-  br i1 %found.conflict, label %for.body.preheader, label %vector.ph
-
-vector.ph:                                        ; preds = %vector.memcheck
-  %n.vec = and i64 %6, 4294967288
-  %7 = add nsw i64 %n.vec, -8
-  %8 = lshr exact i64 %7, 3
-  %9 = add nuw nsw i64 %8, 1
-  %xtraiter95 = and i64 %9, 1
-  %10 = icmp eq i64 %7, 0
-  br i1 %10, label %middle.block.unr-lcssa, label %vector.ph.new
-
-vector.ph.new:                                    ; preds = %vector.ph
-  %unroll_iter97 = sub nuw nsw i64 %9, %xtraiter95
-  %11 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !511
-  %12 = insertelement <4 x float> undef, float %11, i32 0
-  %13 = shufflevector <4 x float> %12, <4 x float> undef, <4 x i32> zeroinitializer
-  %14 = insertelement <4 x float> undef, float %11, i32 0
-  %15 = shufflevector <4 x float> %14, <4 x float> undef, <4 x i32> zeroinitializer
-  %16 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !511
-  %17 = insertelement <4 x float> undef, float %16, i32 0
-  %18 = shufflevector <4 x float> %17, <4 x float> undef, <4 x i32> zeroinitializer
-  %19 = insertelement <4 x float> undef, float %16, i32 0
-  %20 = shufflevector <4 x float> %19, <4 x float> undef, <4 x i32> zeroinitializer
-  br label %vector.body
-
-vector.body:                                      ; preds = %vector.body, %vector.ph.new
-  %index = phi i64 [ 0, %vector.ph.new ], [ %index.next.1, %vector.body ]
-  %niter98 = phi i64 [ %unroll_iter97, %vector.ph.new ], [ %niter98.nsub.1, %vector.body ]
-  %21 = getelementptr inbounds float, float* %4, i64 %index
-  %22 = bitcast float* %21 to <4 x float>*
-  %wide.load = load <4 x float>, <4 x float>* %22, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %23 = getelementptr inbounds float, float* %21, i64 4
-  %24 = bitcast float* %23 to <4 x float>*
-  %wide.load65 = load <4 x float>, <4 x float>* %24, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %25 = fmul <4 x float> %13, %wide.load
-  %26 = fmul <4 x float> %15, %wide.load65
-  %27 = bitcast float* %21 to <4 x float>*
-  store <4 x float> %25, <4 x float>* %27, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %28 = bitcast float* %23 to <4 x float>*
-  store <4 x float> %26, <4 x float>* %28, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %index.next = or i64 %index, 8
-  %29 = getelementptr inbounds float, float* %4, i64 %index.next
-  %30 = bitcast float* %29 to <4 x float>*
-  %wide.load.1 = load <4 x float>, <4 x float>* %30, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %31 = getelementptr inbounds float, float* %29, i64 4
-  %32 = bitcast float* %31 to <4 x float>*
-  %wide.load65.1 = load <4 x float>, <4 x float>* %32, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %33 = fmul <4 x float> %18, %wide.load.1
-  %34 = fmul <4 x float> %20, %wide.load65.1
-  %35 = bitcast float* %29 to <4 x float>*
-  store <4 x float> %33, <4 x float>* %35, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %36 = bitcast float* %31 to <4 x float>*
-  store <4 x float> %34, <4 x float>* %36, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %index.next.1 = add i64 %index, 16
-  %niter98.nsub.1 = add i64 %niter98, -2
-  %niter98.ncmp.1 = icmp eq i64 %niter98.nsub.1, 0
-  br i1 %niter98.ncmp.1, label %middle.block.unr-lcssa, label %vector.body, !llvm.loop !516
-
-middle.block.unr-lcssa:                           ; preds = %vector.body, %vector.ph
-  %index.unr = phi i64 [ 0, %vector.ph ], [ %index.next.1, %vector.body ]
-  %lcmp.mod96 = icmp eq i64 %xtraiter95, 0
-  br i1 %lcmp.mod96, label %middle.block, label %vector.body.epil
-
-vector.body.epil:                                 ; preds = %middle.block.unr-lcssa
-  %37 = load float, float* %m_fFFTScaler, align 8, !tbaa !305, !alias.scope !511
-  %38 = insertelement <4 x float> undef, float %37, i32 0
-  %39 = shufflevector <4 x float> %38, <4 x float> undef, <4 x i32> zeroinitializer
-  %40 = insertelement <4 x float> undef, float %37, i32 0
-  %41 = shufflevector <4 x float> %40, <4 x float> undef, <4 x i32> zeroinitializer
-  %42 = getelementptr inbounds float, float* %4, i64 %index.unr
-  %43 = bitcast float* %42 to <4 x float>*
-  %wide.load.epil = load <4 x float>, <4 x float>* %43, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %44 = getelementptr inbounds float, float* %42, i64 4
-  %45 = bitcast float* %44 to <4 x float>*
-  %wide.load65.epil = load <4 x float>, <4 x float>* %45, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %46 = fmul <4 x float> %39, %wide.load.epil
-  %47 = fmul <4 x float> %41, %wide.load65.epil
-  %48 = bitcast float* %42 to <4 x float>*
-  store <4 x float> %46, <4 x float>* %48, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  %49 = bitcast float* %44 to <4 x float>*
-  store <4 x float> %47, <4 x float>* %49, align 4, !tbaa !50, !alias.scope !514, !noalias !511
-  br label %middle.block
-
-middle.block:                                     ; preds = %vector.body.epil, %middle.block.unr-lcssa
-  %cmp.n = icmp eq i64 %n.vec, %6
-  br i1 %cmp.n, label %for.cond.cleanup, label %for.body.preheader
-
-for.cond.cleanup:                                 ; preds = %for.body, %middle.block, %entry.for.cond.cleanup_crit_edge
-  %50 = phi i8* [ %.pre, %entry.for.cond.cleanup_crit_edge ], [ %5, %middle.block ], [ %5, %for.body ]
-  %_M_start.i = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 12, i32 0, i32 0, i32 0
-  %m_nBlockSize = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 2
-  %51 = load i32, i32* %m_nBlockSize, align 8, !tbaa !301
-  %conv3 = zext i32 %51 to i64
-  %mul4 = shl nuw nsw i64 %conv3, 2
-  tail call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 4 %2, i8* align 4 %50, i64 %mul4, i1 false)
-  %m_nOverlapLength = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 7
-  %52 = load i32, i32* %m_nOverlapLength, align 4, !tbaa !302
-  %cmp753 = icmp eq i32 %52, 0
-  br i1 %cmp753, label %for.cond.cleanup8, label %for.body9.lr.ph
-
-for.body9.lr.ph:                                  ; preds = %for.cond.cleanup
-  %_M_start.i47 = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 15, i64 0, i32 0, i32 0, i32 0
-  %53 = load float*, float** %_M_start.i47, align 8, !tbaa !76
-  %54 = zext i32 %52 to i64
-  %min.iters.check69 = icmp ult i32 %52, 8
-  br i1 %min.iters.check69, label %for.body9.preheader, label %vector.memcheck79
-
-for.body9.preheader:                              ; preds = %middle.block67, %vector.memcheck79, %for.body9.lr.ph
-  %indvars.iv.ph = phi i64 [ 0, %vector.memcheck79 ], [ 0, %for.body9.lr.ph ], [ %n.vec82, %middle.block67 ]
-  br label %for.body9
-
-vector.memcheck79:                                ; preds = %for.body9.lr.ph
-  %scevgep71 = getelementptr float, float* %resultSample1, i64 %54
-  %scevgep73 = getelementptr float, float* %53, i64 %54
-  %bound075 = icmp ugt float* %scevgep73, %resultSample1
-  %bound176 = icmp ult float* %53, %scevgep71
-  %found.conflict77 = and i1 %bound075, %bound176
-  br i1 %found.conflict77, label %for.body9.preheader, label %vector.ph80
-
-vector.ph80:                                      ; preds = %vector.memcheck79
-  %n.vec82 = and i64 %54, 4294967288
-  %55 = add nsw i64 %n.vec82, -8
-  %56 = lshr exact i64 %55, 3
-  %57 = add nuw nsw i64 %56, 1
-  %xtraiter = and i64 %57, 1
-  %58 = icmp eq i64 %55, 0
-  br i1 %58, label %middle.block67.unr-lcssa, label %vector.ph80.new
-
-vector.ph80.new:                                  ; preds = %vector.ph80
-  %unroll_iter = sub nuw nsw i64 %57, %xtraiter
-  br label %vector.body66
-
-vector.body66:                                    ; preds = %vector.body66, %vector.ph80.new
-  %index83 = phi i64 [ 0, %vector.ph80.new ], [ %index.next84.1, %vector.body66 ]
-  %niter = phi i64 [ %unroll_iter, %vector.ph80.new ], [ %niter.nsub.1, %vector.body66 ]
-  %59 = getelementptr inbounds float, float* %53, i64 %index83
-  %60 = bitcast float* %59 to <4 x float>*
-  %wide.load91 = load <4 x float>, <4 x float>* %60, align 4, !tbaa !50, !alias.scope !517
-  %61 = getelementptr inbounds float, float* %59, i64 4
-  %62 = bitcast float* %61 to <4 x float>*
-  %wide.load92 = load <4 x float>, <4 x float>* %62, align 4, !tbaa !50, !alias.scope !517
-  %63 = getelementptr inbounds float, float* %resultSample1, i64 %index83
-  %64 = bitcast float* %63 to <4 x float>*
-  %wide.load93 = load <4 x float>, <4 x float>* %64, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %65 = getelementptr inbounds float, float* %63, i64 4
-  %66 = bitcast float* %65 to <4 x float>*
-  %wide.load94 = load <4 x float>, <4 x float>* %66, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %67 = fadd <4 x float> %wide.load91, %wide.load93
-  %68 = fadd <4 x float> %wide.load92, %wide.load94
-  %69 = bitcast float* %63 to <4 x float>*
-  store <4 x float> %67, <4 x float>* %69, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %70 = bitcast float* %65 to <4 x float>*
-  store <4 x float> %68, <4 x float>* %70, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %index.next84 = or i64 %index83, 8
-  %71 = getelementptr inbounds float, float* %53, i64 %index.next84
-  %72 = bitcast float* %71 to <4 x float>*
-  %wide.load91.1 = load <4 x float>, <4 x float>* %72, align 4, !tbaa !50, !alias.scope !517
-  %73 = getelementptr inbounds float, float* %71, i64 4
-  %74 = bitcast float* %73 to <4 x float>*
-  %wide.load92.1 = load <4 x float>, <4 x float>* %74, align 4, !tbaa !50, !alias.scope !517
-  %75 = getelementptr inbounds float, float* %resultSample1, i64 %index.next84
-  %76 = bitcast float* %75 to <4 x float>*
-  %wide.load93.1 = load <4 x float>, <4 x float>* %76, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %77 = getelementptr inbounds float, float* %75, i64 4
-  %78 = bitcast float* %77 to <4 x float>*
-  %wide.load94.1 = load <4 x float>, <4 x float>* %78, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %79 = fadd <4 x float> %wide.load91.1, %wide.load93.1
-  %80 = fadd <4 x float> %wide.load92.1, %wide.load94.1
-  %81 = bitcast float* %75 to <4 x float>*
-  store <4 x float> %79, <4 x float>* %81, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %82 = bitcast float* %77 to <4 x float>*
-  store <4 x float> %80, <4 x float>* %82, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %index.next84.1 = add i64 %index83, 16
-  %niter.nsub.1 = add i64 %niter, -2
-  %niter.ncmp.1 = icmp eq i64 %niter.nsub.1, 0
-  br i1 %niter.ncmp.1, label %middle.block67.unr-lcssa, label %vector.body66, !llvm.loop !522
-
-middle.block67.unr-lcssa:                         ; preds = %vector.body66, %vector.ph80
-  %index83.unr = phi i64 [ 0, %vector.ph80 ], [ %index.next84.1, %vector.body66 ]
-  %lcmp.mod = icmp eq i64 %xtraiter, 0
-  br i1 %lcmp.mod, label %middle.block67, label %vector.body66.epil
-
-vector.body66.epil:                               ; preds = %middle.block67.unr-lcssa
-  %83 = getelementptr inbounds float, float* %53, i64 %index83.unr
-  %84 = bitcast float* %83 to <4 x float>*
-  %wide.load91.epil = load <4 x float>, <4 x float>* %84, align 4, !tbaa !50, !alias.scope !517
-  %85 = getelementptr inbounds float, float* %83, i64 4
-  %86 = bitcast float* %85 to <4 x float>*
-  %wide.load92.epil = load <4 x float>, <4 x float>* %86, align 4, !tbaa !50, !alias.scope !517
-  %87 = getelementptr inbounds float, float* %resultSample1, i64 %index83.unr
-  %88 = bitcast float* %87 to <4 x float>*
-  %wide.load93.epil = load <4 x float>, <4 x float>* %88, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %89 = getelementptr inbounds float, float* %87, i64 4
-  %90 = bitcast float* %89 to <4 x float>*
-  %wide.load94.epil = load <4 x float>, <4 x float>* %90, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %91 = fadd <4 x float> %wide.load91.epil, %wide.load93.epil
-  %92 = fadd <4 x float> %wide.load92.epil, %wide.load94.epil
-  %93 = bitcast float* %87 to <4 x float>*
-  store <4 x float> %91, <4 x float>* %93, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  %94 = bitcast float* %89 to <4 x float>*
-  store <4 x float> %92, <4 x float>* %94, align 4, !tbaa !50, !alias.scope !520, !noalias !517
-  br label %middle.block67
-
-middle.block67:                                   ; preds = %vector.body66.epil, %middle.block67.unr-lcssa
-  %cmp.n86 = icmp eq i64 %n.vec82, %54
-  br i1 %cmp.n86, label %for.cond.cleanup8.loopexit, label %for.body9.preheader
-
-for.body:                                         ; preds = %for.body, %for.body.preheader
-  %indvars.iv57 = phi i64 [ %indvars.iv.next58, %for.body ], [ %indvars.iv57.ph, %for.body.preheader ]
-  %95 = load float, float* %m_fFFTScaler, align 8, !tbaa !305
-  %add.ptr.i52 = getelementptr inbounds float, float* %4, i64 %indvars.iv57
-  %96 = load float, float* %add.ptr.i52, align 4, !tbaa !50
-  %mul = fmul float %95, %96
-  store float %mul, float* %add.ptr.i52, align 4, !tbaa !50
-  %indvars.iv.next58 = add nuw nsw i64 %indvars.iv57, 1
-  %cmp = icmp ult i64 %indvars.iv.next58, %6
-  br i1 %cmp, label %for.body, label %for.cond.cleanup, !llvm.loop !523
-
-for.cond.cleanup8.loopexit:                       ; preds = %for.body9, %middle.block67
-  %phitmp = zext i32 %52 to i64
-  %phitmp60 = shl nuw nsw i64 %phitmp, 2
-  br label %for.cond.cleanup8
-
-for.cond.cleanup8:                                ; preds = %for.cond.cleanup8.loopexit, %for.cond.cleanup
-  %.lcssa = phi i64 [ %phitmp60, %for.cond.cleanup8.loopexit ], [ 0, %for.cond.cleanup ]
-  %_M_start.i50 = getelementptr inbounds %class.CAmbisonicBinauralizer, %class.CAmbisonicBinauralizer* %decoder, i64 0, i32 15, i64 1, i32 0, i32 0, i32 0
-  %97 = bitcast float** %_M_start.i50 to i8**
-  %98 = load i8*, i8** %97, align 8, !tbaa !76
-  %99 = load i32, i32* %m_nBlockSize, align 8, !tbaa !301
-  %conv21 = zext i32 %99 to i64
-  %100 = load float*, float** %_M_start.i, align 8, !tbaa !76
-  %add.ptr.i49 = getelementptr inbounds float, float* %100, i64 %conv21
-  %101 = bitcast float* %add.ptr.i49 to i8*
-  tail call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 4 %98, i8* nonnull align 4 %101, i64 %.lcssa, i1 false)
-  %returnStruct = insertvalue %struct.out.overlap_right_fxp undef, i64 %bytes_resultSample1, 0
-  ret %struct.out.overlap_right_fxp %returnStruct
-
-for.body9:                                        ; preds = %for.body9, %for.body9.preheader
-  %indvars.iv = phi i64 [ %indvars.iv.next, %for.body9 ], [ %indvars.iv.ph, %for.body9.preheader ]
-  %add.ptr.i = getelementptr inbounds float, float* %53, i64 %indvars.iv
-  %102 = load float, float* %add.ptr.i, align 4, !tbaa !50
-  %arrayidx12 = getelementptr inbounds float, float* %resultSample1, i64 %indvars.iv
-  %103 = load float, float* %arrayidx12, align 4, !tbaa !50
-  %add = fadd float %102, %103
-  store float %add, float* %arrayidx12, align 4, !tbaa !50
-  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1
-  %cmp7 = icmp ult i64 %indvars.iv.next, %54
-  br i1 %cmp7, label %for.body9, label %for.cond.cleanup8.loopexit, !llvm.loop !524
+define void @audioDecoding_cloned.LaunchFunction(i8* %data.addr, i8* %graphID) {
+entry:
+  %rotator_buffer.addr = bitcast i8* %data.addr to i8**
+  %rotator_buffer = load i8*, i8** %rotator_buffer.addr
+  %nextArg = getelementptr i8*, i8** %rotator_buffer.addr, i64 1
+  %bytes_rotator_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_rotator_buffer = load i8*, i8** %bytes_rotator_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_rotator_buffer.addr, i64 1
+  %sumBF_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %sumBF_buffer = load i8*, i8** %sumBF_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %sumBF_buffer.addr, i64 1
+  %bytes_sumBF_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %bytes_sumBF_buffer = load i8*, i8** %bytes_sumBF_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %bytes_sumBF_buffer.addr, i64 1
+  %zoomer_buffer.addr = bitcast i8** %nextArg3 to i8**
+  %zoomer_buffer = load i8*, i8** %zoomer_buffer.addr
+  %nextArg4 = getelementptr i8*, i8** %zoomer_buffer.addr, i64 1
+  %bytes_zoomer_buffer.addr = bitcast i8** %nextArg4 to i8**
+  %bytes_zoomer_buffer = load i8*, i8** %bytes_zoomer_buffer.addr
+  %nextArg5 = getelementptr i8*, i8** %bytes_zoomer_buffer.addr, i64 1
+  %decoder0_buffer.addr = bitcast i8** %nextArg5 to i8**
+  %decoder0_buffer = load i8*, i8** %decoder0_buffer.addr
+  %nextArg6 = getelementptr i8*, i8** %decoder0_buffer.addr, i64 1
+  %bytes_decoder0_buffer.addr = bitcast i8** %nextArg6 to i8**
+  %bytes_decoder0_buffer = load i8*, i8** %bytes_decoder0_buffer.addr
+  %nextArg7 = getelementptr i8*, i8** %bytes_decoder0_buffer.addr, i64 1
+  %resultSample0_buffer.addr = bitcast i8** %nextArg7 to i8**
+  %resultSample0_buffer = load i8*, i8** %resultSample0_buffer.addr
+  %nextArg8 = getelementptr i8*, i8** %resultSample0_buffer.addr, i64 1
+  %bytes_resultSample0_buffer.addr = bitcast i8** %nextArg8 to i8**
+  %bytes_resultSample0_buffer = load i8*, i8** %bytes_resultSample0_buffer.addr
+  %nextArg9 = getelementptr i8*, i8** %bytes_resultSample0_buffer.addr, i64 1
+  %nSample_buffer.addr = bitcast i8** %nextArg9 to i8**
+  %nSample_buffer = load i8*, i8** %nSample_buffer.addr
+  %nextArg10 = getelementptr i8*, i8** %nSample_buffer.addr, i64 1
+  %channelpart1_buffer.addr = bitcast i8** %nextArg10 to i8**
+  %channelpart1_buffer = load i8*, i8** %channelpart1_buffer.addr
+  %nextArg11 = getelementptr i8*, i8** %channelpart1_buffer.addr, i64 1
+  %bytes_channelpart1_buffer.addr = bitcast i8** %nextArg11 to i8**
+  %bytes_channelpart1_buffer = load i8*, i8** %bytes_channelpart1_buffer.addr
+  %nextArg12 = getelementptr i8*, i8** %bytes_channelpart1_buffer.addr, i64 1
+  %channelpart2_buffer.addr = bitcast i8** %nextArg12 to i8**
+  %channelpart2_buffer = load i8*, i8** %channelpart2_buffer.addr
+  %nextArg13 = getelementptr i8*, i8** %channelpart2_buffer.addr, i64 1
+  %bytes_channelpart2_buffer.addr = bitcast i8** %nextArg13 to i8**
+  %bytes_channelpart2_buffer = load i8*, i8** %bytes_channelpart2_buffer.addr
+  %nextArg14 = getelementptr i8*, i8** %bytes_channelpart2_buffer.addr, i64 1
+  %channelpart3_buffer.addr = bitcast i8** %nextArg14 to i8**
+  %channelpart3_buffer = load i8*, i8** %channelpart3_buffer.addr
+  %nextArg15 = getelementptr i8*, i8** %channelpart3_buffer.addr, i64 1
+  %bytes_channelpart3_buffer.addr = bitcast i8** %nextArg15 to i8**
+  %bytes_channelpart3_buffer = load i8*, i8** %bytes_channelpart3_buffer.addr
+  %nextArg16 = getelementptr i8*, i8** %bytes_channelpart3_buffer.addr, i64 1
+  %decoder1_buffer.addr = bitcast i8** %nextArg16 to i8**
+  %decoder1_buffer = load i8*, i8** %decoder1_buffer.addr
+  %nextArg17 = getelementptr i8*, i8** %decoder1_buffer.addr, i64 1
+  %bytes_decoder1_buffer.addr = bitcast i8** %nextArg17 to i8**
+  %bytes_decoder1_buffer = load i8*, i8** %bytes_decoder1_buffer.addr
+  %nextArg18 = getelementptr i8*, i8** %bytes_decoder1_buffer.addr, i64 1
+  %resultSample1_buffer.addr = bitcast i8** %nextArg18 to i8**
+  %resultSample1_buffer = load i8*, i8** %resultSample1_buffer.addr
+  %nextArg19 = getelementptr i8*, i8** %resultSample1_buffer.addr, i64 1
+  %bytes_resultSample1_buffer.addr = bitcast i8** %nextArg19 to i8**
+  %bytes_resultSample1_buffer = load i8*, i8** %bytes_resultSample1_buffer.addr
+  %nextArg20 = getelementptr i8*, i8** %bytes_resultSample1_buffer.addr, i64 1
+  %decoder0ChannelCount_buffer.addr = bitcast i8** %nextArg20 to i8**
+  %decoder0ChannelCount_buffer = load i8*, i8** %decoder0ChannelCount_buffer.addr
+  %nextArg21 = getelementptr i8*, i8** %decoder0ChannelCount_buffer.addr, i64 1
+  %decoder0FFTBins_buffer.addr = bitcast i8** %nextArg21 to i8**
+  %decoder0FFTBins_buffer = load i8*, i8** %decoder0FFTBins_buffer.addr
+  %nextArg22 = getelementptr i8*, i8** %decoder0FFTBins_buffer.addr, i64 1
+  %decoder1ChannelCount_buffer.addr = bitcast i8** %nextArg22 to i8**
+  %decoder1ChannelCount_buffer = load i8*, i8** %decoder1ChannelCount_buffer.addr
+  %nextArg23 = getelementptr i8*, i8** %decoder1ChannelCount_buffer.addr, i64 1
+  %decoder1FFTBins_buffer.addr = bitcast i8** %nextArg23 to i8**
+  %decoder1FFTBins_buffer = load i8*, i8** %decoder1FFTBins_buffer.addr
+  %BindIn.wrapperRotatorSet_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 0)
+  %BindIn.wrapperRotatorSet_fxp_cloned24 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 1)
+  %BindIn.wrapperPsychoFilter_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 0)
+  %wrapperRotatorSet_fxp_cloned.wrapperPsychoFilter_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperPsychoFilter_fxp_cloned25 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 2)
+  %BindIn.wrapperPsychoFilter_fxp_cloned26 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 3)
+  %BindIn.wrapperPsychoFilter_fxp_cloned27 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 10)
+  %BindIn.wrapperPsychoFilter_fxp_cloned28 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 11)
+  %BindIn.wrapperPsychoFilter_fxp_cloned29 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 12)
+  %BindIn.wrapperPsychoFilter_fxp_cloned30 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 13)
+  %BindIn.wrapperPsychoFilter_fxp_cloned31 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 14)
+  %BindIn.wrapperPsychoFilter_fxp_cloned32 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 15)
+  %BindIn.wrapperPsychoFilter_fxp_cloned33 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 16)
+  %BindIn.wrapperRotateOrder1_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 0)
+  %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder1_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperRotateOrder1_fxp_cloned34 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 10)
+  %BindIn.wrapperRotateOrder1_fxp_cloned35 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 11)
+  %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder1_fxp_cloned36 = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperRotateOrder2_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 0)
+  %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder2_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperRotateOrder2_fxp_cloned37 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 10)
+  %BindIn.wrapperRotateOrder2_fxp_cloned38 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 13)
+  %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder2_fxp_cloned39 = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperRotateOrder3_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 0)
+  %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder3_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperRotateOrder3_fxp_cloned40 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 10)
+  %BindIn.wrapperRotateOrder3_fxp_cloned41 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 15)
+  %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder3_fxp_cloned42 = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperZoomSet_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 4)
+  %BindIn.wrapperZoomSet_fxp_cloned43 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 5)
+  %BindIn.wrapperZoomProcess_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 4)
+  %wrapperZoomSet_fxp_cloned.wrapperZoomProcess_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperZoomProcess_fxp_cloned44 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 2)
+  %wrapperPsychoFilter_fxp_cloned.wrapperZoomProcess_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperZoomProcess_fxp_cloned45 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 10)
+  %BindIn.wrapperZoomProcess_fxp_cloned46 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 11)
+  %wrapperRotateOrder1_fxp_cloned.wrapperZoomProcess_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperZoomProcess_fxp_cloned47 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 13)
+  %wrapperRotateOrder2_fxp_cloned.wrapperZoomProcess_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperZoomProcess_fxp_cloned48 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 15)
+  %wrapperRotateOrder3_fxp_cloned.wrapperZoomProcess_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperSetAndFFT_left_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 6)
+  %BindIn.wrapperSetAndFFT_left_fxp_cloned49 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 7)
+  %BindIn.wrapperSetAndFFT_left_fxp_cloned50 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 2)
+  %wrapperZoomProcess_fxp_cloned.wrapperSetAndFFT_left_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperSetAndFFT_right_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 17)
+  %BindIn.wrapperSetAndFFT_right_fxp_cloned51 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 18)
+  %BindIn.wrapperSetAndFFT_right_fxp_cloned52 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 2)
+  %wrapperZoomProcess_fxp_cloned.wrapperSetAndFFT_right_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperFIR_left_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 6)
+  %wrapperSetAndFFT_left_fxp_cloned.wrapperFIR_left_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperFIR_left_fxp_cloned53 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 21)
+  %BindIn.wrapperFIR_left_fxp_cloned54 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 22)
+  %BindIn.wrapperFIR_right_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 17)
+  %wrapperSetAndFFT_right_fxp_cloned.wrapperFIR_right_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperFIR_right_fxp_cloned55 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 23)
+  %BindIn.wrapperFIR_right_fxp_cloned56 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 24)
+  %BindIn.wrapperIFFT_left_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 6)
+  %wrapperFIR_left_fxp_cloned.wrapperIFFT_left_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperIFFT_right_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 17)
+  %wrapperFIR_right_fxp_cloned.wrapperIFFT_right_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperOverlap_left_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 6)
+  %wrapperIFFT_left_fxp_cloned.wrapperOverlap_left_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperOverlap_left_fxp_cloned57 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 8)
+  %BindIn.wrapperOverlap_left_fxp_cloned58 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 9)
+  %BindIn.wrapperOverlap_right_fxp_cloned = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 17)
+  %wrapperIFFT_right_fxp_cloned.wrapperOverlap_right_fxp_cloned = call i8* @llvm_hpvm_createEdgeBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.wrapperOverlap_right_fxp_cloned59 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i1** getelementptr (i1*, i1** null, i32 1) to i64), i32 19)
+  %BindIn.wrapperOverlap_right_fxp_cloned60 = call i8* @llvm_hpvm_createBindInBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i32 20)
+  %BindOut.wrapperOverlap_left_fxp_cloned = call i8* @llvm_hpvm_createBindOutBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindOut.wrapperOverlap_right_fxp_cloned = call i8* @llvm_hpvm_createBindOutBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperRotatorSet_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperZoomSet_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperPsychoFilter_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperRotateOrder1_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperRotateOrder2_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperRotateOrder3_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperZoomProcess_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperSetAndFFT_left_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperSetAndFFT_right_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperFIR_left_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperFIR_right_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperIFFT_left_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperIFFT_right_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperOverlap_right_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %BindIn.isLastInput.wrapperOverlap_left_fxp_cloned = call i8* @llvm_hpvm_createLastInputBuffer(i8* %graphID, i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64))
+  %wrapperRotatorSet_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperRotatorSet_fxp_cloned* getelementptr (%struct.thread.wrapperRotatorSet_fxp_cloned, %struct.thread.wrapperRotatorSet_fxp_cloned* null, i32 1) to i64))
+  %wrapperRotatorSet_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperRotatorSet_fxp_cloned.inputs to %struct.thread.wrapperRotatorSet_fxp_cloned*
+  %wrapperRotatorSet_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperRotatorSet_fxp_cloned, %struct.thread.wrapperRotatorSet_fxp_cloned* %wrapperRotatorSet_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperRotatorSet_fxp_cloned, i8** %wrapperRotatorSet_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperRotatorSet_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperRotatorSet_fxp_cloned, %struct.thread.wrapperRotatorSet_fxp_cloned* %wrapperRotatorSet_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %BindIn.wrapperRotatorSet_fxp_cloned24, i8** %wrapperRotatorSet_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperRotatorSet_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperRotatorSet_fxp_cloned, %struct.thread.wrapperRotatorSet_fxp_cloned* %wrapperRotatorSet_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %wrapperRotatorSet_fxp_cloned.wrapperPsychoFilter_fxp_cloned, i8** %wrapperRotatorSet_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperRotatorSet_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperRotatorSet_fxp_cloned, %struct.thread.wrapperRotatorSet_fxp_cloned* %wrapperRotatorSet_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.isLastInput.wrapperRotatorSet_fxp_cloned, i8** %wrapperRotatorSet_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperRotatorSet_fxp_cloned.inputs.i8ptr61 = bitcast %struct.thread.wrapperRotatorSet_fxp_cloned* %wrapperRotatorSet_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperRotatorSet_fxp_cloned_Pipeline, i8* %wrapperRotatorSet_fxp_cloned.inputs.i8ptr61)
+  %wrapperZoomSet_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperZoomSet_fxp_cloned* getelementptr (%struct.thread.wrapperZoomSet_fxp_cloned, %struct.thread.wrapperZoomSet_fxp_cloned* null, i32 1) to i64))
+  %wrapperZoomSet_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperZoomSet_fxp_cloned.inputs to %struct.thread.wrapperZoomSet_fxp_cloned*
+  %wrapperZoomSet_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperZoomSet_fxp_cloned, %struct.thread.wrapperZoomSet_fxp_cloned* %wrapperZoomSet_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperZoomSet_fxp_cloned, i8** %wrapperZoomSet_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperZoomSet_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperZoomSet_fxp_cloned, %struct.thread.wrapperZoomSet_fxp_cloned* %wrapperZoomSet_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %BindIn.wrapperZoomSet_fxp_cloned43, i8** %wrapperZoomSet_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperZoomSet_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperZoomSet_fxp_cloned, %struct.thread.wrapperZoomSet_fxp_cloned* %wrapperZoomSet_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %wrapperZoomSet_fxp_cloned.wrapperZoomProcess_fxp_cloned, i8** %wrapperZoomSet_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperZoomSet_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperZoomSet_fxp_cloned, %struct.thread.wrapperZoomSet_fxp_cloned* %wrapperZoomSet_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.isLastInput.wrapperZoomSet_fxp_cloned, i8** %wrapperZoomSet_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperZoomSet_fxp_cloned.inputs.i8ptr62 = bitcast %struct.thread.wrapperZoomSet_fxp_cloned* %wrapperZoomSet_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperZoomSet_fxp_cloned_Pipeline, i8* %wrapperZoomSet_fxp_cloned.inputs.i8ptr62)
+  %wrapperPsychoFilter_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperPsychoFilter_fxp_cloned* getelementptr (%struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* null, i32 1) to i64))
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperPsychoFilter_fxp_cloned.inputs to %struct.thread.wrapperPsychoFilter_fxp_cloned*
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperPsychoFilter_fxp_cloned, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperRotatorSet_fxp_cloned.wrapperPsychoFilter_fxp_cloned, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperPsychoFilter_fxp_cloned25, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.wrapperPsychoFilter_fxp_cloned26, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_4 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %BindIn.wrapperPsychoFilter_fxp_cloned27, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_4
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_5 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %BindIn.wrapperPsychoFilter_fxp_cloned28, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_5
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_6 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 6
+  store i8* %BindIn.wrapperPsychoFilter_fxp_cloned29, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_6
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_7 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 7
+  store i8* %BindIn.wrapperPsychoFilter_fxp_cloned30, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_7
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_8 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 8
+  store i8* %BindIn.wrapperPsychoFilter_fxp_cloned31, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_8
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_9 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 9
+  store i8* %BindIn.wrapperPsychoFilter_fxp_cloned32, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_9
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_10 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 10
+  store i8* %BindIn.wrapperPsychoFilter_fxp_cloned33, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.arg_10
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 11
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder1_fxp_cloned, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_1 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 12
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder2_fxp_cloned, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_1
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_2 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 13
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder3_fxp_cloned, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_2
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_3 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 14
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperZoomProcess_fxp_cloned, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_3
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_4 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 15
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder1_fxp_cloned36, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_4
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_5 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 16
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder2_fxp_cloned39, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_5
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_6 = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 17
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder3_fxp_cloned42, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.out_6
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperPsychoFilter_fxp_cloned, %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr, i32 0, i32 18
+  store i8* %BindIn.isLastInput.wrapperPsychoFilter_fxp_cloned, i8** %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr63 = bitcast %struct.thread.wrapperPsychoFilter_fxp_cloned* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperPsychoFilter_fxp_cloned_Pipeline, i8* %wrapperPsychoFilter_fxp_cloned.inputs.i8ptr63)
+  %wrapperRotateOrder1_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperRotateOrder1_fxp_cloned* getelementptr (%struct.thread.wrapperRotateOrder1_fxp_cloned, %struct.thread.wrapperRotateOrder1_fxp_cloned* null, i32 1) to i64))
+  %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperRotateOrder1_fxp_cloned.inputs to %struct.thread.wrapperRotateOrder1_fxp_cloned*
+  %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperRotateOrder1_fxp_cloned, %struct.thread.wrapperRotateOrder1_fxp_cloned* %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperRotateOrder1_fxp_cloned, i8** %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperRotateOrder1_fxp_cloned, %struct.thread.wrapperRotateOrder1_fxp_cloned* %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder1_fxp_cloned, i8** %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperRotateOrder1_fxp_cloned, %struct.thread.wrapperRotateOrder1_fxp_cloned* %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperRotateOrder1_fxp_cloned34, i8** %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperRotateOrder1_fxp_cloned, %struct.thread.wrapperRotateOrder1_fxp_cloned* %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.wrapperRotateOrder1_fxp_cloned35, i8** %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.arg_4 = getelementptr %struct.thread.wrapperRotateOrder1_fxp_cloned, %struct.thread.wrapperRotateOrder1_fxp_cloned* %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder1_fxp_cloned36, i8** %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.arg_4
+  %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperRotateOrder1_fxp_cloned, %struct.thread.wrapperRotateOrder1_fxp_cloned* %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %wrapperRotateOrder1_fxp_cloned.wrapperZoomProcess_fxp_cloned, i8** %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperRotateOrder1_fxp_cloned, %struct.thread.wrapperRotateOrder1_fxp_cloned* %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr, i32 0, i32 6
+  store i8* %BindIn.isLastInput.wrapperRotateOrder1_fxp_cloned, i8** %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr64 = bitcast %struct.thread.wrapperRotateOrder1_fxp_cloned* %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperRotateOrder1_fxp_cloned_Pipeline, i8* %wrapperRotateOrder1_fxp_cloned.inputs.i8ptr64)
+  %wrapperRotateOrder2_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperRotateOrder2_fxp_cloned* getelementptr (%struct.thread.wrapperRotateOrder2_fxp_cloned, %struct.thread.wrapperRotateOrder2_fxp_cloned* null, i32 1) to i64))
+  %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperRotateOrder2_fxp_cloned.inputs to %struct.thread.wrapperRotateOrder2_fxp_cloned*
+  %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperRotateOrder2_fxp_cloned, %struct.thread.wrapperRotateOrder2_fxp_cloned* %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperRotateOrder2_fxp_cloned, i8** %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperRotateOrder2_fxp_cloned, %struct.thread.wrapperRotateOrder2_fxp_cloned* %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder2_fxp_cloned, i8** %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperRotateOrder2_fxp_cloned, %struct.thread.wrapperRotateOrder2_fxp_cloned* %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperRotateOrder2_fxp_cloned37, i8** %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperRotateOrder2_fxp_cloned, %struct.thread.wrapperRotateOrder2_fxp_cloned* %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.wrapperRotateOrder2_fxp_cloned38, i8** %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.arg_4 = getelementptr %struct.thread.wrapperRotateOrder2_fxp_cloned, %struct.thread.wrapperRotateOrder2_fxp_cloned* %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder2_fxp_cloned39, i8** %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.arg_4
+  %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperRotateOrder2_fxp_cloned, %struct.thread.wrapperRotateOrder2_fxp_cloned* %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %wrapperRotateOrder2_fxp_cloned.wrapperZoomProcess_fxp_cloned, i8** %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperRotateOrder2_fxp_cloned, %struct.thread.wrapperRotateOrder2_fxp_cloned* %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr, i32 0, i32 6
+  store i8* %BindIn.isLastInput.wrapperRotateOrder2_fxp_cloned, i8** %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr65 = bitcast %struct.thread.wrapperRotateOrder2_fxp_cloned* %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperRotateOrder2_fxp_cloned_Pipeline, i8* %wrapperRotateOrder2_fxp_cloned.inputs.i8ptr65)
+  %wrapperRotateOrder3_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperRotateOrder3_fxp_cloned* getelementptr (%struct.thread.wrapperRotateOrder3_fxp_cloned, %struct.thread.wrapperRotateOrder3_fxp_cloned* null, i32 1) to i64))
+  %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperRotateOrder3_fxp_cloned.inputs to %struct.thread.wrapperRotateOrder3_fxp_cloned*
+  %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperRotateOrder3_fxp_cloned, %struct.thread.wrapperRotateOrder3_fxp_cloned* %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperRotateOrder3_fxp_cloned, i8** %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperRotateOrder3_fxp_cloned, %struct.thread.wrapperRotateOrder3_fxp_cloned* %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder3_fxp_cloned, i8** %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperRotateOrder3_fxp_cloned, %struct.thread.wrapperRotateOrder3_fxp_cloned* %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperRotateOrder3_fxp_cloned40, i8** %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperRotateOrder3_fxp_cloned, %struct.thread.wrapperRotateOrder3_fxp_cloned* %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.wrapperRotateOrder3_fxp_cloned41, i8** %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.arg_4 = getelementptr %struct.thread.wrapperRotateOrder3_fxp_cloned, %struct.thread.wrapperRotateOrder3_fxp_cloned* %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperRotateOrder3_fxp_cloned42, i8** %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.arg_4
+  %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperRotateOrder3_fxp_cloned, %struct.thread.wrapperRotateOrder3_fxp_cloned* %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %wrapperRotateOrder3_fxp_cloned.wrapperZoomProcess_fxp_cloned, i8** %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperRotateOrder3_fxp_cloned, %struct.thread.wrapperRotateOrder3_fxp_cloned* %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr, i32 0, i32 6
+  store i8* %BindIn.isLastInput.wrapperRotateOrder3_fxp_cloned, i8** %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr66 = bitcast %struct.thread.wrapperRotateOrder3_fxp_cloned* %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperRotateOrder3_fxp_cloned_Pipeline, i8* %wrapperRotateOrder3_fxp_cloned.inputs.i8ptr66)
+  %wrapperZoomProcess_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperZoomProcess_fxp_cloned* getelementptr (%struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* null, i32 1) to i64))
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperZoomProcess_fxp_cloned.inputs to %struct.thread.wrapperZoomProcess_fxp_cloned*
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperZoomProcess_fxp_cloned, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperZoomSet_fxp_cloned.wrapperZoomProcess_fxp_cloned, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperZoomProcess_fxp_cloned44, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %wrapperPsychoFilter_fxp_cloned.wrapperZoomProcess_fxp_cloned, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_4 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %BindIn.wrapperZoomProcess_fxp_cloned45, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_4
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_5 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %BindIn.wrapperZoomProcess_fxp_cloned46, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_5
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_6 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 6
+  store i8* %wrapperRotateOrder1_fxp_cloned.wrapperZoomProcess_fxp_cloned, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_6
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_7 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 7
+  store i8* %BindIn.wrapperZoomProcess_fxp_cloned47, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_7
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_8 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 8
+  store i8* %wrapperRotateOrder2_fxp_cloned.wrapperZoomProcess_fxp_cloned, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_8
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_9 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 9
+  store i8* %BindIn.wrapperZoomProcess_fxp_cloned48, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_9
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_10 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 10
+  store i8* %wrapperRotateOrder3_fxp_cloned.wrapperZoomProcess_fxp_cloned, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.arg_10
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 11
+  store i8* %wrapperZoomProcess_fxp_cloned.wrapperSetAndFFT_left_fxp_cloned, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.out_1 = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 12
+  store i8* %wrapperZoomProcess_fxp_cloned.wrapperSetAndFFT_right_fxp_cloned, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.out_1
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperZoomProcess_fxp_cloned, %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr, i32 0, i32 13
+  store i8* %BindIn.isLastInput.wrapperZoomProcess_fxp_cloned, i8** %wrapperZoomProcess_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperZoomProcess_fxp_cloned.inputs.i8ptr67 = bitcast %struct.thread.wrapperZoomProcess_fxp_cloned* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperZoomProcess_fxp_cloned_Pipeline, i8* %wrapperZoomProcess_fxp_cloned.inputs.i8ptr67)
+  %wrapperSetAndFFT_left_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperSetAndFFT_left_fxp_cloned* getelementptr (%struct.thread.wrapperSetAndFFT_left_fxp_cloned, %struct.thread.wrapperSetAndFFT_left_fxp_cloned* null, i32 1) to i64))
+  %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperSetAndFFT_left_fxp_cloned.inputs to %struct.thread.wrapperSetAndFFT_left_fxp_cloned*
+  %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperSetAndFFT_left_fxp_cloned, %struct.thread.wrapperSetAndFFT_left_fxp_cloned* %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperSetAndFFT_left_fxp_cloned, i8** %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperSetAndFFT_left_fxp_cloned, %struct.thread.wrapperSetAndFFT_left_fxp_cloned* %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %BindIn.wrapperSetAndFFT_left_fxp_cloned49, i8** %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperSetAndFFT_left_fxp_cloned, %struct.thread.wrapperSetAndFFT_left_fxp_cloned* %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperSetAndFFT_left_fxp_cloned50, i8** %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperSetAndFFT_left_fxp_cloned, %struct.thread.wrapperSetAndFFT_left_fxp_cloned* %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %wrapperZoomProcess_fxp_cloned.wrapperSetAndFFT_left_fxp_cloned, i8** %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperSetAndFFT_left_fxp_cloned, %struct.thread.wrapperSetAndFFT_left_fxp_cloned* %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %wrapperSetAndFFT_left_fxp_cloned.wrapperFIR_left_fxp_cloned, i8** %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperSetAndFFT_left_fxp_cloned, %struct.thread.wrapperSetAndFFT_left_fxp_cloned* %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %BindIn.isLastInput.wrapperSetAndFFT_left_fxp_cloned, i8** %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr68 = bitcast %struct.thread.wrapperSetAndFFT_left_fxp_cloned* %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperSetAndFFT_left_fxp_cloned_Pipeline, i8* %wrapperSetAndFFT_left_fxp_cloned.inputs.i8ptr68)
+  %wrapperSetAndFFT_right_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperSetAndFFT_right_fxp_cloned* getelementptr (%struct.thread.wrapperSetAndFFT_right_fxp_cloned, %struct.thread.wrapperSetAndFFT_right_fxp_cloned* null, i32 1) to i64))
+  %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperSetAndFFT_right_fxp_cloned.inputs to %struct.thread.wrapperSetAndFFT_right_fxp_cloned*
+  %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperSetAndFFT_right_fxp_cloned, %struct.thread.wrapperSetAndFFT_right_fxp_cloned* %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperSetAndFFT_right_fxp_cloned, i8** %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperSetAndFFT_right_fxp_cloned, %struct.thread.wrapperSetAndFFT_right_fxp_cloned* %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %BindIn.wrapperSetAndFFT_right_fxp_cloned51, i8** %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperSetAndFFT_right_fxp_cloned, %struct.thread.wrapperSetAndFFT_right_fxp_cloned* %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperSetAndFFT_right_fxp_cloned52, i8** %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperSetAndFFT_right_fxp_cloned, %struct.thread.wrapperSetAndFFT_right_fxp_cloned* %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %wrapperZoomProcess_fxp_cloned.wrapperSetAndFFT_right_fxp_cloned, i8** %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperSetAndFFT_right_fxp_cloned, %struct.thread.wrapperSetAndFFT_right_fxp_cloned* %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %wrapperSetAndFFT_right_fxp_cloned.wrapperFIR_right_fxp_cloned, i8** %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperSetAndFFT_right_fxp_cloned, %struct.thread.wrapperSetAndFFT_right_fxp_cloned* %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %BindIn.isLastInput.wrapperSetAndFFT_right_fxp_cloned, i8** %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr69 = bitcast %struct.thread.wrapperSetAndFFT_right_fxp_cloned* %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperSetAndFFT_right_fxp_cloned_Pipeline, i8* %wrapperSetAndFFT_right_fxp_cloned.inputs.i8ptr69)
+  %wrapperFIR_left_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperFIR_left_fxp_cloned* getelementptr (%struct.thread.wrapperFIR_left_fxp_cloned, %struct.thread.wrapperFIR_left_fxp_cloned* null, i32 1) to i64))
+  %wrapperFIR_left_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperFIR_left_fxp_cloned.inputs to %struct.thread.wrapperFIR_left_fxp_cloned*
+  %wrapperFIR_left_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperFIR_left_fxp_cloned, %struct.thread.wrapperFIR_left_fxp_cloned* %wrapperFIR_left_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperFIR_left_fxp_cloned, i8** %wrapperFIR_left_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperFIR_left_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperFIR_left_fxp_cloned, %struct.thread.wrapperFIR_left_fxp_cloned* %wrapperFIR_left_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperSetAndFFT_left_fxp_cloned.wrapperFIR_left_fxp_cloned, i8** %wrapperFIR_left_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperFIR_left_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperFIR_left_fxp_cloned, %struct.thread.wrapperFIR_left_fxp_cloned* %wrapperFIR_left_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperFIR_left_fxp_cloned53, i8** %wrapperFIR_left_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperFIR_left_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperFIR_left_fxp_cloned, %struct.thread.wrapperFIR_left_fxp_cloned* %wrapperFIR_left_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.wrapperFIR_left_fxp_cloned54, i8** %wrapperFIR_left_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperFIR_left_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperFIR_left_fxp_cloned, %struct.thread.wrapperFIR_left_fxp_cloned* %wrapperFIR_left_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %wrapperFIR_left_fxp_cloned.wrapperIFFT_left_fxp_cloned, i8** %wrapperFIR_left_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperFIR_left_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperFIR_left_fxp_cloned, %struct.thread.wrapperFIR_left_fxp_cloned* %wrapperFIR_left_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %BindIn.isLastInput.wrapperFIR_left_fxp_cloned, i8** %wrapperFIR_left_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperFIR_left_fxp_cloned.inputs.i8ptr70 = bitcast %struct.thread.wrapperFIR_left_fxp_cloned* %wrapperFIR_left_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperFIR_left_fxp_cloned_Pipeline, i8* %wrapperFIR_left_fxp_cloned.inputs.i8ptr70)
+  %wrapperFIR_right_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperFIR_right_fxp_cloned* getelementptr (%struct.thread.wrapperFIR_right_fxp_cloned, %struct.thread.wrapperFIR_right_fxp_cloned* null, i32 1) to i64))
+  %wrapperFIR_right_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperFIR_right_fxp_cloned.inputs to %struct.thread.wrapperFIR_right_fxp_cloned*
+  %wrapperFIR_right_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperFIR_right_fxp_cloned, %struct.thread.wrapperFIR_right_fxp_cloned* %wrapperFIR_right_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperFIR_right_fxp_cloned, i8** %wrapperFIR_right_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperFIR_right_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperFIR_right_fxp_cloned, %struct.thread.wrapperFIR_right_fxp_cloned* %wrapperFIR_right_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperSetAndFFT_right_fxp_cloned.wrapperFIR_right_fxp_cloned, i8** %wrapperFIR_right_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperFIR_right_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperFIR_right_fxp_cloned, %struct.thread.wrapperFIR_right_fxp_cloned* %wrapperFIR_right_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperFIR_right_fxp_cloned55, i8** %wrapperFIR_right_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperFIR_right_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperFIR_right_fxp_cloned, %struct.thread.wrapperFIR_right_fxp_cloned* %wrapperFIR_right_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.wrapperFIR_right_fxp_cloned56, i8** %wrapperFIR_right_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperFIR_right_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperFIR_right_fxp_cloned, %struct.thread.wrapperFIR_right_fxp_cloned* %wrapperFIR_right_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %wrapperFIR_right_fxp_cloned.wrapperIFFT_right_fxp_cloned, i8** %wrapperFIR_right_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperFIR_right_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperFIR_right_fxp_cloned, %struct.thread.wrapperFIR_right_fxp_cloned* %wrapperFIR_right_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %BindIn.isLastInput.wrapperFIR_right_fxp_cloned, i8** %wrapperFIR_right_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperFIR_right_fxp_cloned.inputs.i8ptr71 = bitcast %struct.thread.wrapperFIR_right_fxp_cloned* %wrapperFIR_right_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperFIR_right_fxp_cloned_Pipeline, i8* %wrapperFIR_right_fxp_cloned.inputs.i8ptr71)
+  %wrapperIFFT_left_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperIFFT_left_fxp_cloned* getelementptr (%struct.thread.wrapperIFFT_left_fxp_cloned, %struct.thread.wrapperIFFT_left_fxp_cloned* null, i32 1) to i64))
+  %wrapperIFFT_left_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperIFFT_left_fxp_cloned.inputs to %struct.thread.wrapperIFFT_left_fxp_cloned*
+  %wrapperIFFT_left_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperIFFT_left_fxp_cloned, %struct.thread.wrapperIFFT_left_fxp_cloned* %wrapperIFFT_left_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperIFFT_left_fxp_cloned, i8** %wrapperIFFT_left_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperIFFT_left_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperIFFT_left_fxp_cloned, %struct.thread.wrapperIFFT_left_fxp_cloned* %wrapperIFFT_left_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperFIR_left_fxp_cloned.wrapperIFFT_left_fxp_cloned, i8** %wrapperIFFT_left_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperIFFT_left_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperIFFT_left_fxp_cloned, %struct.thread.wrapperIFFT_left_fxp_cloned* %wrapperIFFT_left_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %wrapperIFFT_left_fxp_cloned.wrapperOverlap_left_fxp_cloned, i8** %wrapperIFFT_left_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperIFFT_left_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperIFFT_left_fxp_cloned, %struct.thread.wrapperIFFT_left_fxp_cloned* %wrapperIFFT_left_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.isLastInput.wrapperIFFT_left_fxp_cloned, i8** %wrapperIFFT_left_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperIFFT_left_fxp_cloned.inputs.i8ptr72 = bitcast %struct.thread.wrapperIFFT_left_fxp_cloned* %wrapperIFFT_left_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperIFFT_left_fxp_cloned_Pipeline, i8* %wrapperIFFT_left_fxp_cloned.inputs.i8ptr72)
+  %wrapperIFFT_right_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperIFFT_right_fxp_cloned* getelementptr (%struct.thread.wrapperIFFT_right_fxp_cloned, %struct.thread.wrapperIFFT_right_fxp_cloned* null, i32 1) to i64))
+  %wrapperIFFT_right_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperIFFT_right_fxp_cloned.inputs to %struct.thread.wrapperIFFT_right_fxp_cloned*
+  %wrapperIFFT_right_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperIFFT_right_fxp_cloned, %struct.thread.wrapperIFFT_right_fxp_cloned* %wrapperIFFT_right_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperIFFT_right_fxp_cloned, i8** %wrapperIFFT_right_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperIFFT_right_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperIFFT_right_fxp_cloned, %struct.thread.wrapperIFFT_right_fxp_cloned* %wrapperIFFT_right_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperFIR_right_fxp_cloned.wrapperIFFT_right_fxp_cloned, i8** %wrapperIFFT_right_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperIFFT_right_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperIFFT_right_fxp_cloned, %struct.thread.wrapperIFFT_right_fxp_cloned* %wrapperIFFT_right_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %wrapperIFFT_right_fxp_cloned.wrapperOverlap_right_fxp_cloned, i8** %wrapperIFFT_right_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperIFFT_right_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperIFFT_right_fxp_cloned, %struct.thread.wrapperIFFT_right_fxp_cloned* %wrapperIFFT_right_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.isLastInput.wrapperIFFT_right_fxp_cloned, i8** %wrapperIFFT_right_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperIFFT_right_fxp_cloned.inputs.i8ptr73 = bitcast %struct.thread.wrapperIFFT_right_fxp_cloned* %wrapperIFFT_right_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperIFFT_right_fxp_cloned_Pipeline, i8* %wrapperIFFT_right_fxp_cloned.inputs.i8ptr73)
+  %wrapperOverlap_right_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperOverlap_right_fxp_cloned* getelementptr (%struct.thread.wrapperOverlap_right_fxp_cloned, %struct.thread.wrapperOverlap_right_fxp_cloned* null, i32 1) to i64))
+  %wrapperOverlap_right_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperOverlap_right_fxp_cloned.inputs to %struct.thread.wrapperOverlap_right_fxp_cloned*
+  %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperOverlap_right_fxp_cloned, %struct.thread.wrapperOverlap_right_fxp_cloned* %wrapperOverlap_right_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperOverlap_right_fxp_cloned, i8** %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperOverlap_right_fxp_cloned, %struct.thread.wrapperOverlap_right_fxp_cloned* %wrapperOverlap_right_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperIFFT_right_fxp_cloned.wrapperOverlap_right_fxp_cloned, i8** %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperOverlap_right_fxp_cloned, %struct.thread.wrapperOverlap_right_fxp_cloned* %wrapperOverlap_right_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperOverlap_right_fxp_cloned59, i8** %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperOverlap_right_fxp_cloned, %struct.thread.wrapperOverlap_right_fxp_cloned* %wrapperOverlap_right_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.wrapperOverlap_right_fxp_cloned60, i8** %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperOverlap_right_fxp_cloned, %struct.thread.wrapperOverlap_right_fxp_cloned* %wrapperOverlap_right_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %BindOut.wrapperOverlap_right_fxp_cloned, i8** %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperOverlap_right_fxp_cloned, %struct.thread.wrapperOverlap_right_fxp_cloned* %wrapperOverlap_right_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %BindIn.isLastInput.wrapperOverlap_right_fxp_cloned, i8** %wrapperOverlap_right_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperOverlap_right_fxp_cloned.inputs.i8ptr74 = bitcast %struct.thread.wrapperOverlap_right_fxp_cloned* %wrapperOverlap_right_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperOverlap_right_fxp_cloned_Pipeline, i8* %wrapperOverlap_right_fxp_cloned.inputs.i8ptr74)
+  %wrapperOverlap_left_fxp_cloned.inputs = call i8* @malloc(i64 ptrtoint (%struct.thread.wrapperOverlap_left_fxp_cloned* getelementptr (%struct.thread.wrapperOverlap_left_fxp_cloned, %struct.thread.wrapperOverlap_left_fxp_cloned* null, i32 1) to i64))
+  %wrapperOverlap_left_fxp_cloned.inputs.i8ptr = bitcast i8* %wrapperOverlap_left_fxp_cloned.inputs to %struct.thread.wrapperOverlap_left_fxp_cloned*
+  %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.arg_0 = getelementptr %struct.thread.wrapperOverlap_left_fxp_cloned, %struct.thread.wrapperOverlap_left_fxp_cloned* %wrapperOverlap_left_fxp_cloned.inputs.i8ptr, i32 0, i32 0
+  store i8* %BindIn.wrapperOverlap_left_fxp_cloned, i8** %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.arg_0
+  %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.arg_1 = getelementptr %struct.thread.wrapperOverlap_left_fxp_cloned, %struct.thread.wrapperOverlap_left_fxp_cloned* %wrapperOverlap_left_fxp_cloned.inputs.i8ptr, i32 0, i32 1
+  store i8* %wrapperIFFT_left_fxp_cloned.wrapperOverlap_left_fxp_cloned, i8** %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.arg_1
+  %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.arg_2 = getelementptr %struct.thread.wrapperOverlap_left_fxp_cloned, %struct.thread.wrapperOverlap_left_fxp_cloned* %wrapperOverlap_left_fxp_cloned.inputs.i8ptr, i32 0, i32 2
+  store i8* %BindIn.wrapperOverlap_left_fxp_cloned57, i8** %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.arg_2
+  %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.arg_3 = getelementptr %struct.thread.wrapperOverlap_left_fxp_cloned, %struct.thread.wrapperOverlap_left_fxp_cloned* %wrapperOverlap_left_fxp_cloned.inputs.i8ptr, i32 0, i32 3
+  store i8* %BindIn.wrapperOverlap_left_fxp_cloned58, i8** %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.arg_3
+  %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.out_0 = getelementptr %struct.thread.wrapperOverlap_left_fxp_cloned, %struct.thread.wrapperOverlap_left_fxp_cloned* %wrapperOverlap_left_fxp_cloned.inputs.i8ptr, i32 0, i32 4
+  store i8* %BindOut.wrapperOverlap_left_fxp_cloned, i8** %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.out_0
+  %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.isLastInput = getelementptr %struct.thread.wrapperOverlap_left_fxp_cloned, %struct.thread.wrapperOverlap_left_fxp_cloned* %wrapperOverlap_left_fxp_cloned.inputs.i8ptr, i32 0, i32 5
+  store i8* %BindIn.isLastInput.wrapperOverlap_left_fxp_cloned, i8** %wrapperOverlap_left_fxp_cloned.inputs.i8ptr.isLastInput
+  %wrapperOverlap_left_fxp_cloned.inputs.i8ptr75 = bitcast %struct.thread.wrapperOverlap_left_fxp_cloned* %wrapperOverlap_left_fxp_cloned.inputs.i8ptr to i8*
+  call void @llvm_hpvm_createThread(i8* %graphID, i8* (i8*)* @wrapperOverlap_left_fxp_cloned_Pipeline, i8* %wrapperOverlap_left_fxp_cloned.inputs.i8ptr75)
+  ret void
 }
 
-define %struct.out.wrapperOverlap_right_fxp @wrapperOverlap_right_fxp_cloned.30_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample1, i64 %bytes_resultSample1, i64 %idx_x, i64 %idx_y, i64 %idx_z, i64 %dim_x, i64 %dim_y, i64 %dim_z) {
+define i8* @wrapperRotatorSet_fxp_cloned_Pipeline(i8* %data.addr) {
 entry:
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %overlap_right_fxp_cloned.29_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.overlap_right_fxp @overlap_right_fxp_cloned.29_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder, i64 %bytes_decoder, float* %resultSample1, i64 %bytes_resultSample1, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %0 = extractvalue %struct.out.overlap_right_fxp %overlap_right_fxp_cloned.29_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  %output = insertvalue %struct.out.wrapperOverlap_right_fxp undef, i64 %0, 0
-  ret %struct.out.wrapperOverlap_right_fxp %output
+  %rotator_buffer.addr = bitcast i8* %data.addr to i8**
+  %rotator_buffer = load i8*, i8** %rotator_buffer.addr
+  %nextArg = getelementptr i8*, i8** %rotator_buffer.addr, i64 1
+  %bytes_rotator_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_rotator_buffer = load i8*, i8** %bytes_rotator_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_rotator_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg1 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg2 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %rotator_buffer)
+  %rotator.addr = inttoptr i64 %1 to %class.CAmbisonicProcessor*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_rotator_buffer)
+  %bytes_rotator.addr = bitcast i64 %2 to i64
+  %wrapperRotatorSet_fxp_cloned.2.output = call %struct.out.wrapperRotatorSet_fxp @wrapperRotatorSet_fxp_cloned.2(%class.CAmbisonicProcessor* %rotator.addr, i64 %bytes_rotator.addr)
+  %3 = extractvalue %struct.out.wrapperRotatorSet_fxp %wrapperRotatorSet_fxp_cloned.2.output, 0
+  %4 = bitcast i64 %3 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %4)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
 }
 
-define %emptyStruct @audioDecoding_cloned.31(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, %class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CAmbisonicBinauralizer* %decoder0, i64 %bytes_decoder0, float* %resultSample0, i64 %bytes_resultSample0, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3, %class.CAmbisonicBinauralizer* %decoder1, i64 %bytes_decoder1, float* %resultSample1, i64 %bytes_resultSample1, i64 %decoder0ChannelCount, i64 %decoder0FFTBins, i64 %decoder1ChannelCount, i64 %decoder1FFTBins) {
+define i8* @wrapperZoomSet_fxp_cloned_Pipeline(i8* %data.addr) {
 entry:
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperRotatorSet_fxp_cloned.2_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperRotatorSet_fxp @wrapperRotatorSet_fxp_cloned.2_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperZoomSet_fxp_cloned.4_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperZoomSet_fxp @wrapperZoomSet_fxp_cloned.4_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %0 = extractvalue %struct.out.wrapperRotatorSet_fxp %wrapperRotatorSet_fxp_cloned.2_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperPsychoFilter_fxp_cloned.6_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperPsychoFilter_fxp @wrapperPsychoFilter_fxp_cloned.6_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %0, %class.CBFormat* %sumBF, i64 %bytes_sumBF, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %1 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  %2 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6_cloned_cloned_cloned_cloned_cloned_cloned_output, 4
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperRotateOrder1_fxp_cloned.8_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperRotateOrder1_fxp @wrapperRotateOrder1_fxp_cloned.8_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %1, i64 %nSample, float** %channelpart1, i64 %2, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %3 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6_cloned_cloned_cloned_cloned_cloned_cloned_output, 1
-  %4 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6_cloned_cloned_cloned_cloned_cloned_cloned_output, 5
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperRotateOrder2_fxp_cloned.10_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperRotateOrder2_fxp @wrapperRotateOrder2_fxp_cloned.10_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %3, i64 %nSample, float** %channelpart2, i64 %4, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %5 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6_cloned_cloned_cloned_cloned_cloned_cloned_output, 2
-  %6 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6_cloned_cloned_cloned_cloned_cloned_cloned_output, 6
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperRotateOrder3_fxp_cloned.12_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperRotateOrder3_fxp @wrapperRotateOrder3_fxp_cloned.12_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicProcessor* %rotator, i64 %5, i64 %nSample, float** %channelpart3, i64 %6, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %7 = extractvalue %struct.out.wrapperZoomSet_fxp %wrapperZoomSet_fxp_cloned.4_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  %8 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6_cloned_cloned_cloned_cloned_cloned_cloned_output, 3
-  %9 = extractvalue %struct.out.wrapperRotateOrder1_fxp %wrapperRotateOrder1_fxp_cloned.8_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  %10 = extractvalue %struct.out.wrapperRotateOrder2_fxp %wrapperRotateOrder2_fxp_cloned.10_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  %11 = extractvalue %struct.out.wrapperRotateOrder3_fxp %wrapperRotateOrder3_fxp_cloned.12_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperZoomProcess_fxp_cloned.14_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperZoomProcess_fxp @wrapperZoomProcess_fxp_cloned.14_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicZoomer* %zoomer, i64 %7, %class.CBFormat* %sumBF, i64 %8, i64 %nSample, float** %channelpart1, i64 %9, float** %channelpart2, i64 %10, float** %channelpart3, i64 %11, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %12 = extractvalue %struct.out.wrapperZoomProcess_fxp %wrapperZoomProcess_fxp_cloned.14_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperSetAndFFT_left_fxp_cloned.16_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperSetAndFFT_left_fxp @wrapperSetAndFFT_left_fxp_cloned.16_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder0, i64 %bytes_decoder0, %class.CBFormat* %sumBF, i64 %12, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %13 = extractvalue %struct.out.wrapperZoomProcess_fxp %wrapperZoomProcess_fxp_cloned.14_cloned_cloned_cloned_cloned_cloned_cloned_output, 1
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperSetAndFFT_right_fxp_cloned.18_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperSetAndFFT_right_fxp @wrapperSetAndFFT_right_fxp_cloned.18_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder1, i64 %bytes_decoder1, %class.CBFormat* %sumBF, i64 %13, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %14 = extractvalue %struct.out.wrapperSetAndFFT_left_fxp %wrapperSetAndFFT_left_fxp_cloned.16_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperFIR_left_fxp_cloned.20_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperFIR_left_fxp @wrapperFIR_left_fxp_cloned.20_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder0, i64 %14, i64 %decoder0ChannelCount, i64 %decoder0FFTBins, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %15 = extractvalue %struct.out.wrapperSetAndFFT_right_fxp %wrapperSetAndFFT_right_fxp_cloned.18_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperFIR_right_fxp_cloned.22_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperFIR_right_fxp @wrapperFIR_right_fxp_cloned.22_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder1, i64 %15, i64 %decoder1ChannelCount, i64 %decoder1FFTBins, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %16 = extractvalue %struct.out.wrapperFIR_left_fxp %wrapperFIR_left_fxp_cloned.20_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperIFFT_left_fxp_cloned.24_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperIFFT_left_fxp @wrapperIFFT_left_fxp_cloned.24_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder0, i64 %16, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %17 = extractvalue %struct.out.wrapperFIR_right_fxp %wrapperFIR_right_fxp_cloned.22_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperIFFT_right_fxp_cloned.26_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperIFFT_right_fxp @wrapperIFFT_right_fxp_cloned.26_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder1, i64 %17, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %18 = extractvalue %struct.out.wrapperIFFT_left_fxp %wrapperIFFT_left_fxp_cloned.24_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperOverlap_left_fxp_cloned.28_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperOverlap_left_fxp @wrapperOverlap_left_fxp_cloned.28_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder0, i64 %18, float* %resultSample0, i64 %bytes_resultSample0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  %19 = extractvalue %struct.out.wrapperIFFT_right_fxp %wrapperIFFT_right_fxp_cloned.26_cloned_cloned_cloned_cloned_cloned_cloned_output, 0
-  call void @llvm_hpvm_cpu_dstack_push(i32 0, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  %wrapperOverlap_right_fxp_cloned.30_cloned_cloned_cloned_cloned_cloned_cloned_output = call %struct.out.wrapperOverlap_right_fxp @wrapperOverlap_right_fxp_cloned.30_cloned_cloned_cloned_cloned_cloned_cloned(%class.CAmbisonicBinauralizer* %decoder1, i64 %19, float* %resultSample1, i64 %bytes_resultSample1, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)
-  call void @llvm_hpvm_cpu_dstack_pop()
-  ret %emptyStruct undef
+  %zoomer_buffer.addr = bitcast i8* %data.addr to i8**
+  %zoomer_buffer = load i8*, i8** %zoomer_buffer.addr
+  %nextArg = getelementptr i8*, i8** %zoomer_buffer.addr, i64 1
+  %bytes_zoomer_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_zoomer_buffer = load i8*, i8** %bytes_zoomer_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_zoomer_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg1 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg2 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %zoomer_buffer)
+  %zoomer.addr = inttoptr i64 %1 to %class.CAmbisonicZoomer*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_zoomer_buffer)
+  %bytes_zoomer.addr = bitcast i64 %2 to i64
+  %wrapperZoomSet_fxp_cloned.4.output = call %struct.out.wrapperZoomSet_fxp @wrapperZoomSet_fxp_cloned.4(%class.CAmbisonicZoomer* %zoomer.addr, i64 %bytes_zoomer.addr)
+  %3 = extractvalue %struct.out.wrapperZoomSet_fxp %wrapperZoomSet_fxp_cloned.4.output, 0
+  %4 = bitcast i64 %3 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %4)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
 }
 
-define i8* @LaunchDataflowGraph(i8* %data.addr) {
+define i8* @wrapperPsychoFilter_fxp_cloned_Pipeline(i8* %data.addr) {
 entry:
-  %rotator.addr = bitcast i8* %data.addr to %class.CAmbisonicProcessor**
-  %rotator = load %class.CAmbisonicProcessor*, %class.CAmbisonicProcessor** %rotator.addr
-  %nextArg = getelementptr %class.CAmbisonicProcessor*, %class.CAmbisonicProcessor** %rotator.addr, i64 1
-  %bytes_rotator.addr = bitcast %class.CAmbisonicProcessor** %nextArg to i64*
-  %bytes_rotator = load i64, i64* %bytes_rotator.addr
-  %nextArg1 = getelementptr i64, i64* %bytes_rotator.addr, i64 1
-  %sumBF.addr = bitcast i64* %nextArg1 to %class.CBFormat**
-  %sumBF = load %class.CBFormat*, %class.CBFormat** %sumBF.addr
-  %nextArg2 = getelementptr %class.CBFormat*, %class.CBFormat** %sumBF.addr, i64 1
-  %bytes_sumBF.addr = bitcast %class.CBFormat** %nextArg2 to i64*
-  %bytes_sumBF = load i64, i64* %bytes_sumBF.addr
-  %nextArg3 = getelementptr i64, i64* %bytes_sumBF.addr, i64 1
-  %zoomer.addr = bitcast i64* %nextArg3 to %class.CAmbisonicZoomer**
-  %zoomer = load %class.CAmbisonicZoomer*, %class.CAmbisonicZoomer** %zoomer.addr
-  %nextArg4 = getelementptr %class.CAmbisonicZoomer*, %class.CAmbisonicZoomer** %zoomer.addr, i64 1
-  %bytes_zoomer.addr = bitcast %class.CAmbisonicZoomer** %nextArg4 to i64*
-  %bytes_zoomer = load i64, i64* %bytes_zoomer.addr
-  %nextArg5 = getelementptr i64, i64* %bytes_zoomer.addr, i64 1
-  %decoder0.addr = bitcast i64* %nextArg5 to %class.CAmbisonicBinauralizer**
-  %decoder0 = load %class.CAmbisonicBinauralizer*, %class.CAmbisonicBinauralizer** %decoder0.addr
-  %nextArg6 = getelementptr %class.CAmbisonicBinauralizer*, %class.CAmbisonicBinauralizer** %decoder0.addr, i64 1
-  %bytes_decoder0.addr = bitcast %class.CAmbisonicBinauralizer** %nextArg6 to i64*
-  %bytes_decoder0 = load i64, i64* %bytes_decoder0.addr
-  %nextArg7 = getelementptr i64, i64* %bytes_decoder0.addr, i64 1
-  %resultSample0.addr = bitcast i64* %nextArg7 to float**
-  %resultSample0 = load float*, float** %resultSample0.addr
-  %nextArg8 = getelementptr float*, float** %resultSample0.addr, i64 1
-  %bytes_resultSample0.addr = bitcast float** %nextArg8 to i64*
-  %bytes_resultSample0 = load i64, i64* %bytes_resultSample0.addr
-  %nextArg9 = getelementptr i64, i64* %bytes_resultSample0.addr, i64 1
-  %nSample.addr = bitcast i64* %nextArg9 to i64*
-  %nSample = load i64, i64* %nSample.addr
-  %nextArg10 = getelementptr i64, i64* %nSample.addr, i64 1
-  %channelpart1.addr = bitcast i64* %nextArg10 to float***
-  %channelpart1 = load float**, float*** %channelpart1.addr
-  %nextArg11 = getelementptr float**, float*** %channelpart1.addr, i64 1
-  %bytes_channelpart1.addr = bitcast float*** %nextArg11 to i64*
-  %bytes_channelpart1 = load i64, i64* %bytes_channelpart1.addr
-  %nextArg12 = getelementptr i64, i64* %bytes_channelpart1.addr, i64 1
-  %channelpart2.addr = bitcast i64* %nextArg12 to float***
-  %channelpart2 = load float**, float*** %channelpart2.addr
-  %nextArg13 = getelementptr float**, float*** %channelpart2.addr, i64 1
-  %bytes_channelpart2.addr = bitcast float*** %nextArg13 to i64*
-  %bytes_channelpart2 = load i64, i64* %bytes_channelpart2.addr
-  %nextArg14 = getelementptr i64, i64* %bytes_channelpart2.addr, i64 1
-  %channelpart3.addr = bitcast i64* %nextArg14 to float***
-  %channelpart3 = load float**, float*** %channelpart3.addr
-  %nextArg15 = getelementptr float**, float*** %channelpart3.addr, i64 1
-  %bytes_channelpart3.addr = bitcast float*** %nextArg15 to i64*
-  %bytes_channelpart3 = load i64, i64* %bytes_channelpart3.addr
-  %nextArg16 = getelementptr i64, i64* %bytes_channelpart3.addr, i64 1
-  %decoder1.addr = bitcast i64* %nextArg16 to %class.CAmbisonicBinauralizer**
-  %decoder1 = load %class.CAmbisonicBinauralizer*, %class.CAmbisonicBinauralizer** %decoder1.addr
-  %nextArg17 = getelementptr %class.CAmbisonicBinauralizer*, %class.CAmbisonicBinauralizer** %decoder1.addr, i64 1
-  %bytes_decoder1.addr = bitcast %class.CAmbisonicBinauralizer** %nextArg17 to i64*
-  %bytes_decoder1 = load i64, i64* %bytes_decoder1.addr
-  %nextArg18 = getelementptr i64, i64* %bytes_decoder1.addr, i64 1
-  %resultSample1.addr = bitcast i64* %nextArg18 to float**
-  %resultSample1 = load float*, float** %resultSample1.addr
-  %nextArg19 = getelementptr float*, float** %resultSample1.addr, i64 1
-  %bytes_resultSample1.addr = bitcast float** %nextArg19 to i64*
-  %bytes_resultSample1 = load i64, i64* %bytes_resultSample1.addr
-  %nextArg20 = getelementptr i64, i64* %bytes_resultSample1.addr, i64 1
-  %decoder0ChannelCount.addr = bitcast i64* %nextArg20 to i64*
-  %decoder0ChannelCount = load i64, i64* %decoder0ChannelCount.addr
-  %nextArg21 = getelementptr i64, i64* %decoder0ChannelCount.addr, i64 1
-  %decoder0FFTBins.addr = bitcast i64* %nextArg21 to i64*
-  %decoder0FFTBins = load i64, i64* %decoder0FFTBins.addr
-  %nextArg22 = getelementptr i64, i64* %decoder0FFTBins.addr, i64 1
-  %decoder1ChannelCount.addr = bitcast i64* %nextArg22 to i64*
-  %decoder1ChannelCount = load i64, i64* %decoder1ChannelCount.addr
-  %nextArg23 = getelementptr i64, i64* %decoder1ChannelCount.addr, i64 1
-  %decoder1FFTBins.addr = bitcast i64* %nextArg23 to i64*
-  %decoder1FFTBins = load i64, i64* %decoder1FFTBins.addr
-  %audioDecoding_cloned.31.output = call %emptyStruct @audioDecoding_cloned.31(%class.CAmbisonicProcessor* %rotator, i64 %bytes_rotator, %class.CBFormat* %sumBF, i64 %bytes_sumBF, %class.CAmbisonicZoomer* %zoomer, i64 %bytes_zoomer, %class.CAmbisonicBinauralizer* %decoder0, i64 %bytes_decoder0, float* %resultSample0, i64 %bytes_resultSample0, i64 %nSample, float** %channelpart1, i64 %bytes_channelpart1, float** %channelpart2, i64 %bytes_channelpart2, float** %channelpart3, i64 %bytes_channelpart3, %class.CAmbisonicBinauralizer* %decoder1, i64 %bytes_decoder1, float* %resultSample1, i64 %bytes_resultSample1, i64 %decoder0ChannelCount, i64 %decoder0FFTBins, i64 %decoder1ChannelCount, i64 %decoder1FFTBins)
-  %audioDecoding_cloned.31.output.addr = bitcast i8* %data.addr to %emptyStruct*
-  store %emptyStruct %audioDecoding_cloned.31.output, %emptyStruct* %audioDecoding_cloned.31.output.addr
-  ret i8* null
+  %rotator_buffer.addr = bitcast i8* %data.addr to i8**
+  %rotator_buffer = load i8*, i8** %rotator_buffer.addr
+  %nextArg = getelementptr i8*, i8** %rotator_buffer.addr, i64 1
+  %bytes_rotator_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_rotator_buffer = load i8*, i8** %bytes_rotator_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_rotator_buffer.addr, i64 1
+  %sumBF_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %sumBF_buffer = load i8*, i8** %sumBF_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %sumBF_buffer.addr, i64 1
+  %bytes_sumBF_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %bytes_sumBF_buffer = load i8*, i8** %bytes_sumBF_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %bytes_sumBF_buffer.addr, i64 1
+  %nSample_buffer.addr = bitcast i8** %nextArg3 to i8**
+  %nSample_buffer = load i8*, i8** %nSample_buffer.addr
+  %nextArg4 = getelementptr i8*, i8** %nSample_buffer.addr, i64 1
+  %channelpart1_buffer.addr = bitcast i8** %nextArg4 to i8**
+  %channelpart1_buffer = load i8*, i8** %channelpart1_buffer.addr
+  %nextArg5 = getelementptr i8*, i8** %channelpart1_buffer.addr, i64 1
+  %bytes_channelpart1_buffer.addr = bitcast i8** %nextArg5 to i8**
+  %bytes_channelpart1_buffer = load i8*, i8** %bytes_channelpart1_buffer.addr
+  %nextArg6 = getelementptr i8*, i8** %bytes_channelpart1_buffer.addr, i64 1
+  %channelpart2_buffer.addr = bitcast i8** %nextArg6 to i8**
+  %channelpart2_buffer = load i8*, i8** %channelpart2_buffer.addr
+  %nextArg7 = getelementptr i8*, i8** %channelpart2_buffer.addr, i64 1
+  %bytes_channelpart2_buffer.addr = bitcast i8** %nextArg7 to i8**
+  %bytes_channelpart2_buffer = load i8*, i8** %bytes_channelpart2_buffer.addr
+  %nextArg8 = getelementptr i8*, i8** %bytes_channelpart2_buffer.addr, i64 1
+  %channelpart3_buffer.addr = bitcast i8** %nextArg8 to i8**
+  %channelpart3_buffer = load i8*, i8** %channelpart3_buffer.addr
+  %nextArg9 = getelementptr i8*, i8** %channelpart3_buffer.addr, i64 1
+  %bytes_channelpart3_buffer.addr = bitcast i8** %nextArg9 to i8**
+  %bytes_channelpart3_buffer = load i8*, i8** %bytes_channelpart3_buffer.addr
+  %nextArg10 = getelementptr i8*, i8** %bytes_channelpart3_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg10 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg11 = getelementptr i8*, i8** %out.addr, i64 1
+  %out.addr12 = bitcast i8** %nextArg11 to i8**
+  %out13 = load i8*, i8** %out.addr12
+  %nextArg14 = getelementptr i8*, i8** %out.addr12, i64 1
+  %out.addr15 = bitcast i8** %nextArg14 to i8**
+  %out16 = load i8*, i8** %out.addr15
+  %nextArg17 = getelementptr i8*, i8** %out.addr15, i64 1
+  %out.addr18 = bitcast i8** %nextArg17 to i8**
+  %out19 = load i8*, i8** %out.addr18
+  %nextArg20 = getelementptr i8*, i8** %out.addr18, i64 1
+  %out.addr21 = bitcast i8** %nextArg20 to i8**
+  %out22 = load i8*, i8** %out.addr21
+  %nextArg23 = getelementptr i8*, i8** %out.addr21, i64 1
+  %out.addr24 = bitcast i8** %nextArg23 to i8**
+  %out25 = load i8*, i8** %out.addr24
+  %nextArg26 = getelementptr i8*, i8** %out.addr24, i64 1
+  %out.addr27 = bitcast i8** %nextArg26 to i8**
+  %out28 = load i8*, i8** %out.addr27
+  %nextArg29 = getelementptr i8*, i8** %out.addr27, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg29 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %rotator_buffer)
+  %rotator.addr = inttoptr i64 %1 to %class.CAmbisonicProcessor*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_rotator_buffer)
+  %bytes_rotator.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %sumBF_buffer)
+  %sumBF.addr = inttoptr i64 %3 to %class.CBFormat*
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_sumBF_buffer)
+  %bytes_sumBF.addr = bitcast i64 %4 to i64
+  %5 = call i64 @llvm_hpvm_bufferPop(i8* %nSample_buffer)
+  %nSample.addr = bitcast i64 %5 to i64
+  %6 = call i64 @llvm_hpvm_bufferPop(i8* %channelpart1_buffer)
+  %channelpart1.addr = inttoptr i64 %6 to float**
+  %7 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_channelpart1_buffer)
+  %bytes_channelpart1.addr = bitcast i64 %7 to i64
+  %8 = call i64 @llvm_hpvm_bufferPop(i8* %channelpart2_buffer)
+  %channelpart2.addr = inttoptr i64 %8 to float**
+  %9 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_channelpart2_buffer)
+  %bytes_channelpart2.addr = bitcast i64 %9 to i64
+  %10 = call i64 @llvm_hpvm_bufferPop(i8* %channelpart3_buffer)
+  %channelpart3.addr = inttoptr i64 %10 to float**
+  %11 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_channelpart3_buffer)
+  %bytes_channelpart3.addr = bitcast i64 %11 to i64
+  %wrapperPsychoFilter_fxp_cloned.6.output = call %struct.out.wrapperPsychoFilter_fxp @wrapperPsychoFilter_fxp_cloned.6(%class.CAmbisonicProcessor* %rotator.addr, i64 %bytes_rotator.addr, %class.CBFormat* %sumBF.addr, i64 %bytes_sumBF.addr, i64 %nSample.addr, float** %channelpart1.addr, i64 %bytes_channelpart1.addr, float** %channelpart2.addr, i64 %bytes_channelpart2.addr, float** %channelpart3.addr, i64 %bytes_channelpart3.addr)
+  %12 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6.output, 0
+  %13 = bitcast i64 %12 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %13)
+  %14 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6.output, 1
+  %15 = bitcast i64 %14 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out13, i64 %15)
+  %16 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6.output, 2
+  %17 = bitcast i64 %16 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out16, i64 %17)
+  %18 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6.output, 3
+  %19 = bitcast i64 %18 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out19, i64 %19)
+  %20 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6.output, 4
+  %21 = bitcast i64 %20 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out22, i64 %21)
+  %22 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6.output, 5
+  %23 = bitcast i64 %22 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out25, i64 %23)
+  %24 = extractvalue %struct.out.wrapperPsychoFilter_fxp %wrapperPsychoFilter_fxp_cloned.6.output, 6
+  %25 = bitcast i64 %24 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out28, i64 %25)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperRotateOrder1_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %rotator_buffer.addr = bitcast i8* %data.addr to i8**
+  %rotator_buffer = load i8*, i8** %rotator_buffer.addr
+  %nextArg = getelementptr i8*, i8** %rotator_buffer.addr, i64 1
+  %bytes_rotator_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_rotator_buffer = load i8*, i8** %bytes_rotator_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_rotator_buffer.addr, i64 1
+  %nSample_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %nSample_buffer = load i8*, i8** %nSample_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %nSample_buffer.addr, i64 1
+  %channelpart1_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %channelpart1_buffer = load i8*, i8** %channelpart1_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %channelpart1_buffer.addr, i64 1
+  %bytes_channelpart1_buffer.addr = bitcast i8** %nextArg3 to i8**
+  %bytes_channelpart1_buffer = load i8*, i8** %bytes_channelpart1_buffer.addr
+  %nextArg4 = getelementptr i8*, i8** %bytes_channelpart1_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg4 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg5 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg5 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %rotator_buffer)
+  %rotator.addr = inttoptr i64 %1 to %class.CAmbisonicProcessor*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_rotator_buffer)
+  %bytes_rotator.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %nSample_buffer)
+  %nSample.addr = bitcast i64 %3 to i64
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %channelpart1_buffer)
+  %channelpart1.addr = inttoptr i64 %4 to float**
+  %5 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_channelpart1_buffer)
+  %bytes_channelpart1.addr = bitcast i64 %5 to i64
+  %wrapperRotateOrder1_fxp_cloned.8.output = call %struct.out.wrapperRotateOrder1_fxp @wrapperRotateOrder1_fxp_cloned.8(%class.CAmbisonicProcessor* %rotator.addr, i64 %bytes_rotator.addr, i64 %nSample.addr, float** %channelpart1.addr, i64 %bytes_channelpart1.addr)
+  %6 = extractvalue %struct.out.wrapperRotateOrder1_fxp %wrapperRotateOrder1_fxp_cloned.8.output, 0
+  %7 = bitcast i64 %6 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %7)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperRotateOrder2_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %rotator_buffer.addr = bitcast i8* %data.addr to i8**
+  %rotator_buffer = load i8*, i8** %rotator_buffer.addr
+  %nextArg = getelementptr i8*, i8** %rotator_buffer.addr, i64 1
+  %bytes_rotator_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_rotator_buffer = load i8*, i8** %bytes_rotator_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_rotator_buffer.addr, i64 1
+  %nSample_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %nSample_buffer = load i8*, i8** %nSample_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %nSample_buffer.addr, i64 1
+  %channelpart2_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %channelpart2_buffer = load i8*, i8** %channelpart2_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %channelpart2_buffer.addr, i64 1
+  %bytes_channelpart2_buffer.addr = bitcast i8** %nextArg3 to i8**
+  %bytes_channelpart2_buffer = load i8*, i8** %bytes_channelpart2_buffer.addr
+  %nextArg4 = getelementptr i8*, i8** %bytes_channelpart2_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg4 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg5 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg5 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %rotator_buffer)
+  %rotator.addr = inttoptr i64 %1 to %class.CAmbisonicProcessor*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_rotator_buffer)
+  %bytes_rotator.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %nSample_buffer)
+  %nSample.addr = bitcast i64 %3 to i64
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %channelpart2_buffer)
+  %channelpart2.addr = inttoptr i64 %4 to float**
+  %5 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_channelpart2_buffer)
+  %bytes_channelpart2.addr = bitcast i64 %5 to i64
+  %wrapperRotateOrder2_fxp_cloned.10.output = call %struct.out.wrapperRotateOrder2_fxp @wrapperRotateOrder2_fxp_cloned.10(%class.CAmbisonicProcessor* %rotator.addr, i64 %bytes_rotator.addr, i64 %nSample.addr, float** %channelpart2.addr, i64 %bytes_channelpart2.addr)
+  %6 = extractvalue %struct.out.wrapperRotateOrder2_fxp %wrapperRotateOrder2_fxp_cloned.10.output, 0
+  %7 = bitcast i64 %6 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %7)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperRotateOrder3_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %rotator_buffer.addr = bitcast i8* %data.addr to i8**
+  %rotator_buffer = load i8*, i8** %rotator_buffer.addr
+  %nextArg = getelementptr i8*, i8** %rotator_buffer.addr, i64 1
+  %bytes_rotator_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_rotator_buffer = load i8*, i8** %bytes_rotator_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_rotator_buffer.addr, i64 1
+  %nSample_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %nSample_buffer = load i8*, i8** %nSample_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %nSample_buffer.addr, i64 1
+  %channelpart3_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %channelpart3_buffer = load i8*, i8** %channelpart3_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %channelpart3_buffer.addr, i64 1
+  %bytes_channelpart3_buffer.addr = bitcast i8** %nextArg3 to i8**
+  %bytes_channelpart3_buffer = load i8*, i8** %bytes_channelpart3_buffer.addr
+  %nextArg4 = getelementptr i8*, i8** %bytes_channelpart3_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg4 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg5 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg5 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %rotator_buffer)
+  %rotator.addr = inttoptr i64 %1 to %class.CAmbisonicProcessor*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_rotator_buffer)
+  %bytes_rotator.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %nSample_buffer)
+  %nSample.addr = bitcast i64 %3 to i64
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %channelpart3_buffer)
+  %channelpart3.addr = inttoptr i64 %4 to float**
+  %5 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_channelpart3_buffer)
+  %bytes_channelpart3.addr = bitcast i64 %5 to i64
+  %wrapperRotateOrder3_fxp_cloned.12.output = call %struct.out.wrapperRotateOrder3_fxp @wrapperRotateOrder3_fxp_cloned.12(%class.CAmbisonicProcessor* %rotator.addr, i64 %bytes_rotator.addr, i64 %nSample.addr, float** %channelpart3.addr, i64 %bytes_channelpart3.addr)
+  %6 = extractvalue %struct.out.wrapperRotateOrder3_fxp %wrapperRotateOrder3_fxp_cloned.12.output, 0
+  %7 = bitcast i64 %6 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %7)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperZoomProcess_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %zoomer_buffer.addr = bitcast i8* %data.addr to i8**
+  %zoomer_buffer = load i8*, i8** %zoomer_buffer.addr
+  %nextArg = getelementptr i8*, i8** %zoomer_buffer.addr, i64 1
+  %bytes_zoomer_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_zoomer_buffer = load i8*, i8** %bytes_zoomer_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_zoomer_buffer.addr, i64 1
+  %sumBF_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %sumBF_buffer = load i8*, i8** %sumBF_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %sumBF_buffer.addr, i64 1
+  %bytes_sumBF_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %bytes_sumBF_buffer = load i8*, i8** %bytes_sumBF_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %bytes_sumBF_buffer.addr, i64 1
+  %nSample_buffer.addr = bitcast i8** %nextArg3 to i8**
+  %nSample_buffer = load i8*, i8** %nSample_buffer.addr
+  %nextArg4 = getelementptr i8*, i8** %nSample_buffer.addr, i64 1
+  %channelpart1_buffer.addr = bitcast i8** %nextArg4 to i8**
+  %channelpart1_buffer = load i8*, i8** %channelpart1_buffer.addr
+  %nextArg5 = getelementptr i8*, i8** %channelpart1_buffer.addr, i64 1
+  %bytes_channelpart1_buffer.addr = bitcast i8** %nextArg5 to i8**
+  %bytes_channelpart1_buffer = load i8*, i8** %bytes_channelpart1_buffer.addr
+  %nextArg6 = getelementptr i8*, i8** %bytes_channelpart1_buffer.addr, i64 1
+  %channelpart2_buffer.addr = bitcast i8** %nextArg6 to i8**
+  %channelpart2_buffer = load i8*, i8** %channelpart2_buffer.addr
+  %nextArg7 = getelementptr i8*, i8** %channelpart2_buffer.addr, i64 1
+  %bytes_channelpart2_buffer.addr = bitcast i8** %nextArg7 to i8**
+  %bytes_channelpart2_buffer = load i8*, i8** %bytes_channelpart2_buffer.addr
+  %nextArg8 = getelementptr i8*, i8** %bytes_channelpart2_buffer.addr, i64 1
+  %channelpart3_buffer.addr = bitcast i8** %nextArg8 to i8**
+  %channelpart3_buffer = load i8*, i8** %channelpart3_buffer.addr
+  %nextArg9 = getelementptr i8*, i8** %channelpart3_buffer.addr, i64 1
+  %bytes_channelpart3_buffer.addr = bitcast i8** %nextArg9 to i8**
+  %bytes_channelpart3_buffer = load i8*, i8** %bytes_channelpart3_buffer.addr
+  %nextArg10 = getelementptr i8*, i8** %bytes_channelpart3_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg10 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg11 = getelementptr i8*, i8** %out.addr, i64 1
+  %out.addr12 = bitcast i8** %nextArg11 to i8**
+  %out13 = load i8*, i8** %out.addr12
+  %nextArg14 = getelementptr i8*, i8** %out.addr12, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg14 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %zoomer_buffer)
+  %zoomer.addr = inttoptr i64 %1 to %class.CAmbisonicZoomer*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_zoomer_buffer)
+  %bytes_zoomer.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %sumBF_buffer)
+  %sumBF.addr = inttoptr i64 %3 to %class.CBFormat*
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_sumBF_buffer)
+  %bytes_sumBF.addr = bitcast i64 %4 to i64
+  %5 = call i64 @llvm_hpvm_bufferPop(i8* %nSample_buffer)
+  %nSample.addr = bitcast i64 %5 to i64
+  %6 = call i64 @llvm_hpvm_bufferPop(i8* %channelpart1_buffer)
+  %channelpart1.addr = inttoptr i64 %6 to float**
+  %7 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_channelpart1_buffer)
+  %bytes_channelpart1.addr = bitcast i64 %7 to i64
+  %8 = call i64 @llvm_hpvm_bufferPop(i8* %channelpart2_buffer)
+  %channelpart2.addr = inttoptr i64 %8 to float**
+  %9 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_channelpart2_buffer)
+  %bytes_channelpart2.addr = bitcast i64 %9 to i64
+  %10 = call i64 @llvm_hpvm_bufferPop(i8* %channelpart3_buffer)
+  %channelpart3.addr = inttoptr i64 %10 to float**
+  %11 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_channelpart3_buffer)
+  %bytes_channelpart3.addr = bitcast i64 %11 to i64
+  %wrapperZoomProcess_fxp_cloned.14.output = call %struct.out.wrapperZoomProcess_fxp @wrapperZoomProcess_fxp_cloned.14(%class.CAmbisonicZoomer* %zoomer.addr, i64 %bytes_zoomer.addr, %class.CBFormat* %sumBF.addr, i64 %bytes_sumBF.addr, i64 %nSample.addr, float** %channelpart1.addr, i64 %bytes_channelpart1.addr, float** %channelpart2.addr, i64 %bytes_channelpart2.addr, float** %channelpart3.addr, i64 %bytes_channelpart3.addr)
+  %12 = extractvalue %struct.out.wrapperZoomProcess_fxp %wrapperZoomProcess_fxp_cloned.14.output, 0
+  %13 = bitcast i64 %12 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %13)
+  %14 = extractvalue %struct.out.wrapperZoomProcess_fxp %wrapperZoomProcess_fxp_cloned.14.output, 1
+  %15 = bitcast i64 %14 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out13, i64 %15)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperSetAndFFT_left_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %decoder_buffer.addr = bitcast i8* %data.addr to i8**
+  %decoder_buffer = load i8*, i8** %decoder_buffer.addr
+  %nextArg = getelementptr i8*, i8** %decoder_buffer.addr, i64 1
+  %bytes_decoder_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_decoder_buffer = load i8*, i8** %bytes_decoder_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_decoder_buffer.addr, i64 1
+  %sumBF_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %sumBF_buffer = load i8*, i8** %sumBF_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %sumBF_buffer.addr, i64 1
+  %bytes_sumBF_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %bytes_sumBF_buffer = load i8*, i8** %bytes_sumBF_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %bytes_sumBF_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg3 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg4 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg4 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %decoder_buffer)
+  %decoder.addr = inttoptr i64 %1 to %class.CAmbisonicBinauralizer*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_decoder_buffer)
+  %bytes_decoder.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %sumBF_buffer)
+  %sumBF.addr = inttoptr i64 %3 to %class.CBFormat*
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_sumBF_buffer)
+  %bytes_sumBF.addr = bitcast i64 %4 to i64
+  %wrapperSetAndFFT_left_fxp_cloned.16.output = call %struct.out.wrapperSetAndFFT_left_fxp @wrapperSetAndFFT_left_fxp_cloned.16(%class.CAmbisonicBinauralizer* %decoder.addr, i64 %bytes_decoder.addr, %class.CBFormat* %sumBF.addr, i64 %bytes_sumBF.addr)
+  %5 = extractvalue %struct.out.wrapperSetAndFFT_left_fxp %wrapperSetAndFFT_left_fxp_cloned.16.output, 0
+  %6 = bitcast i64 %5 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %6)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperSetAndFFT_right_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %decoder_buffer.addr = bitcast i8* %data.addr to i8**
+  %decoder_buffer = load i8*, i8** %decoder_buffer.addr
+  %nextArg = getelementptr i8*, i8** %decoder_buffer.addr, i64 1
+  %bytes_decoder_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_decoder_buffer = load i8*, i8** %bytes_decoder_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_decoder_buffer.addr, i64 1
+  %sumBF_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %sumBF_buffer = load i8*, i8** %sumBF_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %sumBF_buffer.addr, i64 1
+  %bytes_sumBF_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %bytes_sumBF_buffer = load i8*, i8** %bytes_sumBF_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %bytes_sumBF_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg3 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg4 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg4 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %decoder_buffer)
+  %decoder.addr = inttoptr i64 %1 to %class.CAmbisonicBinauralizer*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_decoder_buffer)
+  %bytes_decoder.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %sumBF_buffer)
+  %sumBF.addr = inttoptr i64 %3 to %class.CBFormat*
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_sumBF_buffer)
+  %bytes_sumBF.addr = bitcast i64 %4 to i64
+  %wrapperSetAndFFT_right_fxp_cloned.18.output = call %struct.out.wrapperSetAndFFT_right_fxp @wrapperSetAndFFT_right_fxp_cloned.18(%class.CAmbisonicBinauralizer* %decoder.addr, i64 %bytes_decoder.addr, %class.CBFormat* %sumBF.addr, i64 %bytes_sumBF.addr)
+  %5 = extractvalue %struct.out.wrapperSetAndFFT_right_fxp %wrapperSetAndFFT_right_fxp_cloned.18.output, 0
+  %6 = bitcast i64 %5 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %6)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperFIR_left_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %decoder_buffer.addr = bitcast i8* %data.addr to i8**
+  %decoder_buffer = load i8*, i8** %decoder_buffer.addr
+  %nextArg = getelementptr i8*, i8** %decoder_buffer.addr, i64 1
+  %bytes_decoder_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_decoder_buffer = load i8*, i8** %bytes_decoder_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_decoder_buffer.addr, i64 1
+  %decoder0ChannelCount_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %decoder0ChannelCount_buffer = load i8*, i8** %decoder0ChannelCount_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %decoder0ChannelCount_buffer.addr, i64 1
+  %decoder0FFTBins_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %decoder0FFTBins_buffer = load i8*, i8** %decoder0FFTBins_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %decoder0FFTBins_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg3 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg4 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg4 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %decoder_buffer)
+  %decoder.addr = inttoptr i64 %1 to %class.CAmbisonicBinauralizer*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_decoder_buffer)
+  %bytes_decoder.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %decoder0ChannelCount_buffer)
+  %decoder0ChannelCount.addr = bitcast i64 %3 to i64
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %decoder0FFTBins_buffer)
+  %decoder0FFTBins.addr = bitcast i64 %4 to i64
+  %wrapperFIR_left_fxp_cloned.20.output = call %struct.out.wrapperFIR_left_fxp @wrapperFIR_left_fxp_cloned.20(%class.CAmbisonicBinauralizer* %decoder.addr, i64 %bytes_decoder.addr, i64 %decoder0ChannelCount.addr, i64 %decoder0FFTBins.addr)
+  %5 = extractvalue %struct.out.wrapperFIR_left_fxp %wrapperFIR_left_fxp_cloned.20.output, 0
+  %6 = bitcast i64 %5 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %6)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperFIR_right_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %decoder_buffer.addr = bitcast i8* %data.addr to i8**
+  %decoder_buffer = load i8*, i8** %decoder_buffer.addr
+  %nextArg = getelementptr i8*, i8** %decoder_buffer.addr, i64 1
+  %bytes_decoder_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_decoder_buffer = load i8*, i8** %bytes_decoder_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_decoder_buffer.addr, i64 1
+  %decoder1ChannelCount_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %decoder1ChannelCount_buffer = load i8*, i8** %decoder1ChannelCount_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %decoder1ChannelCount_buffer.addr, i64 1
+  %decoder1FFTBins_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %decoder1FFTBins_buffer = load i8*, i8** %decoder1FFTBins_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %decoder1FFTBins_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg3 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg4 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg4 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %decoder_buffer)
+  %decoder.addr = inttoptr i64 %1 to %class.CAmbisonicBinauralizer*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_decoder_buffer)
+  %bytes_decoder.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %decoder1ChannelCount_buffer)
+  %decoder1ChannelCount.addr = bitcast i64 %3 to i64
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %decoder1FFTBins_buffer)
+  %decoder1FFTBins.addr = bitcast i64 %4 to i64
+  %wrapperFIR_right_fxp_cloned.22.output = call %struct.out.wrapperFIR_right_fxp @wrapperFIR_right_fxp_cloned.22(%class.CAmbisonicBinauralizer* %decoder.addr, i64 %bytes_decoder.addr, i64 %decoder1ChannelCount.addr, i64 %decoder1FFTBins.addr)
+  %5 = extractvalue %struct.out.wrapperFIR_right_fxp %wrapperFIR_right_fxp_cloned.22.output, 0
+  %6 = bitcast i64 %5 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %6)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperIFFT_left_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %decoder_buffer.addr = bitcast i8* %data.addr to i8**
+  %decoder_buffer = load i8*, i8** %decoder_buffer.addr
+  %nextArg = getelementptr i8*, i8** %decoder_buffer.addr, i64 1
+  %bytes_decoder_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_decoder_buffer = load i8*, i8** %bytes_decoder_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_decoder_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg1 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg2 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %decoder_buffer)
+  %decoder.addr = inttoptr i64 %1 to %class.CAmbisonicBinauralizer*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_decoder_buffer)
+  %bytes_decoder.addr = bitcast i64 %2 to i64
+  %wrapperIFFT_left_fxp_cloned.24.output = call %struct.out.wrapperIFFT_left_fxp @wrapperIFFT_left_fxp_cloned.24(%class.CAmbisonicBinauralizer* %decoder.addr, i64 %bytes_decoder.addr)
+  %3 = extractvalue %struct.out.wrapperIFFT_left_fxp %wrapperIFFT_left_fxp_cloned.24.output, 0
+  %4 = bitcast i64 %3 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %4)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperIFFT_right_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %decoder_buffer.addr = bitcast i8* %data.addr to i8**
+  %decoder_buffer = load i8*, i8** %decoder_buffer.addr
+  %nextArg = getelementptr i8*, i8** %decoder_buffer.addr, i64 1
+  %bytes_decoder_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_decoder_buffer = load i8*, i8** %bytes_decoder_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_decoder_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg1 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg2 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %decoder_buffer)
+  %decoder.addr = inttoptr i64 %1 to %class.CAmbisonicBinauralizer*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_decoder_buffer)
+  %bytes_decoder.addr = bitcast i64 %2 to i64
+  %wrapperIFFT_right_fxp_cloned.26.output = call %struct.out.wrapperIFFT_right_fxp @wrapperIFFT_right_fxp_cloned.26(%class.CAmbisonicBinauralizer* %decoder.addr, i64 %bytes_decoder.addr)
+  %3 = extractvalue %struct.out.wrapperIFFT_right_fxp %wrapperIFFT_right_fxp_cloned.26.output, 0
+  %4 = bitcast i64 %3 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %4)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperOverlap_right_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %decoder_buffer.addr = bitcast i8* %data.addr to i8**
+  %decoder_buffer = load i8*, i8** %decoder_buffer.addr
+  %nextArg = getelementptr i8*, i8** %decoder_buffer.addr, i64 1
+  %bytes_decoder_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_decoder_buffer = load i8*, i8** %bytes_decoder_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_decoder_buffer.addr, i64 1
+  %resultSample1_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %resultSample1_buffer = load i8*, i8** %resultSample1_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %resultSample1_buffer.addr, i64 1
+  %bytes_resultSample1_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %bytes_resultSample1_buffer = load i8*, i8** %bytes_resultSample1_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %bytes_resultSample1_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg3 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg4 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg4 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %decoder_buffer)
+  %decoder.addr = inttoptr i64 %1 to %class.CAmbisonicBinauralizer*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_decoder_buffer)
+  %bytes_decoder.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %resultSample1_buffer)
+  %resultSample1.addr = inttoptr i64 %3 to float*
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_resultSample1_buffer)
+  %bytes_resultSample1.addr = bitcast i64 %4 to i64
+  %wrapperOverlap_right_fxp_cloned.28.output = call %struct.out.wrapperOverlap_right_fxp @wrapperOverlap_right_fxp_cloned.28(%class.CAmbisonicBinauralizer* %decoder.addr, i64 %bytes_decoder.addr, float* %resultSample1.addr, i64 %bytes_resultSample1.addr)
+  %5 = extractvalue %struct.out.wrapperOverlap_right_fxp %wrapperOverlap_right_fxp_cloned.28.output, 0
+  %6 = bitcast i64 %5 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %6)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
+}
+
+define i8* @wrapperOverlap_left_fxp_cloned_Pipeline(i8* %data.addr) {
+entry:
+  %decoder_buffer.addr = bitcast i8* %data.addr to i8**
+  %decoder_buffer = load i8*, i8** %decoder_buffer.addr
+  %nextArg = getelementptr i8*, i8** %decoder_buffer.addr, i64 1
+  %bytes_decoder_buffer.addr = bitcast i8** %nextArg to i8**
+  %bytes_decoder_buffer = load i8*, i8** %bytes_decoder_buffer.addr
+  %nextArg1 = getelementptr i8*, i8** %bytes_decoder_buffer.addr, i64 1
+  %resultSample0_buffer.addr = bitcast i8** %nextArg1 to i8**
+  %resultSample0_buffer = load i8*, i8** %resultSample0_buffer.addr
+  %nextArg2 = getelementptr i8*, i8** %resultSample0_buffer.addr, i64 1
+  %bytes_resultSample0_buffer.addr = bitcast i8** %nextArg2 to i8**
+  %bytes_resultSample0_buffer = load i8*, i8** %bytes_resultSample0_buffer.addr
+  %nextArg3 = getelementptr i8*, i8** %bytes_resultSample0_buffer.addr, i64 1
+  %out.addr = bitcast i8** %nextArg3 to i8**
+  %out = load i8*, i8** %out.addr
+  %nextArg4 = getelementptr i8*, i8** %out.addr, i64 1
+  %isLastInput_buffer.addr = bitcast i8** %nextArg4 to i8**
+  %isLastInput_buffer = load i8*, i8** %isLastInput_buffer.addr
+  br label %condition
+
+condition:                                        ; preds = %while.body, %entry
+  %0 = call i64 @llvm_hpvm_bufferPop(i8* %isLastInput_buffer)
+  %isLastInput = bitcast i64 %0 to i64
+  %isLastInputNotZero = icmp ne i64 %isLastInput, 0
+  br i1 %isLastInputNotZero, label %while.end, label %while.body
+
+while.body:                                       ; preds = %condition
+  %1 = call i64 @llvm_hpvm_bufferPop(i8* %decoder_buffer)
+  %decoder.addr = inttoptr i64 %1 to %class.CAmbisonicBinauralizer*
+  %2 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_decoder_buffer)
+  %bytes_decoder.addr = bitcast i64 %2 to i64
+  %3 = call i64 @llvm_hpvm_bufferPop(i8* %resultSample0_buffer)
+  %resultSample0.addr = inttoptr i64 %3 to float*
+  %4 = call i64 @llvm_hpvm_bufferPop(i8* %bytes_resultSample0_buffer)
+  %bytes_resultSample0.addr = bitcast i64 %4 to i64
+  %wrapperOverlap_left_fxp_cloned.30.output = call %struct.out.wrapperOverlap_left_fxp @wrapperOverlap_left_fxp_cloned.30(%class.CAmbisonicBinauralizer* %decoder.addr, i64 %bytes_decoder.addr, float* %resultSample0.addr, i64 %bytes_resultSample0.addr)
+  %5 = extractvalue %struct.out.wrapperOverlap_left_fxp %wrapperOverlap_left_fxp_cloned.30.output, 0
+  %6 = bitcast i64 %5 to i64
+  call void @llvm_hpvm_bufferPush(i8* %out, i64 %6)
+  br label %condition
+
+while.end:                                        ; preds = %condition
+  ret i8* undef
 }
 
 attributes #0 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
@@ -22198,7 +23298,7 @@ attributes #29 = { noreturn nounwind }
 !30 = !{%struct.out.wrapperOverlap_left_fxp (%class.CAmbisonicBinauralizer*, i64, float*, i64)* undef}
 !31 = !{%struct.out.overlap_right_fxp (%class.CAmbisonicBinauralizer*, i64, float*, i64)* undef}
 !32 = !{%struct.out.wrapperOverlap_right_fxp (%class.CAmbisonicBinauralizer*, i64, float*, i64)* undef}
-!33 = !{%emptyStruct (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, %class.CAmbisonicZoomer*, i64, %class.CAmbisonicBinauralizer*, i64, float*, i64, i64, float**, i64, float**, i64, float**, i64, %class.CAmbisonicBinauralizer*, i64, float*, i64, i64, i64, i64, i64)* undef}
+!33 = !{%struct.out.audioDecoding (%class.CAmbisonicProcessor*, i64, %class.CBFormat*, i64, %class.CAmbisonicZoomer*, i64, %class.CAmbisonicBinauralizer*, i64, float*, i64, i64, float**, i64, float**, i64, float**, i64, %class.CAmbisonicBinauralizer*, i64, float*, i64, i64, i64, i64, i64)* undef}
 !34 = !{!35, !36, i64 8}
 !35 = !{!"_ZTS4HRTF", !36, i64 8, !36, i64 12}
 !36 = !{!"int", !37, i64 0}
