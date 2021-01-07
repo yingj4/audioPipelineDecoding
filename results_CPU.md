@@ -25,5 +25,5 @@ Remarks
 3. In the Basic version, the three most time-consuming functions (`psychoFilter`, `FFT`, and `IFFT`) are all calling a function called `kf_work`. According to the profiling results, `kf_work` is the function that is taking the most portion of the time.
 4. In the Parallel version, the extra overhead is caused by the HPVM runtime. For example, the HPVM runtime is calling `llvm_hpvm_cpu_dstack_push` and `llvm_hpvm_cpu_dstack_pop` in the parallel version, but these two functions are not called in the non-parallel versions. Plus, for functions that have unrolled loops (e.g. FIR_left and FIR_right), the HPVM runtime is calling `pthread_mutex_lock` and `pthread_mutex_unlock` to secure a valid execution. However, since the CPU version is still executing each unrolled loop in sequential, these two extra function calls are causing extra timing overhead. For the functions that does not have unrolled loops (e.g. `psychoFilter`), the execution time between the non-parallel versions and the parallel versions is almost the same (e.g. for `psychoFilter`, 0.647 * 27.89% is almost identical to 2.97 * 5.53%).
 <br>
-Takeaways
+Takeaways <br>
 1. Most 
