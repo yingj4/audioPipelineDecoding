@@ -1,5 +1,7 @@
 # CPU Results for Audio Decoding on HPVM
 
+## Non-streaming Versions
+
 ### General Findings
 1. Same as the HPVM version of audio encoding, it is launching a single thread on CPU regardless of the function-level parallelism.
 2. The order of the execution is as follow: `rotatorSet` -> `zoomerSet` -> `psychoFilter` -> `rotateOrder1` -> `rotateOrder2` -> `rotateOrder3` -> `zoomerProcess` -> `FFT_left` -> `FFT_right` -> `FIR_left` -> `FIR_right` -> `IFFT_left` -> `IFFT_right` -> `overlap_left` -> `overlap_right`.
@@ -26,6 +28,8 @@ Remarks
 4. In the Parallel version, the extra overhead is caused by the HPVM runtime. For example, the HPVM runtime is calling `llvm_hpvm_cpu_dstack_push` and `llvm_hpvm_cpu_dstack_pop` in the parallel version, but these two functions are not called in the non-parallel versions. Plus, for functions that have unrolled loops (e.g. FIR_left and FIR_right), the HPVM runtime is calling `pthread_mutex_lock` and `pthread_mutex_unlock` to secure a valid execution. However, since the CPU version is still executing each unrolled loop in sequential, these two extra function calls are causing extra timing overhead. For the functions that does not have unrolled loops (e.g. `psychoFilter`), the execution time between the non-parallel versions and the parallel versions is almost the same (e.g. for `psychoFilter`, 0.647 * 27.89% is almost identical to 2.97 * 5.53%).
 
 #### Takeaways
-1. The three rotate-order functions (`rotateOrder1`, `rotateOrder2`, and `rotateOrder3`) can definitely be parallelly executed. However, the benefit we can gain is limited, as shown from the result table. Similarly, the FIR functions (`FIR_left` and `FIR_right`) can also be in parallel, but the benefit gain is also limited
+1. The three rotate-order functions (`rotateOrder1`, `rotateOrder2`, and `rotateOrder3`) can definitely be parallelly executed. At a first glimpse, the benefit we can gain is limited, as shown from the result table. This is the FIR functions (`FIR_left` and `FIR_right`). However, after achieving the task-level (or say function-level) parallelism, we may have some good improvement, since the results in the table are from sequential execution for all functions.
 2. We may need to change some settings in the code to achieve parallelism. For example, in the rotate-order functions, we need to change intermediate variables into intermediate arrays to achieve parallel executions.
 3. Functions like `psychoFilter`, `FFT_left`, `FFT_right`, `IFFT_left`, and `IFFT_right` has inter-loop dependencies (e.g. addition and multiplication, like `a += b[i];`). They cannot be directly changed into parallel execution, but the performance can be improved by using the reduction algorithm at the cost of a small area and energy overhead.
+
+## Streaming Versions
