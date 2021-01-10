@@ -33,3 +33,6 @@
 3. Functions like `psychoFilter`, `FFT_left`, `FFT_right`, `IFFT_left`, and `IFFT_right` has inter-loop dependencies (e.g. addition and multiplication, like `a += b[i];`). They cannot be directly changed into parallel execution, but the performance can be improved by using the reduction algorithm at the cost of a small area and energy overhead.
 
 ## Streaming Versions
+
+### General Findings
+1. The streaming version may use multiple cores when having task-level parallelisms. This is implemented by the HPVM runtime for the streaming version. In the non-parallel version, it was using at most 2 cores. In the parallel version, it sometimes ran 3 cores simultaneously.
