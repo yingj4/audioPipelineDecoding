@@ -31,7 +31,7 @@
        <use_app_dir_as_work_dir type="bool">true</use_app_dir_as_work_dir>
        <launch_app.app_to_launch type="string">/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/test/benchmarks/audioDecodingNoPara/audioDecoding-seq</launch_app.app_to_launch>
        <launch.userappworkdir type="string"></launch.userappworkdir>
-       <launch_app.app_parameters type="string">1000 decode</launch_app.app_parameters>
+       <launch_app.app_parameters type="string">500 decode</launch_app.app_parameters>
        <launch_app.working_folder type="string">/shared/workspace/yingj4/HPVM/hpvm-release/hpvm/test/benchmarks/audioDecodingNoPara</launch_app.working_folder>
        <context>
         <contextValue>
