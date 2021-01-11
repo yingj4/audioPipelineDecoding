@@ -25,7 +25,7 @@
 1. The reason I am using percentage instead of the absolute value is that we care about the functions that are taking the largest portion of the time. Unlike audio encoding, audio decoding has more dominant functions.
 2. As show in the table, the average CPU time doubles when the block size changes from 500 to 1000.
 3. In the Basic version, the three most time-consuming functions (`psychoFilter`, `FFT`, and `IFFT`) are all calling a function called `kf_work`. According to the profiling results, `kf_work` is the function that is taking the most portion of the time.
-4. In the Parallel version, the extra overhead is caused by the HPVM runtime. For example, the HPVM runtime is calling `llvm_hpvm_cpu_dstack_push` and `llvm_hpvm_cpu_dstack_pop` in the parallel version, but these two functions are not called in the non-parallel versions. Plus, for functions that have unrolled loops (e.g. FIR_left and FIR_right), the HPVM runtime is calling `pthread_mutex_lock` and `pthread_mutex_unlock` to secure a valid execution. However, since the CPU version is still executing each unrolled loop in sequential, these two extra function calls are causing extra timing overhead. For the functions that does not have unrolled loops (e.g. `psychoFilter`), the execution time between the non-parallel versions and the parallel versions is almost the same (e.g. for `psychoFilter`, 0.647 * 27.89% is almost identical to 2.97 * 5.53%).
+4. In the Parallel version, the extra overhead is caused by the HPVM runtime. For example, the HPVM runtime is calling `llvm_hpvm_cpu_dstack_push` and `llvm_hpvm_cpu_dstack_pop` in the parallel version, but these two functions are not called in the non-parallel versions. Plus, for functions that have unrolled loops (e.g. `FIR_left` and `FIR_right`), the HPVM runtime is calling `pthread_mutex_lock` and `pthread_mutex_unlock` to secure a valid execution. However, since the CPU version is still executing each unrolled loop in sequential, these two extra function calls are causing extra timing overhead. For the functions that does not have unrolled loops (e.g. `psychoFilter`), the execution time between the non-parallel versions and the parallel versions is almost the same (e.g. for `psychoFilter`, 0.647 * 27.89% is almost identical to 2.97 * 5.53%).
 5. The HPVM runtime overhead mentioned in the previous remark point is caused by an HPVM function called `invoke_child`. This function is called every time when the dynamic replication is executed ("dynamic replication execution" = "the execution of each unrolled loop"). Inside each `invoke_child`, it is running `llvm_hpvm_request_mem`, which will further call `pthread_mutex_lock`, `pthread_mutex_unlock`, and the functions related to `std::unordered_map`.
 
 #### Takeaways
@@ -40,3 +40,10 @@
 2. Since audio decoding has task-level parallelism, the HPVM runtime is also calling `pthread_mutex_lock` and `pthread_mutex_unlock`. Plus, this task-level parallelism will call `llvm_hpvm_bufferPush` and `llvm_hpvm_bufferPop`, and these two functions will further call `pthread_cond_signal` and `pthread_cond_wait` respectively. These two `pthread_cond` functions will incur timing overhead.
 3. The runtime overhead mentioned in the previous two fingding points makes the streaming version slower than the non-streaming version on average. Though they are using more cores, the spin time is significant (the spin time is shown in the table below).
 4. Even in the parallel version, `llvm_hpvm_cpu_dstack_push` and `llvm_hpvm_cpu_dstack_pop` are taking a trivial or even no time. This might be due to the implementation of the HPVM runtime.
+
+### Profiling Results from Intel VTune
+
+#### General Information
+The points in "General Information`, `Remarks`, and `Takeaways` are nearly identical to the non-streaming versions.
+
+#### Result Tables
