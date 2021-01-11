@@ -12,7 +12,7 @@
 1. The test is based on the modification of updating the `std::map` to `std::unordered_map` in the HPVM runtime.
 2. For the binauralization pipeline, sometimes the left function (e.g. `FFT_left`) is faster than the corresponding right function (e.g. `FFT_right`), while sometimes the results are inversed.
 
-#### Result Tables and Remarks
+#### Result Table and Remarks
 
 | Version | Block Size | Average CPU Time (s) | psychoFilter | FFT_left | FFT_right | IFFT_left | IFFT_right | rotateOrder3 | FIR_left | FIR_right | llvm_hpvm_cpu_dstack_push | llvm_hpvm_cpu_dstack_pop | rotateOrder2 | zoomProcess |
 |---------|------------|----------------------|--------------|----------|-----------|-----------|------------|--------------|----------|-----------|---------------------------|--------------------------|--------------|-------------|
@@ -46,4 +46,4 @@
 #### General Information
 The points in "General Information", "Remarks", and "Takeaways" are nearly identical to the non-streaming versions.
 
-#### Result Tables
+#### Result Table
