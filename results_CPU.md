@@ -44,6 +44,6 @@
 ### Profiling Results from Intel VTune
 
 #### General Information
-The points in "General Information`, `Remarks`, and `Takeaways` are nearly identical to the non-streaming versions.
+The points in "General Information", "Remarks", and "Takeaways" are nearly identical to the non-streaming versions.
 
 #### Result Tables
