@@ -11,11 +11,12 @@
 #### General Information
 1. The test is based on the modification of updating the `std::map` to `std::unordered_map` in the HPVM runtime.
 2. For the binauralization pipeline, sometimes the left function (e.g. `FFT_left`) is faster than the corresponding right function (e.g. `FFT_right`), while sometimes the results are inversed.
+3. The functions with parallel implementation include `FIR_left`, `FIR_right`, `rotateOrder1`, `rotateOrder2`, and `rotateOrder3`.
 
 #### Result Table and Remarks
 
 | Version | Block Size | Average CPU Time (s) | psychoFilter | FFT_left | FFT_right | IFFT_left | IFFT_right | rotateOrder3 | FIR_left | FIR_right | llvm_hpvm_cpu_dstack_push | llvm_hpvm_cpu_dstack_pop | rotateOrder2 | zoomProcess |
-|---------|------------|----------------------|--------------|----------|-----------|-----------|------------|--------------|----------|-----------|---------------------------|--------------------------|--------------|-------------|
+|---------|------------|------------------|--------------|----------|-----------|-----------|------------|--------------|----------|-----------|---------------------------|--------------------------|--------------|-------------|
 | Basic | 500 | 0.647 | 27.89% | 16.1% | 11.27% | 10.17% | 10.3% | 8.27% | 6.43% | 6.47% | - | - | - | - |
 | Basic | 1000 | 1.250 | 28.47% | 9.4% | 9.5% | 11.83% | 10.97% | 11.8% | 3.2% | 5.77% | - | - | - | - |
 | Parallel | 500 | 2.97 | 5.53% | 2.87% | 2.03% | 2.87% | 2.13% | 5.57% | 24.5% | 22.37% | 13.63% | 8.2% | 4.37% | 3.7% |
@@ -44,6 +45,13 @@
 ### Profiling Results from Intel VTune
 
 #### General Information
-The points in "General Information", "Remarks", and "Takeaways" are nearly identical to the non-streaming versions.
+The points in "General Information", "Remarks", and "Takeaways" are nearly identical to the non-streaming versions. The following sections only contain the newly added remarks that are more relevant to the streaming versions.
 
 #### Result Table
+
+| Version | Block Size | Average CPU Time (s) | Spin Time (s) | psychoFilter | FFT_left | FFT_right | IFFT_left | IFFT_right | FIR_left | FIR_right | rotateOrder3 | rotateOrder2 | rotateOrder1 | zoomProcess |
+|---------|------------|------------------|-----------|--------------|----------|-----------|-----------|------------|----------|-----------|--------------|--------------|--------------|-------------|
+| Streaming | 500 | 0.693 | 0.08 | 21.6% | 11.13% | 10.8% | 9.97% | 9.63% | 5.6% | 5.2% | 9.67% | 1.17% | 0.77% | 10% |
+| Streaming | 1000 | 1.634 | 0.17 | 20.4% | 10.17% | 10.17% | 10% | 10.33% | 5.33% | 5% | 9.43% | 2.5% | 1.63% | 8.7% |
+| Streaming-and-Parallel | 500 | 8.54 | 5.44 | 0.97% | 0.47% | 0.47% | 0.4% | 0.47% | 39.23% | 39.17% | 6.17% | 5.93% | 5.93% | 0.5% |
+| Streaming-and-Parallel | 1000 | 17.317 | 10.85 | 0.97% | 0.43% | 0.5% | 0.5% | 0.43% | 39.2% | 39.23% | 6.13% | 5.97% | 5.8% | 0.37% |
