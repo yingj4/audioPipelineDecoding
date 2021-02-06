@@ -2400,27 +2400,27 @@ void rotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         // rotator->ProcessOrder1_3D(sumBF, nSample);
         // float fSqrt3 = sqrt(3.f);
 
-        float valueY[nSample];
-        float valueZ[nSample];
-        float valueX[nSample];
+        float valueY;
+        float valueZ;
+        float valueX;
 
         // This is the non-parallel version
         for(unsigned niSample = 0; niSample < nSample; niSample++) {
-            valueY[niSample] = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
-            valueZ[niSample] = channelpart1[2][niSample];
-            valueX[niSample] = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
+            valueY = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
+            valueZ = channelpart1[2][niSample];
+            valueX = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
 
-            channelpart1[1][niSample] = valueY[niSample];
-            channelpart1[2][niSample] = valueZ[niSample] * rotator->m_fCosBeta + valueX[niSample] * rotator->m_fSinBeta;
-            channelpart1[0][niSample] = valueX[niSample] * rotator->m_fCosBeta + valueZ[niSample] * rotator->m_fSinBeta;
+            channelpart1[1][niSample] = valueY;
+            channelpart1[2][niSample] = valueZ * rotator->m_fCosBeta + valueX * rotator->m_fSinBeta;
+            channelpart1[0][niSample] = valueX * rotator->m_fCosBeta + valueZ * rotator->m_fSinBeta;
 
-            valueY[niSample] = -channelpart1[0][niSample] * rotator->m_fSinGamma + channelpart1[1][niSample] * rotator->m_fCosGamma;
-            valueZ[niSample] = channelpart1[2][niSample];
-            valueX[niSample] = channelpart1[0][niSample] * rotator->m_fCosGamma + channelpart1[1][niSample] * rotator->m_fSinGamma;
+            valueY = -channelpart1[0][niSample] * rotator->m_fSinGamma + channelpart1[1][niSample] * rotator->m_fCosGamma;
+            valueZ = channelpart1[2][niSample];
+            valueX = channelpart1[0][niSample] * rotator->m_fCosGamma + channelpart1[1][niSample] * rotator->m_fSinGamma;
 
-            channelpart1[0][niSample] = valueX[niSample];
-            channelpart1[1][niSample] = valueY[niSample];
-            channelpart1[2][niSample] = valueZ[niSample];
+            channelpart1[0][niSample] = valueX;
+            channelpart1[1][niSample] = valueY;
+            channelpart1[2][niSample] = valueZ;
         }
 
         // This is the parallel version
@@ -2428,21 +2428,21 @@ void rotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         // long niSample = __hpvm__getNodeInstanceID_x(thisNode);
 
         // if (niSample < nSample) {
-        //     valueY[niSample] = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
-        //     valueZ[niSample] = channelpart1[2][niSample];
-        //     valueX[niSample] = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
+        //     valueY = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
+        //     valueZ = channelpart1[2][niSample];
+        //     valueX = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
 
-        //     channelpart1[1][niSample] = valueY[niSample];
-        //     channelpart1[2][niSample] = valueZ[niSample] * rotator->m_fCosBeta + valueX[niSample] * rotator->m_fSinBeta;
-        //     channelpart1[0][niSample] = valueX[niSample] * rotator->m_fCosBeta + valueZ[niSample] * rotator->m_fSinBeta;
+        //     channelpart1[1][niSample] = valueY;
+        //     channelpart1[2][niSample] = valueZ * rotator->m_fCosBeta + valueX * rotator->m_fSinBeta;
+        //     channelpart1[0][niSample] = valueX * rotator->m_fCosBeta + valueZ * rotator->m_fSinBeta;
 
-        //     valueY[niSample] = -channelpart1[0][niSample] * rotator->m_fSinGamma + channelpart1[1][niSample] * rotator->m_fCosGamma;
-        //     valueZ[niSample] = channelpart1[2][niSample];
-        //     valueX[niSample] = channelpart1[0][niSample] * rotator->m_fCosGamma + channelpart1[1][niSample] * rotator->m_fSinGamma;
+        //     valueY = -channelpart1[0][niSample] * rotator->m_fSinGamma + channelpart1[1][niSample] * rotator->m_fCosGamma;
+        //     valueZ = channelpart1[2][niSample];
+        //     valueX = channelpart1[0][niSample] * rotator->m_fCosGamma + channelpart1[1][niSample] * rotator->m_fSinGamma;
 
-        //     channelpart1[0][niSample] = valueX[niSample];
-        //     channelpart1[1][niSample] = valueY[niSample];
-        //     channelpart1[2][niSample] = valueZ[niSample];
+        //     channelpart1[0][niSample] = valueX;
+        //     channelpart1[1][niSample] = valueY;
+        //     channelpart1[2][niSample] = valueZ;
         // }
 
 
@@ -2492,37 +2492,37 @@ void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         // rotator->ProcessOrder2_3D(sumBF, nSample);
         float fSqrt3 = sqrt(3.f);
 
-        float valueV[nSample];
-        float valueT[nSample];
-        float valueR[nSample];
-        float valueS[nSample];
-        float valueU[nSample];
+        float valueV;
+        float valueT;
+        float valueR;
+        float valueS;
+        float valueU;
 
         // This is the non-parallel version
         for (unsigned niSample = 0; niSample < nSample; niSample++) {  // R-0 S-1 T-2 U-3 V-4
-            valueV[niSample] = -channelpart2[3][niSample] * rotator->m_fSin2Alpha + channelpart2[4][niSample] * rotator->m_fCos2Alpha;
-            valueT[niSample] = -channelpart2[1][niSample] * rotator->m_fSinAlpha + channelpart2[2][niSample] * rotator->m_fCosAlpha;
-            valueR[niSample] = channelpart2[0][niSample];
-            valueS[niSample] = channelpart2[1][niSample] * rotator->m_fCosAlpha + channelpart2[2][niSample] * rotator->m_fSinAlpha;
-            valueU[niSample] = channelpart2[3][niSample] * rotator->m_fCos2Alpha + channelpart2[4][niSample] * rotator->m_fSin2Alpha;
+            valueV = -channelpart2[3][niSample] * rotator->m_fSin2Alpha + channelpart2[4][niSample] * rotator->m_fCos2Alpha;
+            valueT = -channelpart2[1][niSample] * rotator->m_fSinAlpha + channelpart2[2][niSample] * rotator->m_fCosAlpha;
+            valueR = channelpart2[0][niSample];
+            valueS = channelpart2[1][niSample] * rotator->m_fCosAlpha + channelpart2[2][niSample] * rotator->m_fSinAlpha;
+            valueU = channelpart2[3][niSample] * rotator->m_fCos2Alpha + channelpart2[4][niSample] * rotator->m_fSin2Alpha;
 
-            channelpart2[4][niSample] = -rotator->m_fSinBeta * valueT[niSample] + rotator->m_fCosBeta * valueV[niSample];
-            channelpart2[2][niSample] = -rotator->m_fCosBeta * valueT[niSample] + rotator->m_fSinBeta * valueV[niSample];
-            channelpart2[0][niSample] = (0.75f * rotator->m_fCos2Beta + 0.25f) * valueR[niSample] + (0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0)) * valueU[niSample] + (fSqrt3 * rotator->m_fSinBeta * rotator->m_fCosBeta) * valueS[niSample];
-            channelpart2[1][niSample] = rotator->m_fCos2Beta * valueS[niSample] - fSqrt3 * rotator->m_fCosBeta * rotator->m_fSinBeta * valueR[niSample] + rotator->m_fCosBeta * rotator->m_fSinBeta * valueU[niSample];
-            channelpart2[3][niSample] = (0.25f * rotator->m_fCos2Beta + 0.75f) * valueU[niSample] - rotator->m_fCosBeta * rotator->m_fSinBeta * valueS[niSample] + 0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0) * valueR[niSample];
+            channelpart2[4][niSample] = -rotator->m_fSinBeta * valueT + rotator->m_fCosBeta * valueV;
+            channelpart2[2][niSample] = -rotator->m_fCosBeta * valueT + rotator->m_fSinBeta * valueV;
+            channelpart2[0][niSample] = (0.75f * rotator->m_fCos2Beta + 0.25f) * valueR + (0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0)) * valueU + (fSqrt3 * rotator->m_fSinBeta * rotator->m_fCosBeta) * valueS;
+            channelpart2[1][niSample] = rotator->m_fCos2Beta * valueS - fSqrt3 * rotator->m_fCosBeta * rotator->m_fSinBeta * valueR + rotator->m_fCosBeta * rotator->m_fSinBeta * valueU;
+            channelpart2[3][niSample] = (0.25f * rotator->m_fCos2Beta + 0.75f) * valueU - rotator->m_fCosBeta * rotator->m_fSinBeta * valueS + 0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0) * valueR;
 
-            valueV[niSample] = -channelpart2[3][niSample] * rotator->m_fSin2Gamma + channelpart2[4][niSample] * rotator->m_fCos2Gamma;
-            valueT[niSample] = -channelpart2[1][niSample] * rotator->m_fSinGamma + channelpart2[2][niSample] * rotator->m_fCosGamma;
-            valueR[niSample] = channelpart2[0][niSample];
-            valueS[niSample] = channelpart2[1][niSample] * rotator->m_fCosGamma + channelpart2[2][niSample] * rotator->m_fSinGamma;
-            valueU[niSample] = channelpart2[3][niSample] * rotator->m_fCos2Gamma + channelpart2[4][niSample] * rotator->m_fSin2Gamma;
+            valueV = -channelpart2[3][niSample] * rotator->m_fSin2Gamma + channelpart2[4][niSample] * rotator->m_fCos2Gamma;
+            valueT = -channelpart2[1][niSample] * rotator->m_fSinGamma + channelpart2[2][niSample] * rotator->m_fCosGamma;
+            valueR = channelpart2[0][niSample];
+            valueS = channelpart2[1][niSample] * rotator->m_fCosGamma + channelpart2[2][niSample] * rotator->m_fSinGamma;
+            valueU = channelpart2[3][niSample] * rotator->m_fCos2Gamma + channelpart2[4][niSample] * rotator->m_fSin2Gamma;
 
-            channelpart2[0][niSample] = valueR[niSample];
-            channelpart2[1][niSample] = valueS[niSample];
-            channelpart2[2][niSample] = valueT[niSample];
-            channelpart2[3][niSample] = valueU[niSample];
-            channelpart2[4][niSample] = valueV[niSample];
+            channelpart2[0][niSample] = valueR;
+            channelpart2[1][niSample] = valueS;
+            channelpart2[2][niSample] = valueT;
+            channelpart2[3][niSample] = valueU;
+            channelpart2[4][niSample] = valueV;
         }
 
         // This is the parallel version
@@ -2530,29 +2530,29 @@ void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         // long niSample = __hpvm__getNodeInstanceID_x(thisNode);
 
         // if (niSample < nSample) {
-        //     valueV[niSample] = -channelpart2[3][niSample] * rotator->m_fSin2Alpha + channelpart2[4][niSample] * rotator->m_fCos2Alpha;
-        //     valueT[niSample] = -channelpart2[1][niSample] * rotator->m_fSinAlpha + channelpart2[2][niSample] * rotator->m_fCosAlpha;
-        //     valueR[niSample] = channelpart2[0][niSample];
-        //     valueS[niSample] = channelpart2[1][niSample] * rotator->m_fCosAlpha + channelpart2[2][niSample] * rotator->m_fSinAlpha;
-        //     valueU[niSample] = channelpart2[3][niSample] * rotator->m_fCos2Alpha + channelpart2[4][niSample] * rotator->m_fSin2Alpha;
+        //     valueV = -channelpart2[3][niSample] * rotator->m_fSin2Alpha + channelpart2[4][niSample] * rotator->m_fCos2Alpha;
+        //     valueT = -channelpart2[1][niSample] * rotator->m_fSinAlpha + channelpart2[2][niSample] * rotator->m_fCosAlpha;
+        //     valueR = channelpart2[0][niSample];
+        //     valueS = channelpart2[1][niSample] * rotator->m_fCosAlpha + channelpart2[2][niSample] * rotator->m_fSinAlpha;
+        //     valueU = channelpart2[3][niSample] * rotator->m_fCos2Alpha + channelpart2[4][niSample] * rotator->m_fSin2Alpha;
 
-        //     channelpart2[4][niSample] = -rotator->m_fSinBeta * valueT[niSample] + rotator->m_fCosBeta * valueV[niSample];
-        //     channelpart2[2][niSample] = -rotator->m_fCosBeta * valueT[niSample] + rotator->m_fSinBeta * valueV[niSample];
-        //     channelpart2[0][niSample] = (0.75f * rotator->m_fCos2Beta + 0.25f) * valueR[niSample] + (0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0)) * valueU[niSample] + (fSqrt3 * rotator->m_fSinBeta * rotator->m_fCosBeta) * valueS[niSample];
-        //     channelpart2[1][niSample] = rotator->m_fCos2Beta * valueS[niSample] - fSqrt3 * rotator->m_fCosBeta * rotator->m_fSinBeta * valueR[niSample] + rotator->m_fCosBeta * rotator->m_fSinBeta * valueU[niSample];
-        //     channelpart2[3][niSample] = (0.25f * rotator->m_fCos2Beta + 0.75f) * valueU[niSample] - rotator->m_fCosBeta * rotator->m_fSinBeta * valueS[niSample] + 0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0) * valueR[niSample];
+        //     channelpart2[4][niSample] = -rotator->m_fSinBeta * valueT + rotator->m_fCosBeta * valueV;
+        //     channelpart2[2][niSample] = -rotator->m_fCosBeta * valueT + rotator->m_fSinBeta * valueV;
+        //     channelpart2[0][niSample] = (0.75f * rotator->m_fCos2Beta + 0.25f) * valueR + (0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0)) * valueU + (fSqrt3 * rotator->m_fSinBeta * rotator->m_fCosBeta) * valueS;
+        //     channelpart2[1][niSample] = rotator->m_fCos2Beta * valueS - fSqrt3 * rotator->m_fCosBeta * rotator->m_fSinBeta * valueR + rotator->m_fCosBeta * rotator->m_fSinBeta * valueU;
+        //     channelpart2[3][niSample] = (0.25f * rotator->m_fCos2Beta + 0.75f) * valueU - rotator->m_fCosBeta * rotator->m_fSinBeta * valueS + 0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0) * valueR;
 
-        //     valueV[niSample] = -channelpart2[3][niSample] * rotator->m_fSin2Gamma + channelpart2[4][niSample] * rotator->m_fCos2Gamma;
-        //     valueT[niSample] = -channelpart2[1][niSample] * rotator->m_fSinGamma + channelpart2[2][niSample] * rotator->m_fCosGamma;
-        //     valueR[niSample] = channelpart2[0][niSample];
-        //     valueS[niSample] = channelpart2[1][niSample] * rotator->m_fCosGamma + channelpart2[2][niSample] * rotator->m_fSinGamma;
-        //     valueU[niSample] = channelpart2[3][niSample] * rotator->m_fCos2Gamma + channelpart2[4][niSample] * rotator->m_fSin2Gamma;
+        //     valueV = -channelpart2[3][niSample] * rotator->m_fSin2Gamma + channelpart2[4][niSample] * rotator->m_fCos2Gamma;
+        //     valueT = -channelpart2[1][niSample] * rotator->m_fSinGamma + channelpart2[2][niSample] * rotator->m_fCosGamma;
+        //     valueR = channelpart2[0][niSample];
+        //     valueS = channelpart2[1][niSample] * rotator->m_fCosGamma + channelpart2[2][niSample] * rotator->m_fSinGamma;
+        //     valueU = channelpart2[3][niSample] * rotator->m_fCos2Gamma + channelpart2[4][niSample] * rotator->m_fSin2Gamma;
 
-        //     channelpart2[0][niSample] = valueR[niSample];
-        //     channelpart2[1][niSample] = valueS[niSample];
-        //     channelpart2[2][niSample] = valueT[niSample];
-        //     channelpart2[3][niSample] = valueU[niSample];
-        //     channelpart2[4][niSample] = valueV[niSample];
+        //     channelpart2[0][niSample] = valueR;
+        //     channelpart2[1][niSample] = valueS;
+        //     channelpart2[2][niSample] = valueT;
+        //     channelpart2[3][niSample] = valueU;
+        //     channelpart2[4][niSample] = valueV;
         // }
 
 
@@ -2604,47 +2604,47 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         float fSqrt15 = sqrt(15.f);
         float fSqrt5_2 = sqrt(5.f/2.f);
 
-        float valueQ[nSample];
-        float valueO[nSample];
-        float valueM[nSample];
-        float valueK[nSample];
-        float valueL[nSample];
-        float valueN[nSample];
-        float valueP[nSample];
+        float valueQ;
+        float valueO;
+        float valueM;
+        float valueK;
+        float valueL;
+        float valueN;
+        float valueP;
 
         // This is the non-parallel version
         for (unsigned niSample = 0; niSample < nSample; niSample++) {  // Q-0 O-1 M-2 K-3 L-4 N-5 P-6
-            valueQ[niSample] = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
-            valueO[niSample] = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
-            valueM[niSample] = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
-            valueK[niSample] = channelpart3[3][niSample];
-            valueL[niSample] = channelpart3[4][niSample] * rotator->m_fCosAlpha + channelpart3[2][niSample] * rotator->m_fSinAlpha;
-            valueN[niSample] = channelpart3[5][niSample] * rotator->m_fCos2Alpha + channelpart3[1][niSample] * rotator->m_fSin2Alpha;
-            valueP[niSample] = channelpart3[6][niSample] * rotator->m_fCos3Alpha + channelpart3[0][niSample] * rotator->m_fSin3Alpha;
+            valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
+            valueO = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
+            valueM = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
+            valueK = channelpart3[3][niSample];
+            valueL = channelpart3[4][niSample] * rotator->m_fCosAlpha + channelpart3[2][niSample] * rotator->m_fSinAlpha;
+            valueN = channelpart3[5][niSample] * rotator->m_fCos2Alpha + channelpart3[1][niSample] * rotator->m_fSin2Alpha;
+            valueP = channelpart3[6][niSample] * rotator->m_fCos3Alpha + channelpart3[0][niSample] * rotator->m_fSin3Alpha;
 
-            channelpart3[0][niSample] = 0.125f * valueQ[niSample] * (5.f + 3.f * rotator->m_fCos2Beta) - fSqrt3_2 * valueO[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueM[niSample] * pow(rotator->m_fSinBeta, 2.0f);
-            channelpart3[1][niSample] = valueO[niSample] * rotator->m_fCos2Beta - fSqrt5_2 * valueM[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] = 
-            channelpart3[2][niSample] = 0.125f * valueM[niSample] * (3.f + 5.f * rotator->m_fCos2Beta) - fSqrt5_2 * valueO[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueQ[niSample] * pow(rotator->m_fSinBeta, 2.0f);
-            channelpart3[3][niSample] = 0.25f * valueK[niSample] * rotator->m_fCosBeta * (-1.f + 15.f * rotator->m_fCos2Beta) + 0.5f * fSqrt15 * valueN[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.5f * fSqrt5_2 * valueP[niSample] * pow(rotator->m_fSinBeta, 3.f) + 0.125f * fSqrt3_2 * valueL[niSample] * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
-            channelpart3[4][niSample] = 0.0625f * valueL[niSample] * (rotator->m_fCosBeta + 15.f * rotator->m_fCos3Beta) + 0.25f * fSqrt5_2 * valueN[niSample] * (1.f + 3.f * rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueP[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.125 * fSqrt3_2 * valueK[niSample] * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
-            channelpart3[5][niSample] = 0.125f * valueN[niSample] * (5.f * rotator->m_fCosBeta + 3.f * rotator->m_fCos3Beta) + 0.25f * fSqrt3_2 * valueP[niSample] * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.5f * fSqrt15 * valueK[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.125 * fSqrt5_2 * valueL[niSample] * (rotator->m_fSinBeta - 3.f * rotator->m_fSin3Beta);
-            channelpart3[6][niSample] = 0.0625f * valueP[niSample] * (15.f * rotator->m_fCosBeta + rotator->m_fCos3Beta) - 0.25f * fSqrt3_2 * valueN[niSample] * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueL[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.5 * fSqrt5_2 * valueK[niSample] * pow(rotator->m_fSinBeta, 3.f);
+            channelpart3[0][niSample] = 0.125f * valueQ * (5.f + 3.f * rotator->m_fCos2Beta) - fSqrt3_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueM * pow(rotator->m_fSinBeta, 2.0f);
+            channelpart3[1][niSample] = valueO * rotator->m_fCos2Beta - fSqrt5_2 * valueM * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] = 
+            channelpart3[2][niSample] = 0.125f * valueM * (3.f + 5.f * rotator->m_fCos2Beta) - fSqrt5_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueQ * pow(rotator->m_fSinBeta, 2.0f);
+            channelpart3[3][niSample] = 0.25f * valueK * rotator->m_fCosBeta * (-1.f + 15.f * rotator->m_fCos2Beta) + 0.5f * fSqrt15 * valueN * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.5f * fSqrt5_2 * valueP * pow(rotator->m_fSinBeta, 3.f) + 0.125f * fSqrt3_2 * valueL * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
+            channelpart3[4][niSample] = 0.0625f * valueL * (rotator->m_fCosBeta + 15.f * rotator->m_fCos3Beta) + 0.25f * fSqrt5_2 * valueN * (1.f + 3.f * rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueP * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.125 * fSqrt3_2 * valueK * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
+            channelpart3[5][niSample] = 0.125f * valueN * (5.f * rotator->m_fCosBeta + 3.f * rotator->m_fCos3Beta) + 0.25f * fSqrt3_2 * valueP * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.5f * fSqrt15 * valueK * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.125 * fSqrt5_2 * valueL * (rotator->m_fSinBeta - 3.f * rotator->m_fSin3Beta);
+            channelpart3[6][niSample] = 0.0625f * valueP * (15.f * rotator->m_fCosBeta + rotator->m_fCos3Beta) - 0.25f * fSqrt3_2 * valueN * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueL * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.5 * fSqrt5_2 * valueK * pow(rotator->m_fSinBeta, 3.f);
 
-            valueQ[niSample] = -channelpart3[6][niSample] * rotator->m_fSin3Gamma + channelpart3[0][niSample] * rotator->m_fCos3Gamma;
-            valueO[niSample] = -channelpart3[5][niSample] * rotator->m_fSin2Gamma + channelpart3[1][niSample] * rotator->m_fCos2Gamma;
-            valueM[niSample] = -channelpart3[4][niSample] * rotator->m_fSinGamma + channelpart3[2][niSample] * rotator->m_fCosGamma;
-            valueK[niSample] = channelpart3[3][niSample];
-            valueL[niSample] = channelpart3[4][niSample] * rotator->m_fCosGamma + channelpart3[2][niSample] * rotator->m_fSinGamma;
-            valueN[niSample] = channelpart3[5][niSample] * rotator->m_fCos2Gamma + channelpart3[1][niSample] * rotator->m_fSin2Gamma;
-            valueP[niSample] = channelpart3[6][niSample] * rotator->m_fCos3Gamma + channelpart3[0][niSample] * rotator->m_fSin3Gamma;
+            valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Gamma + channelpart3[0][niSample] * rotator->m_fCos3Gamma;
+            valueO = -channelpart3[5][niSample] * rotator->m_fSin2Gamma + channelpart3[1][niSample] * rotator->m_fCos2Gamma;
+            valueM = -channelpart3[4][niSample] * rotator->m_fSinGamma + channelpart3[2][niSample] * rotator->m_fCosGamma;
+            valueK = channelpart3[3][niSample];
+            valueL = channelpart3[4][niSample] * rotator->m_fCosGamma + channelpart3[2][niSample] * rotator->m_fSinGamma;
+            valueN = channelpart3[5][niSample] * rotator->m_fCos2Gamma + channelpart3[1][niSample] * rotator->m_fSin2Gamma;
+            valueP = channelpart3[6][niSample] * rotator->m_fCos3Gamma + channelpart3[0][niSample] * rotator->m_fSin3Gamma;
             
-            channelpart3[0][niSample] = valueQ[niSample];
-            channelpart3[1][niSample] = valueO[niSample];
-            channelpart3[2][niSample] = valueM[niSample];
-            channelpart3[3][niSample] = valueK[niSample];
-            channelpart3[4][niSample] = valueL[niSample];
-            channelpart3[5][niSample] = valueN[niSample];
-            channelpart3[6][niSample] = valueP[niSample];
+            channelpart3[0][niSample] = valueQ;
+            channelpart3[1][niSample] = valueO;
+            channelpart3[2][niSample] = valueM;
+            channelpart3[3][niSample] = valueK;
+            channelpart3[4][niSample] = valueL;
+            channelpart3[5][niSample] = valueN;
+            channelpart3[6][niSample] = valueP;
         }
 
         // This is the parallel version
@@ -2652,37 +2652,37 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         // long niSample = __hpvm__getNodeInstanceID_x(thisNode);
 
         // if (niSample < nSample) {
-        //     valueQ[niSample] = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
-        //     valueO[niSample] = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
-        //     valueM[niSample] = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
-        //     valueK[niSample] = channelpart3[3][niSample];
-        //     valueL[niSample] = channelpart3[4][niSample] * rotator->m_fCosAlpha + channelpart3[2][niSample] * rotator->m_fSinAlpha;
-        //     valueN[niSample] = channelpart3[5][niSample] * rotator->m_fCos2Alpha + channelpart3[1][niSample] * rotator->m_fSin2Alpha;
-        //     valueP[niSample] = channelpart3[6][niSample] * rotator->m_fCos3Alpha + channelpart3[0][niSample] * rotator->m_fSin3Alpha;
+        //     valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
+        //     valueO = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
+        //     valueM = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
+        //     valueK = channelpart3[3][niSample];
+        //     valueL = channelpart3[4][niSample] * rotator->m_fCosAlpha + channelpart3[2][niSample] * rotator->m_fSinAlpha;
+        //     valueN = channelpart3[5][niSample] * rotator->m_fCos2Alpha + channelpart3[1][niSample] * rotator->m_fSin2Alpha;
+        //     valueP = channelpart3[6][niSample] * rotator->m_fCos3Alpha + channelpart3[0][niSample] * rotator->m_fSin3Alpha;
 
-        //     channelpart3[0][niSample] = 0.125f * valueQ[niSample] * (5.f + 3.f * rotator->m_fCos2Beta) - fSqrt3_2 * valueO[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueM[niSample] * pow(rotator->m_fSinBeta, 2.0f);
-        //     channelpart3[1][niSample] = valueO[niSample] * rotator->m_fCos2Beta - fSqrt5_2 * valueM[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] = 
-        //     channelpart3[2][niSample] = 0.125f * valueM[niSample] * (3.f + 5.f * rotator->m_fCos2Beta) - fSqrt5_2 * valueO[niSample] * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueQ[niSample] * pow(rotator->m_fSinBeta, 2.0f);
-        //     channelpart3[3][niSample] = 0.25f * valueK[niSample] * rotator->m_fCosBeta * (-1.f + 15.f * rotator->m_fCos2Beta) + 0.5f * fSqrt15 * valueN[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.5f * fSqrt5_2 * valueP[niSample] * pow(rotator->m_fSinBeta, 3.f) + 0.125f * fSqrt3_2 * valueL[niSample] * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
-        //     channelpart3[4][niSample] = 0.0625f * valueL[niSample] * (rotator->m_fCosBeta + 15.f * rotator->m_fCos3Beta) + 0.25f * fSqrt5_2 * valueN[niSample] * (1.f + 3.f * rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueP[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.125 * fSqrt3_2 * valueK[niSample] * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
-        //     channelpart3[5][niSample] = 0.125f * valueN[niSample] * (5.f * rotator->m_fCosBeta + 3.f * rotator->m_fCos3Beta) + 0.25f * fSqrt3_2 * valueP[niSample] * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.5f * fSqrt15 * valueK[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.125 * fSqrt5_2 * valueL[niSample] * (rotator->m_fSinBeta - 3.f * rotator->m_fSin3Beta);
-        //     channelpart3[6][niSample] = 0.0625f * valueP[niSample] * (15.f * rotator->m_fCosBeta + rotator->m_fCos3Beta) - 0.25f * fSqrt3_2 * valueN[niSample] * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueL[niSample] * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.5 * fSqrt5_2 * valueK[niSample] * pow(rotator->m_fSinBeta, 3.f);
+        //     channelpart3[0][niSample] = 0.125f * valueQ * (5.f + 3.f * rotator->m_fCos2Beta) - fSqrt3_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueM * pow(rotator->m_fSinBeta, 2.0f);
+        //     channelpart3[1][niSample] = valueO * rotator->m_fCos2Beta - fSqrt5_2 * valueM * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] = 
+        //     channelpart3[2][niSample] = 0.125f * valueM * (3.f + 5.f * rotator->m_fCos2Beta) - fSqrt5_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueQ * pow(rotator->m_fSinBeta, 2.0f);
+        //     channelpart3[3][niSample] = 0.25f * valueK * rotator->m_fCosBeta * (-1.f + 15.f * rotator->m_fCos2Beta) + 0.5f * fSqrt15 * valueN * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.5f * fSqrt5_2 * valueP * pow(rotator->m_fSinBeta, 3.f) + 0.125f * fSqrt3_2 * valueL * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
+        //     channelpart3[4][niSample] = 0.0625f * valueL * (rotator->m_fCosBeta + 15.f * rotator->m_fCos3Beta) + 0.25f * fSqrt5_2 * valueN * (1.f + 3.f * rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueP * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.125 * fSqrt3_2 * valueK * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
+        //     channelpart3[5][niSample] = 0.125f * valueN * (5.f * rotator->m_fCosBeta + 3.f * rotator->m_fCos3Beta) + 0.25f * fSqrt3_2 * valueP * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.5f * fSqrt15 * valueK * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.125 * fSqrt5_2 * valueL * (rotator->m_fSinBeta - 3.f * rotator->m_fSin3Beta);
+        //     channelpart3[6][niSample] = 0.0625f * valueP * (15.f * rotator->m_fCosBeta + rotator->m_fCos3Beta) - 0.25f * fSqrt3_2 * valueN * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueL * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.5 * fSqrt5_2 * valueK * pow(rotator->m_fSinBeta, 3.f);
 
-        //     valueQ[niSample] = -channelpart3[6][niSample] * rotator->m_fSin3Gamma + channelpart3[0][niSample] * rotator->m_fCos3Gamma;
-        //     valueO[niSample] = -channelpart3[5][niSample] * rotator->m_fSin2Gamma + channelpart3[1][niSample] * rotator->m_fCos2Gamma;
-        //     valueM[niSample] = -channelpart3[4][niSample] * rotator->m_fSinGamma + channelpart3[2][niSample] * rotator->m_fCosGamma;
-        //     valueK[niSample] = channelpart3[3][niSample];
-        //     valueL[niSample] = channelpart3[4][niSample] * rotator->m_fCosGamma + channelpart3[2][niSample] * rotator->m_fSinGamma;
-        //     valueN[niSample] = channelpart3[5][niSample] * rotator->m_fCos2Gamma + channelpart3[1][niSample] * rotator->m_fSin2Gamma;
-        //     valueP[niSample] = channelpart3[6][niSample] * rotator->m_fCos3Gamma + channelpart3[0][niSample] * rotator->m_fSin3Gamma;
+        //     valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Gamma + channelpart3[0][niSample] * rotator->m_fCos3Gamma;
+        //     valueO = -channelpart3[5][niSample] * rotator->m_fSin2Gamma + channelpart3[1][niSample] * rotator->m_fCos2Gamma;
+        //     valueM = -channelpart3[4][niSample] * rotator->m_fSinGamma + channelpart3[2][niSample] * rotator->m_fCosGamma;
+        //     valueK = channelpart3[3][niSample];
+        //     valueL = channelpart3[4][niSample] * rotator->m_fCosGamma + channelpart3[2][niSample] * rotator->m_fSinGamma;
+        //     valueN = channelpart3[5][niSample] * rotator->m_fCos2Gamma + channelpart3[1][niSample] * rotator->m_fSin2Gamma;
+        //     valueP = channelpart3[6][niSample] * rotator->m_fCos3Gamma + channelpart3[0][niSample] * rotator->m_fSin3Gamma;
             
-        //     channelpart3[0][niSample] = valueQ[niSample];
-        //     channelpart3[1][niSample] = valueO[niSample];
-        //     channelpart3[2][niSample] = valueM[niSample];
-        //     channelpart3[3][niSample] = valueK[niSample];
-        //     channelpart3[4][niSample] = valueL[niSample];
-        //     channelpart3[5][niSample] = valueN[niSample];
-        //     channelpart3[6][niSample] = valueP[niSample];
+        //     channelpart3[0][niSample] = valueQ;
+        //     channelpart3[1][niSample] = valueO;
+        //     channelpart3[2][niSample] = valueM;
+        //     channelpart3[3][niSample] = valueK;
+        //     channelpart3[4][niSample] = valueL;
+        //     channelpart3[5][niSample] = valueN;
+        //     channelpart3[6][niSample] = valueP;
         // }
 
         
