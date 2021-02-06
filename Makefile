@@ -43,8 +43,8 @@ APP_CXXFLAGS += $(INCLUDES) -ffast-math -O3 -fno-lax-vector-conversions -fno-vec
 # APP_CXXFLAGS += $(INCLUDES) -ffast-math -O3 -fno-lax-vector-conversions -fno-vectorize -fno-slp-vectorize -pg
 APP_LDFLAGS=`pkg-config opencv --libs`
 
-CFLAGS=-Wall -fPIC -I./include
-CXXFLAGS=-O3 -std=c++14 -Wall -fPIC -I./include
+CFLAGS=-Wall -fPIC -I./include -ffast-math -O3 -fno-lax-vector-conversions -fno-vectorize -fno-slp-vectorize
+CXXFLAGS=-O3 -std=c++14 -Wall -fPIC -I./include -ffast-math -fno-lax-vector-conversions -fno-vectorize -fno-slp-vectorize -fno-cxx-exceptions
 # CXXFLAGS=-O3 -std=c++14 -Wall -fPIC -I./include -pg
 # CXXFLAGS=-O3 -fprofile-instr-generate -std=c++14 -Wall -fPIC -I./include // not working, no matter with -O3 or -O2
 LD_LIBS=-lpthread -pthread
