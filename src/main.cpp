@@ -315,6 +315,11 @@ bool CBFormat::Configure(unsigned nOrder, bool b3D, unsigned nSampleCount)
         m_ppfChannels[niChannel] = &m_pfData[niChannel * m_nSamples];
     }
 
+    /*
+    std::cout << "Size of m_pfData: " << sizeof(float) * m_nDataLength << std::endl;
+    std::cout << "Size of m_ppfChannels: " << sizeof(float) * m_nChannelCount * m_nSamples << std::endl;
+    */
+
     return true;
 }
 
@@ -492,7 +497,7 @@ bool CAmbisonicEncoder::Configure(unsigned nOrder, bool b3D, unsigned nMisc)
     if(!success)
         return false;
     //SetOrderWeight(0, 1.f / sqrtf(2.f)); // Removed as seems to break SN3D normalisation
-    
+
     return true;
 }
 
@@ -549,7 +554,7 @@ bool CAmbisonicEncoderDist::Configure(unsigned nOrder, bool b3D, unsigned nSampl
         delete [] m_pfDelayBuffer;
     m_pfDelayBuffer = new float[m_nDelayBufferLength];
     Reset();
-    
+
     return true;
 }
 
@@ -741,6 +746,14 @@ bool CAmbisonicProcessor::Configure(unsigned nOrder, bool b3D, unsigned nBlockSi
         memset(&m_pfScratchBufferA[m_nTaps], 0, (m_nFFTSize - m_nTaps) * sizeof(float));
         kiss_fftr(m_pFFT_psych_cfg, m_pfScratchBufferA, m_ppcpPsychFilters[i_m]);
     }
+
+    /*
+    std::cout << "Size of m_pfTempSample: " << sizeof(float) * m_nChannelCount << std::endl;
+    std::cout << "Size of m_pfScratchBufferA: " << sizeof(float) * m_nFFTSize << std::endl;
+    std::cout << "Size of m_pfOverlap: " << sizeof(float) * m_nChannelCount * m_nOverlapLength << std::endl;
+    std::cout << "Size of m_ppcpPsychFilters: " << sizeof(kiss_fft_cpx) * (m_nOrder + 1) * (m_nFFTBins) << std::endl;
+    std::cout << "Size of m-pcpScratch: " << sizeof(kiss_fft_cpx) * m_nFFTBins << std::endl;
+    */
 
     return true;
 }
@@ -1070,7 +1083,7 @@ bool CAmbisonicSpeaker::Configure(unsigned nOrder, bool b3D, unsigned nMisc)
     bool success = CAmbisonicSource::Configure(nOrder, b3D, nMisc);
     if(!success)
         return false;
-    
+
     return true;
 }
 
@@ -1128,7 +1141,7 @@ bool CAmbisonicDecoder::Configure(unsigned nOrder, bool b3D, int nSpeakerSetUp, 
         return false;
     SpeakerSetUp(nSpeakerSetUp, nSpeakers);
     Refresh();
-    
+
     return true;
 }
 
@@ -1539,6 +1552,12 @@ bool CAmbisonicZoomer::Configure(unsigned nOrder, bool b3D, unsigned nMisc)
         m_AmbFrontMic += m_AmbEncoderFront[iChannel] * m_AmbEncoderFront_weighted[iChannel];
     }
 
+    /*
+    std::cout << "Size of m_AmbEncoderFront: " << sizeof(float) * m_nChannelCount << std::endl;
+    std::cout << "Size of m_AmbEncoderFront_weighted: " << sizeof(float) * m_nChannelCount << std::endl;
+    std::cout << "Size of a_m: " << sizeof(float) * (m_nOrder + 1) << std::endl;
+    */
+
     return true;
 }
 
@@ -1765,6 +1784,14 @@ bool CAmbisonicBinauralizer::Configure(unsigned nOrder,
     }
     delete[] pfLeftEar90;
 
+    /*
+    std::cout << "Size of m_pfScratchBufferA & m_pfScratchBufferB & m_pfScratchBufferC: " << sizeof(float) * m_nFFTSize * 3<< std::endl;
+    std::cout << "Size of m_pfOverlap: " << sizeof(float) * m_nOverlapLength * 2 << std::endl;
+    std::cout << "Size of m_ppcpFilters: " << sizeof(kiss_fft_cpx) * m_nFFTBins * m_nChannelCount * 2 << std::endl;
+    std::cout << "Size of m_pcpScratch: " << sizeof(kiss_fft_cpx) * m_nFFTBins << std::endl;
+    std::cout << "Size of m_pFFT_cfg & m_pIFFT_cfg: " << (sizeof(kiss_fftr_cfg) + sizeof(kiss_fft_cpx) * (m_nFFTSize - 1)) * 2 << std::endl;
+    */
+
     return true;
 }
 
@@ -1807,9 +1834,9 @@ void CAmbisonicBinauralizer::Process(CBFormat* pBFSrc,
         memset(m_pfScratchBufferC.data(), 0, m_nFFTSize * sizeof(float));
         for(niChannel = 0; niChannel < m_nChannelCount; niChannel++)
         {
-            memcpy(m_pfScratchBufferB.data(), pBFSrc->m_ppfChannels[niChannel], m_nBlockSize * sizeof(float));
-            memset(&m_pfScratchBufferB[m_nBlockSize], 0, (m_nFFTSize - m_nBlockSize) * sizeof(float));
-            kiss_fftr(m_pFFT_cfg.get(), m_pfScratchBufferB.data(), m_pcpScratch.get());
+            memcpy(m_pfScratchBufferB[niChannel].data(), pBFSrc->m_ppfChannels[niChannel], m_nBlockSize * sizeof(float));
+            memset(&m_pfScratchBufferB[niChannel][m_nBlockSize], 0, (m_nFFTSize - m_nBlockSize) * sizeof(float));
+            kiss_fftr(m_pFFT_cfg.get(), m_pfScratchBufferB[niChannel].data(), m_pcpScratch.get());
             for(ni = 0; ni < m_nFFTBins; ni++)
             {
                 cpTemp.r = m_pcpScratch[ni].r * m_ppcpFilters[niEar][niChannel][ni].r
@@ -1818,19 +1845,19 @@ void CAmbisonicBinauralizer::Process(CBFormat* pBFSrc,
                             + m_pcpScratch[ni].i * m_ppcpFilters[niEar][niChannel][ni].r;
                 m_pcpScratch[ni] = cpTemp;
             }
-            kiss_fftri(m_pIFFT_cfg.get(), m_pcpScratch.get(), m_pfScratchBufferB.data());
+            kiss_fftri(m_pIFFT_cfg.get(), m_pcpScratch.get(), m_pfScratchBufferB[niChannel].data());
             for(ni = 0; ni < m_nFFTSize; ni++)
-                m_pfScratchBufferA[ni] += m_pfScratchBufferB[ni];
+                m_pfScratchBufferA[ni] += m_pfScratchBufferB[niChannel][ni];
 
             for(ni = 0; ni < m_nFFTSize; ni++){
                 // Subtract certain channels (such as Y) to generate right ear.
                 if((niChannel==1) || (niChannel==4) || (niChannel==5) ||
                     (niChannel==9) || (niChannel==10)|| (niChannel==11))
                 {
-                    m_pfScratchBufferC[ni] -= m_pfScratchBufferB[ni];
+                    m_pfScratchBufferC[ni] -= m_pfScratchBufferB[niChannel][ni];
                 }
                 else{
-                    m_pfScratchBufferC[ni] += m_pfScratchBufferB[ni];
+                    m_pfScratchBufferC[ni] += m_pfScratchBufferB[niChannel][ni];
                 }
             }
         }
@@ -1856,10 +1883,10 @@ void CAmbisonicBinauralizer::Process(CBFormat* pBFSrc,
             memset(m_pfScratchBufferA.data(), 0, m_nFFTSize * sizeof(float));
             for(niChannel = 0; niChannel < m_nChannelCount; niChannel++)
             {
-                memcpy(m_pfScratchBufferB.data(), pBFSrc->m_ppfChannels[niChannel], m_nBlockSize * sizeof(float));
-                memset(&m_pfScratchBufferB[m_nBlockSize], 0, (m_nFFTSize - m_nBlockSize) * sizeof(float));
+                memcpy(m_pfScratchBufferB[niChannel].data(), pBFSrc->m_ppfChannels[niChannel], m_nBlockSize * sizeof(float));
+                memset(&m_pfScratchBufferB[niChannel][m_nBlockSize], 0, (m_nFFTSize - m_nBlockSize) * sizeof(float));
                 // FFT
-                kiss_fftr(m_pFFT_cfg.get(), m_pfScratchBufferB.data(), m_pcpScratch.get());
+                kiss_fftr(m_pFFT_cfg.get(), m_pfScratchBufferB[niChannel].data(), m_pcpScratch.get());
                 // FIR Filter
                 for(ni = 0; ni < m_nFFTBins; ni++)
                 {
@@ -1870,9 +1897,9 @@ void CAmbisonicBinauralizer::Process(CBFormat* pBFSrc,
                     m_pcpScratch[ni] = cpTemp;
                 }
                 // IFFT
-                kiss_fftri(m_pIFFT_cfg.get(), m_pcpScratch.get(), m_pfScratchBufferB.data());
+                kiss_fftri(m_pIFFT_cfg.get(), m_pcpScratch.get(), m_pfScratchBufferB[niChannel].data());
                 for(ni = 0; ni < m_nFFTSize; ni++)
-                    m_pfScratchBufferA[ni] += m_pfScratchBufferB[ni];
+                    m_pfScratchBufferA[ni] += m_pfScratchBufferB[niChannel][ni];
             }
             for(ni = 0; ni < m_nFFTSize; ni++)
                 m_pfScratchBufferA[ni] *= m_fFFTScaler;
@@ -1916,9 +1943,9 @@ HRTF *CAmbisonicBinauralizer::getHRTF(unsigned nSampleRate, std::string HRTFPath
 #ifdef HAVE_MYSOFA
 # ifdef HAVE_MIT_HRTF
     if (HRTFPath == ""){
-        printf("In HRTFPath==""\n");
+        // printf("In HRTFPath==""\n");
         p_hrtf = new MIT_HRTF(nSampleRate);
-        printf("p_hrtf is MIT_HRTF\n");
+        // printf("p_hrtf is MIT_HRTF\n");
     }
     else
 # endif
@@ -1947,7 +1974,10 @@ HRTF *CAmbisonicBinauralizer::getHRTF(unsigned nSampleRate, std::string HRTFPath
 void CAmbisonicBinauralizer::AllocateBuffers() {
     //Allocate scratch buffers
     m_pfScratchBufferA.resize(m_nFFTSize);
-    m_pfScratchBufferB.resize(m_nFFTSize);
+    m_pfScratchBufferB.resize(16);
+    for (int i = 0; i < m_pfScratchBufferB.size(); ++i) {
+        m_pfScratchBufferB[i].resize(m_nFFTSize);
+    }    
     m_pfScratchBufferC.resize(m_nFFTSize);
 
     //Allocate overlap-add buffers
@@ -2043,7 +2073,7 @@ ILLIXR_AUDIO::ABAudio::ABAudio(std::string outputFilePath, ProcessType procTypeI
     // bool ok = decoder->Configure(NORDER, true, SAMPLERATE, BLOCK_SIZE, temp, "");
     bool ok = decoder0->Configure(NORDER, true, SAMPLERATE, BLOCK_SIZE, temp, "") && decoder1->Configure(NORDER, true, SAMPLERATE, BLOCK_SIZE, temp, "");
     if (!ok){
-        printf("Binauralizer Configuration failed!\n");
+        // printf("Binauralizer Configuration failed!\n");
     }
     // Processor to rotate
     rotator = new CAmbisonicProcessor();
@@ -2189,7 +2219,7 @@ namespace ILLIXR_AUDIO{
     	unsigned int byteRate = 48000*2*2;
     	unsigned short BlockAlign = 2*2;
     	unsigned short BitsPerSample = 16;
-    	unsigned int dataChunkID = 0x61746164;	
+    	unsigned int dataChunkID = 0x61746164;
     	unsigned int dataChunkSize = 48000000;		// A large enough random number
     } WAVHeader;
 }
@@ -2224,9 +2254,11 @@ struct __attribute__((__packed__)) RootArg {
     /*19*/ float* resultSample1;
     /*20*/ size_t bytes_resultSample1;
     /*21*/ long decoder0ChannelCount;
-    /*22*/ long decoder0FFTBins;
+    /*22*/ long decoder0FFTSize;
+    // /*22*/ long decoder0FFTBins;
     /*23*/ long decoder1ChannelCount;
-    /*24*/ long decoder1FFTBins;
+    /*24*/ long decoder1FFTSize;
+    // /*24*/ long decoder1FFTBins;
 };
 
 // A leaf node for the rotator
@@ -2298,7 +2330,6 @@ void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
     else {}
     // printf("psychoFilter ends\n");
 
-    // This is the non-parallel version
     for (int i = 0; i < nSample; ++i) {
         channelpart1[0][i] = sumBF->m_ppfChannels[kX][i];
         channelpart1[1][i] = sumBF->m_ppfChannels[kY][i];
@@ -2319,31 +2350,6 @@ void psychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         channelpart3[6][i] = sumBF->m_ppfChannels[kP][i];
     }
 
-    // This is the parallel version
-    // void* thisNode = __hpvm__getNode();
-    // long i = __hpvm__getNodeInstanceID_x(thisNode);
-
-    // if (i < nSample) {
-    //     channelpart1[0][i] = sumBF->m_ppfChannels[kX][i];
-    //     channelpart1[1][i] = sumBF->m_ppfChannels[kY][i];
-    //     channelpart1[2][i] = sumBF->m_ppfChannels[kZ][i];
-
-    //     channelpart2[0][i] = sumBF->m_ppfChannels[kR][i];
-    //     channelpart2[1][i] = sumBF->m_ppfChannels[kS][i];
-    //     channelpart2[2][i] = sumBF->m_ppfChannels[kT][i];
-    //     channelpart2[3][i] = sumBF->m_ppfChannels[kU][i];
-    //     channelpart2[4][i] = sumBF->m_ppfChannels[kV][i];
-
-    //     channelpart3[0][i] = sumBF->m_ppfChannels[kQ][i];
-    //     channelpart3[1][i] = sumBF->m_ppfChannels[kO][i];
-    //     channelpart3[2][i] = sumBF->m_ppfChannels[kM][i];
-    //     channelpart3[3][i] = sumBF->m_ppfChannels[kK][i];
-    //     channelpart3[4][i] = sumBF->m_ppfChannels[kL][i];
-    //     channelpart3[5][i] = sumBF->m_ppfChannels[kN][i];
-    //     channelpart3[6][i] = sumBF->m_ppfChannels[kP][i];
-    // }
-    
-
     __hpvm__return(7, bytes_rotator, bytes_rotator, bytes_rotator, bytes_sumBF, bytes_channelpart1, bytes_channelpart2, bytes_channelpart3);
 }
 
@@ -2351,7 +2357,6 @@ void wrapperPsychoFilter_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t by
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(5, rotator, sumBF, channelpart1, channelpart2, channelpart3, 5, rotator, sumBF, channelpart1, channelpart2, channelpart3);
 
-    // void* psychoNode = __hpvm__createNodeND(1, psychoFilter_fxp, nSample);
     void* psychoNode = __hpvm__createNodeND(0, psychoFilter_fxp);
 
     __hpvm__bindIn(psychoNode, 0, 0, 0);
@@ -2405,29 +2410,7 @@ void rotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         float valueX;
 
         // This is the non-parallel version
-        for(unsigned niSample = 0; niSample < nSample; niSample++) {
-            valueY = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
-            valueZ = channelpart1[2][niSample];
-            valueX = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
-
-            channelpart1[1][niSample] = valueY;
-            channelpart1[2][niSample] = valueZ * rotator->m_fCosBeta + valueX * rotator->m_fSinBeta;
-            channelpart1[0][niSample] = valueX * rotator->m_fCosBeta + valueZ * rotator->m_fSinBeta;
-
-            valueY = -channelpart1[0][niSample] * rotator->m_fSinGamma + channelpart1[1][niSample] * rotator->m_fCosGamma;
-            valueZ = channelpart1[2][niSample];
-            valueX = channelpart1[0][niSample] * rotator->m_fCosGamma + channelpart1[1][niSample] * rotator->m_fSinGamma;
-
-            channelpart1[0][niSample] = valueX;
-            channelpart1[1][niSample] = valueY;
-            channelpart1[2][niSample] = valueZ;
-        }
-
-        // This is the parallel version
-        // void* thisNode = __hpvm__getNode();
-        // long niSample = __hpvm__getNodeInstanceID_x(thisNode);
-
-        // if (niSample < nSample) {
+        // for(unsigned niSample = 0; niSample < nSample; niSample++) {
         //     valueY = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
         //     valueZ = channelpart1[2][niSample];
         //     valueX = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
@@ -2445,6 +2428,28 @@ void rotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         //     channelpart1[2][niSample] = valueZ;
         // }
 
+        // This is the parallel version
+        void* thisNode = __hpvm__getNode();
+        long niSample = __hpvm__getNodeInstanceID_x(thisNode);
+
+        if (niSample < nSample) {
+            valueY = -channelpart1[0][niSample] * rotator->m_fSinAlpha + channelpart1[1][niSample] * rotator->m_fCosAlpha;
+            valueZ = channelpart1[2][niSample];
+            valueX = channelpart1[0][niSample] * rotator->m_fCosAlpha + channelpart1[1][niSample] * rotator->m_fSinAlpha;
+
+            channelpart1[1][niSample] = valueY;
+            channelpart1[2][niSample] = valueZ * rotator->m_fCosBeta + valueX * rotator->m_fSinBeta;
+            channelpart1[0][niSample] = valueX * rotator->m_fCosBeta + valueZ * rotator->m_fSinBeta;
+
+            valueY = -channelpart1[0][niSample] * rotator->m_fSinGamma + channelpart1[1][niSample] * rotator->m_fCosGamma;
+            valueZ = channelpart1[2][niSample];
+            valueX = channelpart1[0][niSample] * rotator->m_fCosGamma + channelpart1[1][niSample] * rotator->m_fSinGamma;
+
+            channelpart1[0][niSample] = valueX;
+            channelpart1[1][niSample] = valueY;
+            channelpart1[2][niSample] = valueZ;
+        }
+
 
     }
     // printf("rotateOrder1 ends\n");
@@ -2456,8 +2461,8 @@ void wrapperRotateOrder1_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t by
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(2, rotator, channelpart1, 1, channelpart1);
 
-    // void* ro1Node = __hpvm__createNodeND(1, rotateOrder1_fxp, nSample);
-    void* ro1Node = __hpvm__createNodeND(0, rotateOrder1_fxp);
+    void* ro1Node = __hpvm__createNodeND(1, rotateOrder1_fxp, nSample);
+    // void* ro1Node = __hpvm__createNodeND(0, rotateOrder1_fxp);
 
     __hpvm__bindIn(ro1Node, 0, 0, 0);
     __hpvm__bindIn(ro1Node, 1, 1, 0);
@@ -2499,37 +2504,7 @@ void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         float valueU;
 
         // This is the non-parallel version
-        for (unsigned niSample = 0; niSample < nSample; niSample++) {  // R-0 S-1 T-2 U-3 V-4
-            valueV = -channelpart2[3][niSample] * rotator->m_fSin2Alpha + channelpart2[4][niSample] * rotator->m_fCos2Alpha;
-            valueT = -channelpart2[1][niSample] * rotator->m_fSinAlpha + channelpart2[2][niSample] * rotator->m_fCosAlpha;
-            valueR = channelpart2[0][niSample];
-            valueS = channelpart2[1][niSample] * rotator->m_fCosAlpha + channelpart2[2][niSample] * rotator->m_fSinAlpha;
-            valueU = channelpart2[3][niSample] * rotator->m_fCos2Alpha + channelpart2[4][niSample] * rotator->m_fSin2Alpha;
-
-            channelpart2[4][niSample] = -rotator->m_fSinBeta * valueT + rotator->m_fCosBeta * valueV;
-            channelpart2[2][niSample] = -rotator->m_fCosBeta * valueT + rotator->m_fSinBeta * valueV;
-            channelpart2[0][niSample] = (0.75f * rotator->m_fCos2Beta + 0.25f) * valueR + (0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0)) * valueU + (fSqrt3 * rotator->m_fSinBeta * rotator->m_fCosBeta) * valueS;
-            channelpart2[1][niSample] = rotator->m_fCos2Beta * valueS - fSqrt3 * rotator->m_fCosBeta * rotator->m_fSinBeta * valueR + rotator->m_fCosBeta * rotator->m_fSinBeta * valueU;
-            channelpart2[3][niSample] = (0.25f * rotator->m_fCos2Beta + 0.75f) * valueU - rotator->m_fCosBeta * rotator->m_fSinBeta * valueS + 0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0) * valueR;
-
-            valueV = -channelpart2[3][niSample] * rotator->m_fSin2Gamma + channelpart2[4][niSample] * rotator->m_fCos2Gamma;
-            valueT = -channelpart2[1][niSample] * rotator->m_fSinGamma + channelpart2[2][niSample] * rotator->m_fCosGamma;
-            valueR = channelpart2[0][niSample];
-            valueS = channelpart2[1][niSample] * rotator->m_fCosGamma + channelpart2[2][niSample] * rotator->m_fSinGamma;
-            valueU = channelpart2[3][niSample] * rotator->m_fCos2Gamma + channelpart2[4][niSample] * rotator->m_fSin2Gamma;
-
-            channelpart2[0][niSample] = valueR;
-            channelpart2[1][niSample] = valueS;
-            channelpart2[2][niSample] = valueT;
-            channelpart2[3][niSample] = valueU;
-            channelpart2[4][niSample] = valueV;
-        }
-
-        // This is the parallel version
-        // void* thisNode = __hpvm__getNode();
-        // long niSample = __hpvm__getNodeInstanceID_x(thisNode);
-
-        // if (niSample < nSample) {
+        // for (unsigned niSample = 0; niSample < nSample; niSample++) {  // R-0 S-1 T-2 U-3 V-4
         //     valueV = -channelpart2[3][niSample] * rotator->m_fSin2Alpha + channelpart2[4][niSample] * rotator->m_fCos2Alpha;
         //     valueT = -channelpart2[1][niSample] * rotator->m_fSinAlpha + channelpart2[2][niSample] * rotator->m_fCosAlpha;
         //     valueR = channelpart2[0][niSample];
@@ -2555,6 +2530,36 @@ void rotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         //     channelpart2[4][niSample] = valueV;
         // }
 
+        // This is the parallel version
+        void* thisNode = __hpvm__getNode();
+        long niSample = __hpvm__getNodeInstanceID_x(thisNode);
+
+        if (niSample < nSample) {
+            valueV = -channelpart2[3][niSample] * rotator->m_fSin2Alpha + channelpart2[4][niSample] * rotator->m_fCos2Alpha;
+            valueT = -channelpart2[1][niSample] * rotator->m_fSinAlpha + channelpart2[2][niSample] * rotator->m_fCosAlpha;
+            valueR = channelpart2[0][niSample];
+            valueS = channelpart2[1][niSample] * rotator->m_fCosAlpha + channelpart2[2][niSample] * rotator->m_fSinAlpha;
+            valueU = channelpart2[3][niSample] * rotator->m_fCos2Alpha + channelpart2[4][niSample] * rotator->m_fSin2Alpha;
+
+            channelpart2[4][niSample] = -rotator->m_fSinBeta * valueT + rotator->m_fCosBeta * valueV;
+            channelpart2[2][niSample] = -rotator->m_fCosBeta * valueT + rotator->m_fSinBeta * valueV;
+            channelpart2[0][niSample] = (0.75f * rotator->m_fCos2Beta + 0.25f) * valueR + (0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0)) * valueU + (fSqrt3 * rotator->m_fSinBeta * rotator->m_fCosBeta) * valueS;
+            channelpart2[1][niSample] = rotator->m_fCos2Beta * valueS - fSqrt3 * rotator->m_fCosBeta * rotator->m_fSinBeta * valueR + rotator->m_fCosBeta * rotator->m_fSinBeta * valueU;
+            channelpart2[3][niSample] = (0.25f * rotator->m_fCos2Beta + 0.75f) * valueU - rotator->m_fCosBeta * rotator->m_fSinBeta * valueS + 0.5 * fSqrt3 * pow(rotator->m_fSinBeta, 2.0) * valueR;
+
+            valueV = -channelpart2[3][niSample] * rotator->m_fSin2Gamma + channelpart2[4][niSample] * rotator->m_fCos2Gamma;
+            valueT = -channelpart2[1][niSample] * rotator->m_fSinGamma + channelpart2[2][niSample] * rotator->m_fCosGamma;
+            valueR = channelpart2[0][niSample];
+            valueS = channelpart2[1][niSample] * rotator->m_fCosGamma + channelpart2[2][niSample] * rotator->m_fSinGamma;
+            valueU = channelpart2[3][niSample] * rotator->m_fCos2Gamma + channelpart2[4][niSample] * rotator->m_fSin2Gamma;
+
+            channelpart2[0][niSample] = valueR;
+            channelpart2[1][niSample] = valueS;
+            channelpart2[2][niSample] = valueT;
+            channelpart2[3][niSample] = valueU;
+            channelpart2[4][niSample] = valueV;
+        }
+
 
     }
     // printf("rotateOrder2 ends\n");
@@ -2566,8 +2571,8 @@ void wrapperRotateOrder2_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t by
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(2, rotator, channelpart2, 1, channelpart2);
 
-    // void* ro2Node = __hpvm__createNodeND(1, rotateOrder2_fxp, nSample);
-    void* ro2Node = __hpvm__createNodeND(0, rotateOrder2_fxp);
+    void* ro2Node = __hpvm__createNodeND(1, rotateOrder2_fxp, nSample);
+    // void* ro2Node = __hpvm__createNodeND(0, rotateOrder2_fxp);
 
     __hpvm__bindIn(ro2Node, 0, 0, 0);
     __hpvm__bindIn(ro2Node, 1, 1, 0);
@@ -2613,45 +2618,7 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         float valueP;
 
         // This is the non-parallel version
-        for (unsigned niSample = 0; niSample < nSample; niSample++) {  // Q-0 O-1 M-2 K-3 L-4 N-5 P-6
-            valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
-            valueO = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
-            valueM = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
-            valueK = channelpart3[3][niSample];
-            valueL = channelpart3[4][niSample] * rotator->m_fCosAlpha + channelpart3[2][niSample] * rotator->m_fSinAlpha;
-            valueN = channelpart3[5][niSample] * rotator->m_fCos2Alpha + channelpart3[1][niSample] * rotator->m_fSin2Alpha;
-            valueP = channelpart3[6][niSample] * rotator->m_fCos3Alpha + channelpart3[0][niSample] * rotator->m_fSin3Alpha;
-
-            channelpart3[0][niSample] = 0.125f * valueQ * (5.f + 3.f * rotator->m_fCos2Beta) - fSqrt3_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueM * pow(rotator->m_fSinBeta, 2.0f);
-            channelpart3[1][niSample] = valueO * rotator->m_fCos2Beta - fSqrt5_2 * valueM * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] = 
-            channelpart3[2][niSample] = 0.125f * valueM * (3.f + 5.f * rotator->m_fCos2Beta) - fSqrt5_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueQ * pow(rotator->m_fSinBeta, 2.0f);
-            channelpart3[3][niSample] = 0.25f * valueK * rotator->m_fCosBeta * (-1.f + 15.f * rotator->m_fCos2Beta) + 0.5f * fSqrt15 * valueN * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.5f * fSqrt5_2 * valueP * pow(rotator->m_fSinBeta, 3.f) + 0.125f * fSqrt3_2 * valueL * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
-            channelpart3[4][niSample] = 0.0625f * valueL * (rotator->m_fCosBeta + 15.f * rotator->m_fCos3Beta) + 0.25f * fSqrt5_2 * valueN * (1.f + 3.f * rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueP * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.125 * fSqrt3_2 * valueK * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
-            channelpart3[5][niSample] = 0.125f * valueN * (5.f * rotator->m_fCosBeta + 3.f * rotator->m_fCos3Beta) + 0.25f * fSqrt3_2 * valueP * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.5f * fSqrt15 * valueK * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.125 * fSqrt5_2 * valueL * (rotator->m_fSinBeta - 3.f * rotator->m_fSin3Beta);
-            channelpart3[6][niSample] = 0.0625f * valueP * (15.f * rotator->m_fCosBeta + rotator->m_fCos3Beta) - 0.25f * fSqrt3_2 * valueN * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueL * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.5 * fSqrt5_2 * valueK * pow(rotator->m_fSinBeta, 3.f);
-
-            valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Gamma + channelpart3[0][niSample] * rotator->m_fCos3Gamma;
-            valueO = -channelpart3[5][niSample] * rotator->m_fSin2Gamma + channelpart3[1][niSample] * rotator->m_fCos2Gamma;
-            valueM = -channelpart3[4][niSample] * rotator->m_fSinGamma + channelpart3[2][niSample] * rotator->m_fCosGamma;
-            valueK = channelpart3[3][niSample];
-            valueL = channelpart3[4][niSample] * rotator->m_fCosGamma + channelpart3[2][niSample] * rotator->m_fSinGamma;
-            valueN = channelpart3[5][niSample] * rotator->m_fCos2Gamma + channelpart3[1][niSample] * rotator->m_fSin2Gamma;
-            valueP = channelpart3[6][niSample] * rotator->m_fCos3Gamma + channelpart3[0][niSample] * rotator->m_fSin3Gamma;
-            
-            channelpart3[0][niSample] = valueQ;
-            channelpart3[1][niSample] = valueO;
-            channelpart3[2][niSample] = valueM;
-            channelpart3[3][niSample] = valueK;
-            channelpart3[4][niSample] = valueL;
-            channelpart3[5][niSample] = valueN;
-            channelpart3[6][niSample] = valueP;
-        }
-
-        // This is the parallel version
-        // void* thisNode = __hpvm__getNode();
-        // long niSample = __hpvm__getNodeInstanceID_x(thisNode);
-
-        // if (niSample < nSample) {
+        // for (unsigned niSample = 0; niSample < nSample; niSample++) {  // Q-0 O-1 M-2 K-3 L-4 N-5 P-6
         //     valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
         //     valueO = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
         //     valueM = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
@@ -2661,7 +2628,7 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         //     valueP = channelpart3[6][niSample] * rotator->m_fCos3Alpha + channelpart3[0][niSample] * rotator->m_fSin3Alpha;
 
         //     channelpart3[0][niSample] = 0.125f * valueQ * (5.f + 3.f * rotator->m_fCos2Beta) - fSqrt3_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueM * pow(rotator->m_fSinBeta, 2.0f);
-        //     channelpart3[1][niSample] = valueO * rotator->m_fCos2Beta - fSqrt5_2 * valueM * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] = 
+        //     channelpart3[1][niSample] = valueO * rotator->m_fCos2Beta - fSqrt5_2 * valueM * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] =
         //     channelpart3[2][niSample] = 0.125f * valueM * (3.f + 5.f * rotator->m_fCos2Beta) - fSqrt5_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueQ * pow(rotator->m_fSinBeta, 2.0f);
         //     channelpart3[3][niSample] = 0.25f * valueK * rotator->m_fCosBeta * (-1.f + 15.f * rotator->m_fCos2Beta) + 0.5f * fSqrt15 * valueN * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.5f * fSqrt5_2 * valueP * pow(rotator->m_fSinBeta, 3.f) + 0.125f * fSqrt3_2 * valueL * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
         //     channelpart3[4][niSample] = 0.0625f * valueL * (rotator->m_fCosBeta + 15.f * rotator->m_fCos3Beta) + 0.25f * fSqrt5_2 * valueN * (1.f + 3.f * rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueP * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.125 * fSqrt3_2 * valueK * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
@@ -2675,7 +2642,7 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         //     valueL = channelpart3[4][niSample] * rotator->m_fCosGamma + channelpart3[2][niSample] * rotator->m_fSinGamma;
         //     valueN = channelpart3[5][niSample] * rotator->m_fCos2Gamma + channelpart3[1][niSample] * rotator->m_fSin2Gamma;
         //     valueP = channelpart3[6][niSample] * rotator->m_fCos3Gamma + channelpart3[0][niSample] * rotator->m_fSin3Gamma;
-            
+
         //     channelpart3[0][niSample] = valueQ;
         //     channelpart3[1][niSample] = valueO;
         //     channelpart3[2][niSample] = valueM;
@@ -2685,7 +2652,45 @@ void rotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rot
         //     channelpart3[6][niSample] = valueP;
         // }
 
-        
+        // This is the parallel version
+        void* thisNode = __hpvm__getNode();
+        long niSample = __hpvm__getNodeInstanceID_x(thisNode);
+
+        if (niSample < nSample) {
+            valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Alpha + channelpart3[0][niSample] * rotator->m_fCos3Alpha;
+            valueO = -channelpart3[5][niSample] * rotator->m_fSin2Alpha + channelpart3[1][niSample] * rotator->m_fCos2Alpha;
+            valueM = -channelpart3[4][niSample] * rotator->m_fSinAlpha + channelpart3[2][niSample] * rotator->m_fCosAlpha;
+            valueK = channelpart3[3][niSample];
+            valueL = channelpart3[4][niSample] * rotator->m_fCosAlpha + channelpart3[2][niSample] * rotator->m_fSinAlpha;
+            valueN = channelpart3[5][niSample] * rotator->m_fCos2Alpha + channelpart3[1][niSample] * rotator->m_fSin2Alpha;
+            valueP = channelpart3[6][niSample] * rotator->m_fCos3Alpha + channelpart3[0][niSample] * rotator->m_fSin3Alpha;
+
+            channelpart3[0][niSample] = 0.125f * valueQ * (5.f + 3.f * rotator->m_fCos2Beta) - fSqrt3_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueM * pow(rotator->m_fSinBeta, 2.0f);
+            channelpart3[1][niSample] = valueO * rotator->m_fCos2Beta - fSqrt5_2 * valueM * rotator->m_fCosBeta * rotator->m_fSinBeta + fSqrt3_2 * valueQ * rotator->m_fCosBeta * rotator->m_fSinBeta;            channelpart3[0][niSample] =
+            channelpart3[2][niSample] = 0.125f * valueM * (3.f + 5.f * rotator->m_fCos2Beta) - fSqrt5_2 * valueO * rotator->m_fCosBeta * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueQ * pow(rotator->m_fSinBeta, 2.0f);
+            channelpart3[3][niSample] = 0.25f * valueK * rotator->m_fCosBeta * (-1.f + 15.f * rotator->m_fCos2Beta) + 0.5f * fSqrt15 * valueN * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.5f * fSqrt5_2 * valueP * pow(rotator->m_fSinBeta, 3.f) + 0.125f * fSqrt3_2 * valueL * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
+            channelpart3[4][niSample] = 0.0625f * valueL * (rotator->m_fCosBeta + 15.f * rotator->m_fCos3Beta) + 0.25f * fSqrt5_2 * valueN * (1.f + 3.f * rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueP * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.125 * fSqrt3_2 * valueK * (rotator->m_fSinBeta + 5.f * rotator->m_fSin3Beta);
+            channelpart3[5][niSample] = 0.125f * valueN * (5.f * rotator->m_fCosBeta + 3.f * rotator->m_fCos3Beta) + 0.25f * fSqrt3_2 * valueP * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.5f * fSqrt15 * valueK * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) + 0.125 * fSqrt5_2 * valueL * (rotator->m_fSinBeta - 3.f * rotator->m_fSin3Beta);
+            channelpart3[6][niSample] = 0.0625f * valueP * (15.f * rotator->m_fCosBeta + rotator->m_fCos3Beta) - 0.25f * fSqrt3_2 * valueN * (3.f + rotator->m_fCos2Beta) * rotator->m_fSinBeta + 0.25f * fSqrt15 * valueL * rotator->m_fCosBeta * pow(rotator->m_fSinBeta, 2.f) - 0.5 * fSqrt5_2 * valueK * pow(rotator->m_fSinBeta, 3.f);
+
+            valueQ = -channelpart3[6][niSample] * rotator->m_fSin3Gamma + channelpart3[0][niSample] * rotator->m_fCos3Gamma;
+            valueO = -channelpart3[5][niSample] * rotator->m_fSin2Gamma + channelpart3[1][niSample] * rotator->m_fCos2Gamma;
+            valueM = -channelpart3[4][niSample] * rotator->m_fSinGamma + channelpart3[2][niSample] * rotator->m_fCosGamma;
+            valueK = channelpart3[3][niSample];
+            valueL = channelpart3[4][niSample] * rotator->m_fCosGamma + channelpart3[2][niSample] * rotator->m_fSinGamma;
+            valueN = channelpart3[5][niSample] * rotator->m_fCos2Gamma + channelpart3[1][niSample] * rotator->m_fSin2Gamma;
+            valueP = channelpart3[6][niSample] * rotator->m_fCos3Gamma + channelpart3[0][niSample] * rotator->m_fSin3Gamma;
+
+            channelpart3[0][niSample] = valueQ;
+            channelpart3[1][niSample] = valueO;
+            channelpart3[2][niSample] = valueM;
+            channelpart3[3][niSample] = valueK;
+            channelpart3[4][niSample] = valueL;
+            channelpart3[5][niSample] = valueN;
+            channelpart3[6][niSample] = valueP;
+        }
+
+
     }
     // printf("rotateOrder3 ends\n");
 
@@ -2696,8 +2701,8 @@ void wrapperRotateOrder3_fxp(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t by
     __hpvm__hint(hpvm::DEVICE);
     __hpvm__attributes(2, rotator, channelpart3, 1, channelpart3);
 
-    // void* ro3Node = __hpvm__createNodeND(1, rotateOrder3_fxp, nSample);
-    void* ro3Node = __hpvm__createNodeND(0, rotateOrder3_fxp);
+    void* ro3Node = __hpvm__createNodeND(1, rotateOrder3_fxp, nSample);
+    // void* ro3Node = __hpvm__createNodeND(0, rotateOrder3_fxp);
 
     __hpvm__bindIn(ro3Node, 0, 0, 0);
     __hpvm__bindIn(ro3Node, 1, 1, 0);
@@ -2743,7 +2748,7 @@ void wrapperZoomSet_fxp(/*0*/ CAmbisonicZoomer* zoomer, /*1*/ size_t bytes_zoome
 //     // printf("zoomProcess starts\n");
 //     zoomer->Process(sumBF, nSample);
 //     // printf("zoomProcess ends\n");
-    
+
 //     __hpvm__return(1, bytes_sumBF);
 // }
 
@@ -2775,7 +2780,7 @@ void zoomProcess_fxp(/*0*/ CAmbisonicZoomer* zoomer, /*1*/ size_t bytes_zoomer, 
     // printf("zoomProcess starts\n");
     zoomer->Process(sumBF, nSample);
     // printf("zoomProcess ends\n");
-    
+
     __hpvm__return(2, bytes_sumBF, bytes_sumBF);
 }
 
@@ -2802,343 +2807,670 @@ void wrapperZoomProcess_fxp(/*0*/ CAmbisonicZoomer* zoomer, /*1*/ size_t bytes_z
     __hpvm__bindOut(zpNode, 1, 1, 0);
 }
 
-// A leaf node for the decoder processing setting
-// void decodeProcessSet_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
-//     __hpvm__hint(hpvm::CPU_TARGET);
-//     __hpvm__attributes(1, decoder, 1, decoder);
-
-//     // decoder->m_pfScratchBufferA.resize(m_nFFTSize);
-//     // for (int i = 0; i < m_nFFTSize; ++i) {
-//     //     decoder->m_pfScratchBufferA[i] = 0;
-//     // }
-//     memset(decoder->m_pfScratchBufferA.data(), 0, (decoder->m_nFFTSize) * sizeof(float));
-
-//     __hpvm__return(1, bytes_decoder);
-// }
-
-// A leaf node for the memcpy and memset and the FFT part
-void setAndFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, \
-                        /*3*/ size_t bytes_sumBF) {
-    __hpvm__hint(hpvm::CPU_TARGET);
-    __hpvm__attributes(2, decoder, sumBF, 1, decoder);
-
-    // printf("setAndFFT_left starts\n");
-    memset(decoder->m_pfScratchBufferA.data(), 0, (decoder->m_nFFTSize) * sizeof(float));
-
-    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
-        memcpy(decoder->m_pfScratchBufferB.data(), sumBF->m_ppfChannels[niChannel], decoder->m_nBlockSize * sizeof(float));
-        memset(&(decoder->m_pfScratchBufferB[decoder->m_nBlockSize]), 0, (decoder->m_nFFTSize - decoder->m_nBlockSize) * sizeof(float));
-        kiss_fftr(decoder->m_pFFT_cfg.get(), decoder->m_pfScratchBufferB.data(), decoder->m_pcpScratch.get());
-    }
-    // printf("setAndFFT ends\n");
-
-    __hpvm__return(1, bytes_decoder);
-}
-
-void wrapperSetAndFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, \
-                                /*3*/ size_t bytes_sumBF) {
-    __hpvm__hint(hpvm::CPU_TARGET);
-    __hpvm__attributes(2, decoder, sumBF, 1, decoder);
-
-    void* sfftlNode = __hpvm__createNodeND(0, setAndFFT_left_fxp);
-
-    __hpvm__bindIn(sfftlNode, 0, 0, 0);
-    __hpvm__bindIn(sfftlNode, 1, 1, 0);
-    __hpvm__bindIn(sfftlNode, 2, 2, 0);
-    __hpvm__bindIn(sfftlNode, 3, 3, 0);
-
-    __hpvm__bindOut(sfftlNode, 0, 0, 0);
-}
-
-void setAndFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, \
-                        /*3*/ size_t bytes_sumBF) {
-    __hpvm__hint(hpvm::CPU_TARGET);
-    __hpvm__attributes(2, decoder, sumBF, 1, decoder);
-
-    // printf("setAndFFT_right starts\n");
-    memset(decoder->m_pfScratchBufferA.data(), 0, (decoder->m_nFFTSize) * sizeof(float));
-
-    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
-        memcpy(decoder->m_pfScratchBufferB.data(), sumBF->m_ppfChannels[niChannel], decoder->m_nBlockSize * sizeof(float));
-        memset(&(decoder->m_pfScratchBufferB[decoder->m_nBlockSize]), 0, (decoder->m_nFFTSize - decoder->m_nBlockSize) * sizeof(float));
-        kiss_fftr(decoder->m_pFFT_cfg.get(), decoder->m_pfScratchBufferB.data(), decoder->m_pcpScratch.get());
-    }
-    // printf("setAndFFT ends\n");
-
-    __hpvm__return(1, bytes_decoder);
-}
-
-void wrapperSetAndFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF) {
-    __hpvm__hint(hpvm::CPU_TARGET);
-    __hpvm__attributes(2, decoder, sumBF, 1, decoder);
-
-    void* sfftrNode = __hpvm__createNodeND(0, setAndFFT_right_fxp);
-
-    __hpvm__bindIn(sfftrNode, 0, 0, 0);
-    __hpvm__bindIn(sfftrNode, 1, 1, 0);
-    __hpvm__bindIn(sfftrNode, 2, 2, 0);
-    __hpvm__bindIn(sfftrNode, 3, 3, 0);
-
-    __hpvm__bindOut(sfftrNode, 0, 0, 0);
-}
-
-// FFT
-// void FFT_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
-//     __hpvm__hint(hpvm::CPU_TARGET);
-//     __hpvm__attributes(1, decoder, 1, decoder);
-
-//     kiss_fftr(decoder->m_pFFT_cfg.get(), decoder->m_pfScratchBufferB.data(), decoder->m_pcpScratch.get());
-
-//     __hpvm__return(1, bytes_decoder);
-// }
-
-// FIR Filter
-void FIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder0ChannelCount, /*3*/ long decoder0FFTBins) {
+// A leaf node for setting up the left decoder
+void decoderSet_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(1, decoder, 1, decoder);
 
-    // printf("FIR_left starts\n");
+    memset(decoder->m_pfScratchBufferA.data(), 0, (decoder->m_nFFTSize) * sizeof(float));
+
+    __hpvm__return(1, bytes_decoder);
+}
+
+void wrapperDecoderSet_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+    __hpvm__hint(hpvm::DEVICE);
+    __hpvm__attributes(1, decoder, 1, decoder);
+
+    void* dslNode = __hpvm__createNodeND(0, decoderSet_left_fxp);
+
+    __hpvm__bindIn(dslNode, 0, 0, 0);
+    __hpvm__bindIn(dslNode, 1, 1, 0);
+
+    __hpvm__bindOut(dslNode, 0, 0, 0);
+}
+
+// A leaf node for setting up the right binauralizer
+void decoderSet_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+    __hpvm__hint(hpvm::CPU_TARGET);
+    __hpvm__attributes(1, decoder, 1, decoder);
+
+    memset(decoder->m_pfScratchBufferA.data(), 0, (decoder->m_nFFTSize) * sizeof(float));
+
+    __hpvm__return(1, bytes_decoder);
+}
+
+void wrapperDecoderSet_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+    __hpvm__hint(hpvm::DEVICE);
+    __hpvm__attributes(1, decoder, 1, decoder);
+
+    void* dsrNode = __hpvm__createNodeND(0, decoderSet_right_fxp);
+
+    __hpvm__bindIn(dsrNode, 0, 0, 0);
+    __hpvm__bindIn(dsrNode, 1, 1, 0);
+
+    __hpvm__bindOut(dsrNode, 0, 0, 0);
+}
+
+// A leaf node for FFT-FIR-IFFT on the left ear
+void FFT_FIR_IFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, \
+                        /*3*/ size_t bytes_sumBF, /*4*/ long decoder0ChannelCount) {
+    __hpvm__hint(hpvm::CPU_TARGET);
+    __hpvm__attributes(2, decoder, sumBF, 1, decoder);
+
     kiss_fft_cpx cpTemp[decoder->m_nFFTBins];
 
     // This is the non-parallel version
-    for (unsigned niChannel = 0; niChannel < decoder0ChannelCount; niChannel++) {
-        for (int ni = 0; ni < decoder0FFTBins; ni++) {
+    // for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+    //     memcpy(decoder->m_pfScratchBufferB[niChannel].data(), sumBF->m_ppfChannels[niChannel], decoder->m_nBlockSize * sizeof(float));
+    //     memset(&(decoder->m_pfScratchBufferB[niChannel][decoder->m_nBlockSize]), 0, (decoder->m_nFFTSize - decoder->m_nBlockSize) * sizeof(float));
+
+    //     // FFT
+    //     kiss_fftr(decoder->m_pFFT_cfg.get(), decoder->m_pfScratchBufferB[niChannel].data(), decoder->m_pcpScratch.get());
+
+    //     // FIR
+    //     for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
+    //         cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
+    //         cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
+    //         decoder->m_pcpScratch[ni] = cpTemp[ni];
+    //     }
+
+    //     // IFFT
+    //     kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB[niChannel].data());
+    // }
+
+    // This is the parallel version
+    void* thisNode = __hpvm__getNode();
+    long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
+    
+    if (niChannel < decoder0ChannelCount) {
+        memcpy(decoder->m_pfScratchBufferB[niChannel].data(), sumBF->m_ppfChannels[niChannel], decoder->m_nBlockSize * sizeof(float));
+        memset(&(decoder->m_pfScratchBufferB[niChannel][decoder->m_nBlockSize]), 0, (decoder->m_nFFTSize - decoder->m_nBlockSize) * sizeof(float));
+
+        // FFT
+        kiss_fftr(decoder->m_pFFT_cfg.get(), decoder->m_pfScratchBufferB[niChannel].data(), decoder->m_pcpScratch.get());
+
+        // FIR
+        for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
             cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
             cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
             decoder->m_pcpScratch[ni] = cpTemp[ni];
         }
+
+        // IFFT
+        kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB[niChannel].data());
     }
-
-    // This is the parallel version
-    // void* thisNode = __hpvm__getNode();
-    // long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
-    // long ni = __hpvm__getNodeInstanceID_y(thisNode);
-
-    // if (niChannel < decoder0ChannelCount && ni < decoder0FFTBins) {
-    //     cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
-    //     cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
-    //     decoder->m_pcpScratch[ni] = cpTemp[ni];
-    // }
-
-
-    // printf("FIR_left ends\n");
 
     __hpvm__return(1, bytes_decoder);
 }
 
-void wrapperFIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder0ChannelCount, /*3*/ long decoder0FFTBins) {
-    __hpvm__hint(hpvm::CPU_TARGET);
-    __hpvm__attributes(1, decoder, 1, decoder);
+void wrapperFFT_FIR_IFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, \
+                        /*3*/ size_t bytes_sumBF, /*4*/ long decoder0ChannelCount) {
+    __hpvm__hint(hpvm::DEVICE);
+    __hpvm__attributes(2, decoder, sumBF, 1, decoder);
 
+    void* fftfirifftlNode = __hpvm__createNodeND(1, FFT_FIR_IFFT_left_fxp, decoder0ChannelCount);
+    // void* fftfirifftlNode = __hpvm__createNodeND(0, FFT_FIR_IFFT_left_fxp);
 
-    // void* firlNode = __hpvm__createNodeND(2, FIR_left_fxp, decoder0ChannelCount, decoder0FFTBins);
-    void* firlNode = __hpvm__createNodeND(0, FIR_left_fxp);
+    __hpvm__bindIn(fftfirifftlNode, 0, 0, 0);
+    __hpvm__bindIn(fftfirifftlNode, 1, 1, 0);
+    __hpvm__bindIn(fftfirifftlNode, 2, 2, 0);
+    __hpvm__bindIn(fftfirifftlNode, 3, 3, 0);
+    __hpvm__bindIn(fftfirifftlNode, 4, 4, 0);
 
-    __hpvm__bindIn(firlNode, 0, 0, 0);
-    __hpvm__bindIn(firlNode, 1, 1, 0);
-    __hpvm__bindIn(firlNode, 2, 2, 0);
-    __hpvm__bindIn(firlNode, 3, 3, 0);
-
-    __hpvm__bindOut(firlNode, 0, 0, 0);
+    __hpvm__bindOut(fftfirifftlNode, 0, 0, 0);
 }
 
-void FIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder1ChannelCount, /*3*/ long decoder1FFTBins) {
+// A leaf node for FFT-FIR-IFFT on the right ear
+void FFT_FIR_IFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, \
+                        /*3*/ size_t bytes_sumBF, /*4*/ long decoder1ChannelCount) {
     __hpvm__hint(hpvm::CPU_TARGET);
-    __hpvm__attributes(1, decoder, 1, decoder);
+    __hpvm__attributes(2, decoder, sumBF, 1, decoder);
 
-    // printf("FIR_right starts\n");
     kiss_fft_cpx cpTemp[decoder->m_nFFTBins];
 
     // This is the non-parallel version
-    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
-        for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
-            cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
-            cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
-            decoder->m_pcpScratch[ni] = cpTemp[ni];
-        }
-    }
+    // for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+    //     memcpy(decoder->m_pfScratchBufferB[niChannel].data(), sumBF->m_ppfChannels[niChannel], decoder->m_nBlockSize * sizeof(float));
+    //     memset(&(decoder->m_pfScratchBufferB[niChannel][decoder->m_nBlockSize]), 0, (decoder->m_nFFTSize - decoder->m_nBlockSize) * sizeof(float));
 
-    // This is the parallel version
-    // void* thisNode = __hpvm__getNode();
-    // long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
-    // long ni = __hpvm__getNodeInstanceID_y(thisNode);
+    //     // FFT
+    //     kiss_fftr(decoder->m_pFFT_cfg.get(), decoder->m_pfScratchBufferB[niChannel].data(), decoder->m_pcpScratch.get());
 
-    // if (niChannel < decoder1ChannelCount && ni < decoder1FFTBins) {
-    //     cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
-    //     cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
-    //     decoder->m_pcpScratch[ni] = cpTemp[ni];
+    //     // FIR
+    //     for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
+    //         cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
+    //         cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
+    //         decoder->m_pcpScratch[ni] = cpTemp[ni];
+    //     }
+
+    //     // IFFT
+    //     kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB[niChannel].data());
     // }
 
+    // This is the parallel version
+    void* thisNode = __hpvm__getNode();
+    long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
 
+    if (niChannel < decoder1ChannelCount) {
+        memcpy(decoder->m_pfScratchBufferB[niChannel].data(), sumBF->m_ppfChannels[niChannel], decoder->m_nBlockSize * sizeof(float));
+        memset(&(decoder->m_pfScratchBufferB[niChannel][decoder->m_nBlockSize]), 0, (decoder->m_nFFTSize - decoder->m_nBlockSize) * sizeof(float));
 
-    // printf("FIR_right ends\n");
+        // FFT
+        kiss_fftr(decoder->m_pFFT_cfg.get(), decoder->m_pfScratchBufferB[niChannel].data(), decoder->m_pcpScratch.get());
 
-    __hpvm__return(1, bytes_decoder);
-}
+        // FIR
+        for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
+            cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
+            cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
+            decoder->m_pcpScratch[ni] = cpTemp[ni];
+        }
 
-void wrapperFIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder1ChannelCount, /*3*/ long decoder1FFTBins) {
-    __hpvm__hint(hpvm::CPU_TARGET);
-    __hpvm__attributes(1, decoder, 1, decoder);
-
-    // void* firrNode = __hpvm__createNodeND(2, FIR_right_fxp, decoder1ChannelCount, decoder1FFTBins);
-    void* firrNode = __hpvm__createNodeND(0, FIR_right_fxp);
-
-    __hpvm__bindIn(firrNode, 0, 0, 0);
-    __hpvm__bindIn(firrNode, 1, 1, 0);
-    __hpvm__bindIn(firrNode, 2, 2, 0);
-    __hpvm__bindIn(firrNode, 3, 3, 0);
-
-    __hpvm__bindOut(firrNode, 0, 0, 0);
-}
-
-// IFFT
-void IFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
-    __hpvm__hint(hpvm::CPU_TARGET);
-    __hpvm__attributes(1, decoder, 1, decoder);
-
-    // printf("IFFT_left starts\n");
-    // printf("%d\n", decoder->m_nChannelCount);
-    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
-        kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB.data());
-        // printf("Np with kiss_fftri\n");
-        for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
-            decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[ni];
-    }    
-    // printf("IFFT_left ends\n");
-
-    __hpvm__return(1, bytes_decoder);
-}
-
-void wrapperIFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
-    __hpvm__hint(hpvm::CPU_TARGET);
-    __hpvm__attributes(1, decoder, 1, decoder);
-
-    void* ifftlNode = __hpvm__createNodeND(0, IFFT_left_fxp);
-
-    __hpvm__bindIn(ifftlNode, 0, 0, 0);
-    __hpvm__bindIn(ifftlNode, 1, 1, 0);
-
-    __hpvm__bindOut(ifftlNode, 0, 0, 0);
-}
-
-void IFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
-    __hpvm__hint(hpvm::CPU_TARGET);
-    __hpvm__attributes(1, decoder, 1, decoder);
-
-    // printf("IFFT_right starts\n");
-    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
-        kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB.data());
-        for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
-            decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[ni];        
+        // IFFT
+        kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB[niChannel].data());
     }
-    // printf("IFFT_right ends\n");
 
     __hpvm__return(1, bytes_decoder);
 }
 
-void wrapperIFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+void wrapperFFT_FIR_IFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, \
+                        /*3*/ size_t bytes_sumBF, /*4*/ long decoder1ChannelCount) {
+    __hpvm__hint(hpvm::DEVICE);
+    __hpvm__attributes(2, decoder, sumBF, 1, decoder);
+
+    void* fftfirifftrNode = __hpvm__createNodeND(1, FFT_FIR_IFFT_right_fxp, decoder1ChannelCount);
+    // void* fftfirifftrNode = __hpvm__createNodeND(0, FFT_FIR_IFFT_right_fxp);
+
+    __hpvm__bindIn(fftfirifftrNode, 0, 0, 0);
+    __hpvm__bindIn(fftfirifftrNode, 1, 1, 0);
+    __hpvm__bindIn(fftfirifftrNode, 2, 2, 0);
+    __hpvm__bindIn(fftfirifftrNode, 3, 3, 0);
+    __hpvm__bindIn(fftfirifftrNode, 4, 4, 0);
+
+    __hpvm__bindOut(fftfirifftrNode, 0, 0, 0);
+}
+
+// A leaf node for sum on the left
+void sum_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(1, decoder, 1, decoder);
 
-    void* ifftrNode = __hpvm__createNodeND(0, IFFT_right_fxp);
+    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+        for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
+            decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[niChannel][ni];
+    }
 
-    __hpvm__bindIn(ifftrNode, 0, 0, 0);
-    __hpvm__bindIn(ifftrNode, 1, 1, 0);
-
-    __hpvm__bindOut(ifftrNode, 0, 0, 0);
+    __hpvm__return(1, bytes_decoder);
 }
 
-// Overlap
+void wrapperSum_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+    __hpvm__hint(hpvm::DEVICE);
+    __hpvm__attributes(1, decoder, 1, decoder);
+
+    void* sumlNode = __hpvm__createNodeND(0, sum_left_fxp);
+
+    __hpvm__bindIn(sumlNode, 0, 0, 0);
+    __hpvm__bindIn(sumlNode, 1, 1, 0);
+
+    __hpvm__bindOut(sumlNode, 0, 0, 0);
+}
+
+// A leaf node for sum on the right
+void sum_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+    __hpvm__hint(hpvm::CPU_TARGET);
+    __hpvm__attributes(1, decoder, 1, decoder);
+
+    for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+        for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
+            decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[niChannel][ni];
+    }
+
+    __hpvm__return(1, bytes_decoder);
+}
+
+void wrapperSum_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+    __hpvm__hint(hpvm::DEVICE);
+    __hpvm__attributes(1, decoder, 1, decoder);
+
+    void* sumrNode = __hpvm__createNodeND(0, sum_right_fxp);
+
+    __hpvm__bindIn(sumrNode, 0, 0, 0);
+    __hpvm__bindIn(sumrNode, 1, 1, 0);
+
+    __hpvm__bindOut(sumrNode, 0, 0, 0);
+}
+
+// A leaf node for scaling on the left
+void scale_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder0FFTSize) {
+    __hpvm__hint(hpvm::CPU_TARGET);
+    __hpvm__attributes(1, decoder, 1, decoder);
+
+    // This is the non-parallel version
+    // for(int ni = 0; ni < decoder->m_nFFTSize; ni++) {
+    //     decoder->m_pfScratchBufferA[ni] *= (decoder->m_fFFTScaler);
+    // }
+
+    // This is the parallel version
+    void* thisNode = __hpvm__getNode();
+    long ni = __hpvm__getNodeInstanceID_x(thisNode);
+
+    if (ni < decoder0FFTSize) {
+        decoder->m_pfScratchBufferA[ni] *= (decoder->m_fFFTScaler);
+    }
+
+    __hpvm__return(1, bytes_decoder);
+}
+
+void wrapperScale_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder0FFTSize) {
+    __hpvm__hint(hpvm::DEVICE);
+    __hpvm__attributes(1, decoder, 1, decoder);
+
+    void* scalelNode = __hpvm__createNodeND(1, scale_left_fxp, decoder0FFTSize);
+    // void* scalelNode = __hpvm__createNodeND(0, scale_left_fxp);
+
+    __hpvm__bindIn(scalelNode, 0, 0, 0);
+    __hpvm__bindIn(scalelNode, 1, 1, 0);
+    __hpvm__bindIn(scalelNode, 2, 2, 0);
+
+    __hpvm__bindOut(scalelNode, 0, 0, 0);
+}
+
+// A leaf node for scaling on the right
+void scale_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder1FFTSize) {
+    __hpvm__hint(hpvm::CPU_TARGET);
+    __hpvm__attributes(1, decoder, 1, decoder);
+
+    // This is the non-parallel version
+    // for(int ni = 0; ni < decoder->m_nFFTSize; ni++) {
+    //     decoder->m_pfScratchBufferA[ni] *= (decoder->m_fFFTScaler);
+    // }
+
+    // This is the parallel version
+    void* thisNode = __hpvm__getNode();
+    long ni = __hpvm__getNodeInstanceID_x(thisNode);
+
+    if (ni < decoder1FFTSize) {
+        decoder->m_pfScratchBufferA[ni] *= (decoder->m_fFFTScaler);
+    }
+
+    __hpvm__return(1, bytes_decoder);
+}
+
+void wrapperScale_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder1FFTSize) {
+    __hpvm__hint(hpvm::DEVICE);
+    __hpvm__attributes(1, decoder, 1, decoder);
+
+    void* scalerNode = __hpvm__createNodeND(1, scale_right_fxp, decoder1FFTSize);
+    // void* scalerNode = __hpvm__createNodeND(0, scale_right_fxp);
+
+    __hpvm__bindIn(scalerNode, 0, 0, 0);
+    __hpvm__bindIn(scalerNode, 1, 1, 0);
+    __hpvm__bindIn(scalerNode, 2, 2, 0);
+
+    __hpvm__bindOut(scalerNode, 0, 0, 0);
+}
+
+// A leaf node for overlapping on the left
 void overlap_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ float* resultSample0, /*3*/ size_t bytes_resultSample0) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(2, decoder, resultSample0, 1, resultSample0);
-
-    // printf("overlap_left starts\n");
-    for(int ni = 0; ni < decoder->m_nFFTSize; ni++) {
-        decoder->m_pfScratchBufferA[ni] *= (decoder->m_fFFTScaler);
-    }
 
     memcpy(resultSample0, decoder->m_pfScratchBufferA.data(), (decoder->m_nBlockSize) * sizeof(float));
     for(int ni = 0; ni < decoder->m_nOverlapLength; ni++) {
         resultSample0[ni] += (decoder->m_pfOverlap)[0][ni];
     }
     memcpy((decoder->m_pfOverlap[0]).data(), &(decoder->m_pfScratchBufferA[decoder->m_nBlockSize]), (decoder->m_nOverlapLength) * sizeof(float));
-    // printf("overlap_left ends\n");
-
 
     __hpvm__return(1, bytes_resultSample0);
-    
 }
 
 void wrapperOverlap_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ float* resultSample0, /*3*/ size_t bytes_resultSample0) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(2, decoder, resultSample0, 1, resultSample0);
 
-    void* overLeftNode = __hpvm__createNodeND(0, overlap_left_fxp);
+    void* overlaplNode = __hpvm__createNodeND(0, overlap_left_fxp);
 
-    __hpvm__bindIn(overLeftNode, 0, 0, 0);
-    __hpvm__bindIn(overLeftNode, 1, 1, 0);
-    __hpvm__bindIn(overLeftNode, 2, 2, 0);
-    __hpvm__bindIn(overLeftNode, 3, 3, 0);
+    __hpvm__bindIn(overlaplNode, 0, 0, 0);
+    __hpvm__bindIn(overlaplNode, 1, 1, 0);
+    __hpvm__bindIn(overlaplNode, 2, 2, 0);
+    __hpvm__bindIn(overlaplNode, 3, 3, 0);
 
-    __hpvm__bindOut(overLeftNode, 0, 0, 0);
+    __hpvm__bindOut(overlaplNode, 0, 0, 0);
 }
 
+// A leaf node for overlapping on the right
 void overlap_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ float* resultSample1, /*3*/ size_t bytes_resultSample1) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(2, decoder, resultSample1, 1, resultSample1);
-
-    // printf("overlap_right starts\n");
-    for(int ni = 0; ni < decoder->m_nFFTSize; ni++) {
-        decoder->m_pfScratchBufferA[ni] *= (decoder->m_fFFTScaler);
-    }
 
     memcpy(resultSample1, decoder->m_pfScratchBufferA.data(), (decoder->m_nBlockSize) * sizeof(float));
     for(int ni = 0; ni < decoder->m_nOverlapLength; ni++) {
         resultSample1[ni] += (decoder->m_pfOverlap)[0][ni];
     }
-    memcpy((decoder->m_pfOverlap[1]).data(), &(decoder->m_pfScratchBufferA[decoder->m_nBlockSize]), (decoder->m_nOverlapLength) * sizeof(float));
-    // printf("overlap_right ends\n");
-    
-
+    memcpy((decoder->m_pfOverlap[0]).data(), &(decoder->m_pfScratchBufferA[decoder->m_nBlockSize]), (decoder->m_nOverlapLength) * sizeof(float));
 
     __hpvm__return(1, bytes_resultSample1);
-    
 }
 
 void wrapperOverlap_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ float* resultSample1, /*3*/ size_t bytes_resultSample1) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(2, decoder, resultSample1, 1, resultSample1);
 
-    void* overRightNode = __hpvm__createNodeND(0, overlap_right_fxp);
+    void* overlaprNode = __hpvm__createNodeND(0, overlap_right_fxp);
 
-    __hpvm__bindIn(overRightNode, 0, 0, 0);
-    __hpvm__bindIn(overRightNode, 1, 1, 0);
-    __hpvm__bindIn(overRightNode, 2, 2, 0);
-    __hpvm__bindIn(overRightNode, 3, 3, 0);
+    __hpvm__bindIn(overlaprNode, 0, 0, 0);
+    __hpvm__bindIn(overlaprNode, 1, 1, 0);
+    __hpvm__bindIn(overlaprNode, 2, 2, 0);
+    __hpvm__bindIn(overlaprNode, 3, 3, 0);
 
-    __hpvm__bindOut(overRightNode, 0, 0, 0);
+    __hpvm__bindOut(overlaprNode, 0, 0, 0);
 }
 
-// An internal node for the FFT-FIR-IFFT flow
-// void channelWrapper_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+// // A leaf node for the memcpy and memset and the FFT part
+// void setAndFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, \
+//                         /*3*/ size_t bytes_sumBF) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(2, decoder, sumBF, 1, decoder);
+
+//     // printf("setAndFFT_left starts\n");
+//     memset(decoder->m_pfScratchBufferA.data(), 0, (decoder->m_nFFTSize) * sizeof(float));
+
+//     /*
+//     std::cout << "m_nFFTSize: " << decoder->m_nFFTSize << std::endl;
+//     std::cout << "m_nChannelCount: " << decoder->m_nChannelCount << std::endl;
+//     std::cout << "m_nBlockSize: " << decoder->m_nBlockSize << std::endl;
+//     */
+
+//     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+//         memcpy(decoder->m_pfScratchBufferB[niChannel].data(), sumBF->m_ppfChannels[niChannel], decoder->m_nBlockSize * sizeof(float));
+//         memset(&(decoder->m_pfScratchBufferB[niChannel][decoder->m_nBlockSize]), 0, (decoder->m_nFFTSize - decoder->m_nBlockSize) * sizeof(float));
+//         kiss_fftr(decoder->m_pFFT_cfg.get(), decoder->m_pfScratchBufferB[niChannel].data(), decoder->m_pcpScratch.get());
+//     }
+//     // printf("setAndFFT ends\n");
+
+//     __hpvm__return(1, bytes_decoder);
+// }
+
+// void wrapperSetAndFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, \
+//                                 /*3*/ size_t bytes_sumBF) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(2, decoder, sumBF, 1, decoder);
+
+//     void* sfftlNode = __hpvm__createNodeND(0, setAndFFT_left_fxp);
+
+//     __hpvm__bindIn(sfftlNode, 0, 0, 0);
+//     __hpvm__bindIn(sfftlNode, 1, 1, 0);
+//     __hpvm__bindIn(sfftlNode, 2, 2, 0);
+//     __hpvm__bindIn(sfftlNode, 3, 3, 0);
+
+//     __hpvm__bindOut(sfftlNode, 0, 0, 0);
+// }
+
+// void setAndFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, \
+//                         /*3*/ size_t bytes_sumBF) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(2, decoder, sumBF, 1, decoder);
+
+//     // printf("setAndFFT_right starts\n");
+//     memset(decoder->m_pfScratchBufferA.data(), 0, (decoder->m_nFFTSize) * sizeof(float));
+
+//     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+//         memcpy(decoder->m_pfScratchBufferB[niChannel].data(), sumBF->m_ppfChannels[niChannel], decoder->m_nBlockSize * sizeof(float));
+//         memset(&(decoder->m_pfScratchBufferB[niChannel][decoder->m_nBlockSize]), 0, (decoder->m_nFFTSize - decoder->m_nBlockSize) * sizeof(float));
+//         kiss_fftr(decoder->m_pFFT_cfg.get(), decoder->m_pfScratchBufferB[niChannel].data(), decoder->m_pcpScratch.get());
+//     }
+//     // printf("setAndFFT ends\n");
+
+//     __hpvm__return(1, bytes_decoder);
+// }
+
+// void wrapperSetAndFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ CBFormat* sumBF, /*3*/ size_t bytes_sumBF) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(2, decoder, sumBF, 1, decoder);
+
+//     void* sfftrNode = __hpvm__createNodeND(0, setAndFFT_right_fxp);
+
+//     __hpvm__bindIn(sfftrNode, 0, 0, 0);
+//     __hpvm__bindIn(sfftrNode, 1, 1, 0);
+//     __hpvm__bindIn(sfftrNode, 2, 2, 0);
+//     __hpvm__bindIn(sfftrNode, 3, 3, 0);
+
+//     __hpvm__bindOut(sfftrNode, 0, 0, 0);
+// }
+
+// // FIR Filter
+// void FIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder0ChannelCount, /*3*/ long decoder0FFTBins) {
 //     __hpvm__hint(hpvm::CPU_TARGET);
 //     __hpvm__attributes(1, decoder, 1, decoder);
 
-//     void* FFTNode = __hpvm__createNodeND(0, FFT_fxp);
-//     void* FIRNode = __hpvm__createNodeND(0, FIR_fxp);
-//     void* IFFTNode = __hpvm__createNodeND(0, IFFT_fxp);
+//     // printf("FIR_left starts\n");
+//     kiss_fft_cpx cpTemp[decoder->m_nFFTBins];
 
-//     __hpvm__bindIn(FFTNode, 0, 0, 0);
-//     __hpvm__bindIn(FFTNode, 1, 1, 0);
+//     /*
+//     std::cout << "m_nFFTBins: " << decoder->m_nFFTBins << std::endl;
+//     */
 
-//     __hpvm__bindIn(FIRNode, 0, 0, 0);
-//     __hpvm__edge(FFTNode, FIRNode, 1, 0, 1, 0);
+//     // This is the non-parallel version
+//     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+//         for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
+//             cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
+//             cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
+//             decoder->m_pcpScratch[ni] = cpTemp[ni];
+//         }
+//     }
 
-//     __hpvm__bindIn(IFFTNode, 0, 0, 0);
-//     __hpvm__edge(FIRNode, IFFTNode, 1, 0, 1, 0);
+//     // This is the parallel version
+//     // void* thisNode = __hpvm__getNode();
+//     // long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
+//     // long ni = __hpvm__getNodeInstanceID_y(thisNode);
 
-//     __hpvm__bindOut(IFFTNode, 0, 0, 0);
+//     // if (niChannel < decoder0ChannelCount && ni < decoder0FFTBins) {
+//     //     cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].i;
+//     //     cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[0][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[0][niChannel][ni].r;
+//     //     decoder->m_pcpScratch[ni] = cpTemp[ni];
+//     // }
+
+
+//     // printf("FIR_left ends\n");
+
+//     __hpvm__return(1, bytes_decoder);
+// }
+
+// void wrapperFIR_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder0ChannelCount, /*3*/ long decoder0FFTBins) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(1, decoder, 1, decoder);
+
+
+//     // void* firlNode = __hpvm__createNodeND(2, FIR_left_fxp, decoder0ChannelCount, decoder0FFTBins);
+//     void* firlNode = __hpvm__createNodeND(0, FIR_left_fxp);
+
+//     __hpvm__bindIn(firlNode, 0, 0, 0);
+//     __hpvm__bindIn(firlNode, 1, 1, 0);
+//     __hpvm__bindIn(firlNode, 2, 2, 0);
+//     __hpvm__bindIn(firlNode, 3, 3, 0);
+
+//     __hpvm__bindOut(firlNode, 0, 0, 0);
+// }
+
+// void FIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder1ChannelCount, /*3*/ long decoder1FFTBins) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(1, decoder, 1, decoder);
+
+//     // printf("FIR_right starts\n");
+//     kiss_fft_cpx cpTemp[decoder->m_nFFTBins];
+
+//     // This is the non-parallel version
+//     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+//         for (int ni = 0; ni < decoder->m_nFFTBins; ni++) {
+//             cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
+//             cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
+//             decoder->m_pcpScratch[ni] = cpTemp[ni];
+//         }
+//     }
+
+//     // This is the parallel version
+//     // void* thisNode = __hpvm__getNode();
+//     // long niChannel = __hpvm__getNodeInstanceID_x(thisNode);
+//     // long ni = __hpvm__getNodeInstanceID_y(thisNode);
+
+//     // if (niChannel < decoder1ChannelCount && ni < decoder1FFTBins) {
+//     //     cpTemp[ni].r = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].r - decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].i;
+//     //     cpTemp[ni].i = decoder->m_pcpScratch[ni].r * decoder->m_ppcpFilters[1][niChannel][ni].i + decoder->m_pcpScratch[ni].i * decoder->m_ppcpFilters[1][niChannel][ni].r;
+//     //     decoder->m_pcpScratch[ni] = cpTemp[ni];
+//     // }
+
+
+
+//     // printf("FIR_right ends\n");
+
+//     __hpvm__return(1, bytes_decoder);
+// }
+
+// void wrapperFIR_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ long decoder1ChannelCount, /*3*/ long decoder1FFTBins) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(1, decoder, 1, decoder);
+
+//     // void* firrNode = __hpvm__createNodeND(2, FIR_right_fxp, decoder1ChannelCount, decoder1FFTBins);
+//     void* firrNode = __hpvm__createNodeND(0, FIR_right_fxp);
+
+//     __hpvm__bindIn(firrNode, 0, 0, 0);
+//     __hpvm__bindIn(firrNode, 1, 1, 0);
+//     __hpvm__bindIn(firrNode, 2, 2, 0);
+//     __hpvm__bindIn(firrNode, 3, 3, 0);
+
+//     __hpvm__bindOut(firrNode, 0, 0, 0);
+// }
+
+// // IFFT
+// void IFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(1, decoder, 1, decoder);
+
+//     // printf("IFFT_left starts\n");
+//     // printf("%d\n", decoder->m_nChannelCount);
+//     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+//         kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB[niChannel].data());
+//         // printf("Np with kiss_fftri\n");
+//         for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
+//             decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[niChannel][ni];
+//     }
+//     // printf("IFFT_left ends\n");
+
+//     __hpvm__return(1, bytes_decoder);
+// }
+
+// void wrapperIFFT_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(1, decoder, 1, decoder);
+
+//     void* ifftlNode = __hpvm__createNodeND(0, IFFT_left_fxp);
+
+//     __hpvm__bindIn(ifftlNode, 0, 0, 0);
+//     __hpvm__bindIn(ifftlNode, 1, 1, 0);
+
+//     __hpvm__bindOut(ifftlNode, 0, 0, 0);
+// }
+
+// void IFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(1, decoder, 1, decoder);
+
+//     // printf("IFFT_right starts\n");
+//     for (unsigned niChannel = 0; niChannel < decoder->m_nChannelCount; niChannel++) {
+//         kiss_fftri(decoder->m_pIFFT_cfg.get(), decoder->m_pcpScratch.get(), decoder->m_pfScratchBufferB[niChannel].data());
+//         for(unsigned ni = 0; ni < decoder->m_nFFTSize; ni++)
+//             decoder->m_pfScratchBufferA[ni] += decoder->m_pfScratchBufferB[niChannel][ni];
+//     }
+//     // printf("IFFT_right ends\n");
+
+//     __hpvm__return(1, bytes_decoder);
+// }
+
+// void wrapperIFFT_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(1, decoder, 1, decoder);
+
+//     void* ifftrNode = __hpvm__createNodeND(0, IFFT_right_fxp);
+
+//     __hpvm__bindIn(ifftrNode, 0, 0, 0);
+//     __hpvm__bindIn(ifftrNode, 1, 1, 0);
+
+//     __hpvm__bindOut(ifftrNode, 0, 0, 0);
+// }
+
+// // Overlap
+// void overlap_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ float* resultSample0, /*3*/ size_t bytes_resultSample0) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(2, decoder, resultSample0, 1, resultSample0);
+
+//     // printf("overlap_left starts\n");
+//     for(int ni = 0; ni < decoder->m_nFFTSize; ni++) {
+//         decoder->m_pfScratchBufferA[ni] *= (decoder->m_fFFTScaler);
+//     }
+
+//     /*
+//     std::cout << "m_nOverlapLength: " << decoder->m_nOverlapLength << std::endl;
+//     */
+    
+//     memcpy(resultSample0, decoder->m_pfScratchBufferA.data(), (decoder->m_nBlockSize) * sizeof(float));
+//     for(int ni = 0; ni < decoder->m_nOverlapLength; ni++) {
+//         resultSample0[ni] += (decoder->m_pfOverlap)[0][ni];
+//     }
+//     memcpy((decoder->m_pfOverlap[0]).data(), &(decoder->m_pfScratchBufferA[decoder->m_nBlockSize]), (decoder->m_nOverlapLength) * sizeof(float));
+//     // printf("overlap_left ends\n");
+
+
+//     __hpvm__return(1, bytes_resultSample0);
+
+// }
+
+// void wrapperOverlap_left_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ float* resultSample0, /*3*/ size_t bytes_resultSample0) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(2, decoder, resultSample0, 1, resultSample0);
+
+//     void* overLeftNode = __hpvm__createNodeND(0, overlap_left_fxp);
+
+//     __hpvm__bindIn(overLeftNode, 0, 0, 0);
+//     __hpvm__bindIn(overLeftNode, 1, 1, 0);
+//     __hpvm__bindIn(overLeftNode, 2, 2, 0);
+//     __hpvm__bindIn(overLeftNode, 3, 3, 0);
+
+//     __hpvm__bindOut(overLeftNode, 0, 0, 0);
+// }
+
+// void overlap_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ float* resultSample1, /*3*/ size_t bytes_resultSample1) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(2, decoder, resultSample1, 1, resultSample1);
+
+//     // printf("overlap_right starts\n");
+//     for(int ni = 0; ni < decoder->m_nFFTSize; ni++) {
+//         decoder->m_pfScratchBufferA[ni] *= (decoder->m_fFFTScaler);
+//     }
+
+//     memcpy(resultSample1, decoder->m_pfScratchBufferA.data(), (decoder->m_nBlockSize) * sizeof(float));
+//     for(int ni = 0; ni < decoder->m_nOverlapLength; ni++) {
+//         resultSample1[ni] += (decoder->m_pfOverlap)[0][ni];
+//     }
+//     memcpy((decoder->m_pfOverlap[1]).data(), &(decoder->m_pfScratchBufferA[decoder->m_nBlockSize]), (decoder->m_nOverlapLength) * sizeof(float));
+//     // printf("overlap_right ends\n");
+
+
+
+//     __hpvm__return(1, bytes_resultSample1);
+
+// }
+
+// void wrapperOverlap_right_fxp(/*0*/ CAmbisonicBinauralizer* decoder, /*1*/ size_t bytes_decoder, /*2*/ float* resultSample1, /*3*/ size_t bytes_resultSample1) {
+//     __hpvm__hint(hpvm::CPU_TARGET);
+//     __hpvm__attributes(2, decoder, resultSample1, 1, resultSample1);
+
+//     void* overRightNode = __hpvm__createNodeND(0, overlap_right_fxp);
+
+//     __hpvm__bindIn(overRightNode, 0, 0, 0);
+//     __hpvm__bindIn(overRightNode, 1, 1, 0);
+//     __hpvm__bindIn(overRightNode, 2, 2, 0);
+//     __hpvm__bindIn(overRightNode, 3, 3, 0);
+
+//     __hpvm__bindOut(overRightNode, 0, 0, 0);
 // }
 
 // The root node
@@ -3146,31 +3478,10 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
                     /*5*/ size_t bytes_zoomer, /*6*/ CAmbisonicBinauralizer* decoder0, /*7*/ size_t bytes_decoder0, /*8*/ float* resultSample0, \
                     /*9*/ size_t bytes_resultSample0, /*10*/ long nSample, /*11*/ float** channelpart1, /*12*/ size_t bytes_channelpart1, /*13*/ float** channelpart2, \
                     /*14*/ size_t bytes_channelpart2, /*15*/ float** channelpart3, /*16*/ size_t bytes_channelpart3, /*17*/ CAmbisonicBinauralizer* decoder1, \
-                    /*18*/ size_t bytes_decoder1, /*19*/ float* resultSample1, /*20*/ size_t bytes_resultSample1, /*21*/ long decoder0ChannelCount, /*22*/ long decoder0FFTBins, \
-                    /*23*/ long decoder1ChannelCount, /*24*/ long decoder1FFTBins) {
+                    /*18*/ size_t bytes_decoder1, /*19*/ float* resultSample1, /*20*/ size_t bytes_resultSample1, /*21*/ long decoder0ChannelCount, /*22*/ long decoder0FFTSize, \
+                    /*23*/ long decoder1ChannelCount, /*24*/ long decoder1FFTSize) {
     __hpvm__hint(hpvm::CPU_TARGET);
     __hpvm__attributes(7, rotator, sumBF, zoomer, decoder0, decoder1, resultSample0, resultSample1, 6, sumBF, zoomer, decoder0, decoder1, resultSample0, resultSample1);
-
-    // void* rotatorNode = __hpvm__createNodeND(0, rotator_fxp);
-    // void* rotatorSetNode = __hpvm__createNodeND(0, rotatorSet_fxp);
-    // void* psychoFilterNode = __hpvm__createNodeND(0, psychoFilter_fxp);
-    // void* rotateOrder1Node = __hpvm__createNodeND(0, rotateOrder1_fxp);
-    // void* rotateOrder2Node = __hpvm__createNodeND(0, rotateOrder2_fxp);
-    // void* rotateOrder3Node = __hpvm__createNodeND(0, rotateOrder3_fxp);
-    // void* zoomSetNode = __hpvm__createNodeND(0, zoomSet_fxp);
-    // void* zoomProcessNode = __hpvm__createNodeND(0, zoomProcess_fxp);
-    // // void* decodeProcessSetNode = __hpvm__createNodeND(0, decodeProcessSet_fxp);
-    // // void* bufferBCpyNSetNode = __hpvm__createNodeND(0, bufferBCpyNSet_fxp);
-    // // void* channelWrapperNode = __hpvm__createNodeND(channelCount, channelWrapper_fxp);
-    // // void* overlapNode = __hpvm__createNodeND(0, overlap_fxp);
-    // void* setAndFFT_LeftNode = __hpvm__createNodeND(0, setAndFFT_left_fxp);
-    // void* setAndFFT_RightNode = __hpvm__createNodeND(0, setAndFFT_right_fxp);
-    // void* FIR_LeftNode= __hpvm__createNodeND(0, FIR_left_fxp);
-    // void* FIR_RightNode= __hpvm__createNodeND(0, FIR_right_fxp);
-    // void* IFFT_LeftNode= __hpvm__createNodeND(0, IFFT_left_fxp);
-    // void* IFFT_RightNode= __hpvm__createNodeND(0, IFFT_right_fxp);
-    // void* overlap_LeftNode= __hpvm__createNodeND(0, overlap_left_fxp);
-    // void* overlap_RightNode= __hpvm__createNodeND(0, overlap_right_fxp);
 
     void* rotatorSetNode = __hpvm__createNodeND(0, wrapperRotatorSet_fxp);
     void* psychoFilterNode = __hpvm__createNodeND(0, wrapperPsychoFilter_fxp);
@@ -3179,26 +3490,24 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
     void* rotateOrder3Node = __hpvm__createNodeND(0, wrapperRotateOrder3_fxp);
     void* zoomSetNode = __hpvm__createNodeND(0, wrapperZoomSet_fxp);
     void* zoomProcessNode = __hpvm__createNodeND(0, wrapperZoomProcess_fxp);
-    // void* decodeProcessSetNode = __hpvm__createNodeND(0, decodeProcessSet_fxp);
-    // void* bufferBCpyNSetNode = __hpvm__createNodeND(0, bufferBCpyNSet_fxp);
-    // void* channelWrapperNode = __hpvm__createNodeND(channelCount, channelWrapper_fxp);
-    // void* overlapNode = __hpvm__createNodeND(0, overlap_fxp);
-    void* setAndFFT_LeftNode = __hpvm__createNodeND(0, wrapperSetAndFFT_left_fxp);
-    void* setAndFFT_RightNode = __hpvm__createNodeND(0, wrapperSetAndFFT_right_fxp);
-    void* FIR_LeftNode= __hpvm__createNodeND(0, wrapperFIR_left_fxp);
-    void* FIR_RightNode= __hpvm__createNodeND(0, wrapperFIR_right_fxp);
-    void* IFFT_LeftNode= __hpvm__createNodeND(0, wrapperIFFT_left_fxp);
-    void* IFFT_RightNode= __hpvm__createNodeND(0, wrapperIFFT_right_fxp);
-    void* overlap_LeftNode= __hpvm__createNodeND(0, wrapperOverlap_left_fxp);
-    void* overlap_RightNode= __hpvm__createNodeND(0, wrapperOverlap_right_fxp);
-
-
-
-    // __hpvm__bindIn(rotatorNode, 0, 0, 0);
-    // __hpvm__bindIn(rotatorNode, 1, 1, 0);
-    // __hpvm__bindIn(rotatorNode, 2, 2, 0);
-    // __hpvm__bindIn(rotatorNode, 3, 3, 0);
-    // __hpvm__bindIn(rotatorNode, 10, 4, 0);
+    void* decoderSet_LeftNode = __hpvm__createNodeND(0, wrapperDecoderSet_left_fxp);
+    void* decoderSet_RightNode = __hpvm__createNodeND(0, wrapperDecoderSet_right_fxp);
+    void* FFT_FIR_IFFT_LeftNode = __hpvm__createNodeND(0, wrapperFFT_FIR_IFFT_left_fxp);
+    void* FFT_FIR_IFFT_RightNode = __hpvm__createNodeND(0, wrapperFFT_FIR_IFFT_right_fxp);
+    void* sum_LeftNode = __hpvm__createNodeND(0, wrapperSum_left_fxp);
+    void* sum_RightNode = __hpvm__createNodeND(0, wrapperSum_right_fxp);
+    void* scale_LeftNode = __hpvm__createNodeND(0, wrapperScale_left_fxp);
+    void* scale_RightNode = __hpvm__createNodeND(0, wrapperScale_right_fxp);
+    void* overlap_LeftNode = __hpvm__createNodeND(0, wrapperOverlap_left_fxp);
+    void* overlap_RightNode = __hpvm__createNodeND(0, wrapperOverlap_right_fxp);
+    // void* setAndFFT_LeftNode = __hpvm__createNodeND(0, wrapperSetAndFFT_left_fxp);
+    // void* setAndFFT_RightNode = __hpvm__createNodeND(0, wrapperSetAndFFT_right_fxp);
+    // void* FIR_LeftNode= __hpvm__createNodeND(0, wrapperFIR_left_fxp);
+    // void* FIR_RightNode= __hpvm__createNodeND(0, wrapperFIR_right_fxp);
+    // void* IFFT_LeftNode= __hpvm__createNodeND(0, wrapperIFFT_left_fxp);
+    // void* IFFT_RightNode= __hpvm__createNodeND(0, wrapperIFFT_right_fxp);
+    // void* overlap_LeftNode= __hpvm__createNodeND(0, wrapperOverlap_left_fxp);
+    // void* overlap_RightNode= __hpvm__createNodeND(0, wrapperOverlap_right_fxp);
 
     __hpvm__bindIn(rotatorSetNode, 0, 0, 0);
     __hpvm__bindIn(rotatorSetNode, 1, 1, 0);
@@ -3257,8 +3566,6 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
     __hpvm__bindIn(zoomProcessNode, 4, 0, 0);
     __hpvm__edge(zoomSetNode, zoomProcessNode, 1, 0, 1, 0);
     __hpvm__bindIn(zoomProcessNode, 2, 2, 0);
-    // __hpvm__edge(rotateOrder3Node, zoomProcessNode, 1, 0, 3, 0);
-    // __hpvm__bindIn(zoomProcessNode, 10, 4, 0);
     __hpvm__edge(psychoFilterNode, zoomProcessNode, 1, 3, 3, 0);
     __hpvm__bindIn(zoomProcessNode, 10, 4, 0);
     __hpvm__bindIn(zoomProcessNode, 11, 5, 0);
@@ -3271,56 +3578,83 @@ void audioDecoding(/*0*/ CAmbisonicProcessor* rotator, /*1*/ size_t bytes_rotato
     // __hpvm__bindIn(decodeProcessSetNode, 6, 0, 0);
     // __hpvm__bindIn(decodeProcessSetNode, 7, 1, 0);
 
-    __hpvm__bindIn(setAndFFT_LeftNode, 6, 0, 0);
-    __hpvm__bindIn(setAndFFT_LeftNode, 7, 1, 0);
-    __hpvm__bindIn(setAndFFT_LeftNode, 2, 2, 0);
-    __hpvm__edge(zoomProcessNode, setAndFFT_LeftNode, 1, 0, 3, 0);
+    __hpvm__bindIn(decoderSet_LeftNode, 6, 0, 0);
+    __hpvm__bindIn(decoderSet_LeftNode, 7, 1, 0);
 
-    __hpvm__bindIn(setAndFFT_RightNode, 17, 0, 0);
-    __hpvm__bindIn(setAndFFT_RightNode, 18, 1, 0);
-    __hpvm__bindIn(setAndFFT_RightNode, 2, 2, 0);
-    __hpvm__edge(zoomProcessNode, setAndFFT_RightNode, 1, 1, 3, 0);
-    
-    __hpvm__bindIn(FIR_LeftNode, 6, 0, 0);
-    __hpvm__edge(setAndFFT_LeftNode, FIR_LeftNode, 1, 0, 1, 0);
-    __hpvm__bindIn(FIR_LeftNode, 21, 2, 0);
-    __hpvm__bindIn(FIR_LeftNode, 22, 3, 0);
-    
-    __hpvm__bindIn(FIR_RightNode, 17, 0, 0);
-    __hpvm__edge(setAndFFT_RightNode, FIR_RightNode, 1, 0, 1, 0);
-    __hpvm__bindIn(FIR_RightNode, 23, 2, 0);
-    __hpvm__bindIn(FIR_RightNode, 24, 3, 0);
+    __hpvm__bindIn(decoderSet_RightNode, 17, 0, 0);
+    __hpvm__bindIn(decoderSet_RightNode, 18, 1, 0);
 
-    __hpvm__bindIn(IFFT_LeftNode, 6, 0, 0);
-    __hpvm__edge(FIR_LeftNode, IFFT_LeftNode, 1, 0, 1, 0);
+    __hpvm__bindIn(FFT_FIR_IFFT_LeftNode, 6, 0, 0);
+    __hpvm__edge(decoderSet_LeftNode, FFT_FIR_IFFT_LeftNode, 1, 0, 1, 0);
+    __hpvm__bindIn(FFT_FIR_IFFT_LeftNode, 2, 2, 0);
+    __hpvm__edge(zoomProcessNode, FFT_FIR_IFFT_LeftNode, 1, 0, 3, 0);
+    __hpvm__bindIn(FFT_FIR_IFFT_LeftNode, 21, 4, 0);
 
-    __hpvm__bindIn(IFFT_RightNode, 17, 0, 0);
-    __hpvm__edge(FIR_RightNode, IFFT_RightNode, 1, 0, 1, 0);
+    __hpvm__bindIn(FFT_FIR_IFFT_RightNode, 17, 0, 0);
+    __hpvm__edge(decoderSet_RightNode, FFT_FIR_IFFT_RightNode, 1, 0, 1, 0);
+    __hpvm__bindIn(FFT_FIR_IFFT_RightNode, 2, 2, 0);
+    __hpvm__edge(zoomProcessNode, FFT_FIR_IFFT_RightNode, 1, 1, 3, 0);
+    __hpvm__bindIn(FFT_FIR_IFFT_RightNode, 23, 4, 0);
+
+    __hpvm__bindIn(sum_LeftNode, 6, 0, 0);
+    __hpvm__edge(FFT_FIR_IFFT_LeftNode, sum_LeftNode, 1, 0, 1, 0);
+
+    __hpvm__bindIn(sum_RightNode, 17, 0, 0);
+    __hpvm__edge(FFT_FIR_IFFT_RightNode, sum_RightNode, 1, 0, 1, 0);
+
+    __hpvm__bindIn(scale_LeftNode, 6, 0, 0);
+    __hpvm__edge(sum_LeftNode, scale_LeftNode, 1, 0, 1, 0);
+    __hpvm__bindIn(scale_LeftNode, 22, 2, 0);
+
+    __hpvm__bindIn(scale_RightNode, 17, 0, 0);
+    __hpvm__edge(sum_RightNode, scale_RightNode, 1, 0, 1, 0);
+    __hpvm__bindIn(scale_RightNode, 24, 2, 0);
 
     __hpvm__bindIn(overlap_LeftNode, 6, 0, 0);
-    __hpvm__edge(IFFT_LeftNode, overlap_LeftNode, 1, 0, 1, 0);
+    __hpvm__edge(scale_LeftNode, overlap_LeftNode, 1, 0, 1, 0);
     __hpvm__bindIn(overlap_LeftNode, 8, 2, 0);
     __hpvm__bindIn(overlap_LeftNode, 9, 3, 0);
 
     __hpvm__bindIn(overlap_RightNode, 17, 0, 0);
-    __hpvm__edge(IFFT_RightNode, overlap_RightNode, 1, 0, 1, 0);
+    __hpvm__edge(scale_RightNode, overlap_RightNode, 1, 0, 1, 0);
     __hpvm__bindIn(overlap_RightNode, 19, 2, 0);
     __hpvm__bindIn(overlap_RightNode, 20, 3, 0);
 
-    // __hpvm__bindIn(bufferBCpyNSetNode, 6, 0, 0);
-    // __hpvm__edge(decodeProcessSetNode, bufferBCpyNSetNode, 1, 0, 1, 0);
-    // __hpvm__bindIn(bufferBCpyNSetNode, 2, 2, 0);
-    // __hpvm__edge(zoomProcessNode, bufferBCpyNSetNode, 1, 0, 3, 0);
+    // __hpvm__bindIn(setAndFFT_LeftNode, 6, 0, 0);
+    // __hpvm__bindIn(setAndFFT_LeftNode, 7, 1, 0);
+    // __hpvm__bindIn(setAndFFT_LeftNode, 2, 2, 0);
+    // __hpvm__edge(zoomProcessNode, setAndFFT_LeftNode, 1, 0, 3, 0);
 
-    // __hpvm__bindIn(channelWrapperNode, 6, 0, 0);
-    // __hpvm__edge(bufferBCpyNSetNode, channelWrapperNode, 1, 0, 1, 0);
+    // __hpvm__bindIn(setAndFFT_RightNode, 17, 0, 0);
+    // __hpvm__bindIn(setAndFFT_RightNode, 18, 1, 0);
+    // __hpvm__bindIn(setAndFFT_RightNode, 2, 2, 0);
+    // __hpvm__edge(zoomProcessNode, setAndFFT_RightNode, 1, 1, 3, 0);
 
-    // __hpvm__bindIn(overlapNode, 6, 0, 0);
-    // __hpvm__edge(channelWrapperNode, overlapNode, 1, 0, 1, 0);
-    // __hpvm__bindIn(overlapNode, 8, 2, 0);
-    // __hpvm__bindIn(overlapNode, 9, 3, 0);
+    // __hpvm__bindIn(FIR_LeftNode, 6, 0, 0);
+    // __hpvm__edge(setAndFFT_LeftNode, FIR_LeftNode, 1, 0, 1, 0);
+    // __hpvm__bindIn(FIR_LeftNode, 21, 2, 0);
+    // __hpvm__bindIn(FIR_LeftNode, 22, 3, 0);
 
-    // __hpvm__bindOut(overlapNode, 0, 0, 0);
+    // __hpvm__bindIn(FIR_RightNode, 17, 0, 0);
+    // __hpvm__edge(setAndFFT_RightNode, FIR_RightNode, 1, 0, 1, 0);
+    // __hpvm__bindIn(FIR_RightNode, 23, 2, 0);
+    // __hpvm__bindIn(FIR_RightNode, 24, 3, 0);
+
+    // __hpvm__bindIn(IFFT_LeftNode, 6, 0, 0);
+    // __hpvm__edge(FIR_LeftNode, IFFT_LeftNode, 1, 0, 1, 0);
+
+    // __hpvm__bindIn(IFFT_RightNode, 17, 0, 0);
+    // __hpvm__edge(FIR_RightNode, IFFT_RightNode, 1, 0, 1, 0);
+
+    // __hpvm__bindIn(overlap_LeftNode, 6, 0, 0);
+    // __hpvm__edge(IFFT_LeftNode, overlap_LeftNode, 1, 0, 1, 0);
+    // __hpvm__bindIn(overlap_LeftNode, 8, 2, 0);
+    // __hpvm__bindIn(overlap_LeftNode, 9, 3, 0);
+
+    // __hpvm__bindIn(overlap_RightNode, 17, 0, 0);
+    // __hpvm__edge(IFFT_RightNode, overlap_RightNode, 1, 0, 1, 0);
+    // __hpvm__bindIn(overlap_RightNode, 19, 2, 0);
+    // __hpvm__bindIn(overlap_RightNode, 20, 3, 0);
 }
 }
 
@@ -3343,7 +3677,7 @@ int main(int argc, char const *argv[])
     //     else
     //         procType = ABAudio::ProcessType::DECODE;
     // }
-    
+
     ABAudio audio("output.wav", ABAudio::ProcessType::DECODE);
     audio.loadSource();
 
@@ -3423,9 +3757,11 @@ int main(int argc, char const *argv[])
     arg->resultSample1 = resultSample1;
     arg->bytes_resultSample1 = bytes_resultSample1;
     arg->decoder0ChannelCount = audioAddr->decoder0->m_nChannelCount;
-    arg->decoder0FFTBins = audioAddr->decoder0->m_nFFTBins;
+    arg->decoder0FFTSize = audioAddr->decoder0->m_nFFTSize;
+    // arg->decoder0FFTBins = audioAddr->decoder0->m_nFFTBins;
     arg->decoder1ChannelCount = audioAddr->decoder1->m_nChannelCount;
-    arg->decoder1FFTBins = audioAddr->decoder1->m_nFFTBins;
+    arg->decoder1FFTSize = audioAddr->decoder1->m_nFFTSize;
+    // arg->decoder1FFTBins = audioAddr->decoder1->m_nFFTBins;
 
     // ABAudio* audioAddr = &audio;
     for (int i = 0; i < numBlocks; ++i){
