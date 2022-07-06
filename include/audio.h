@@ -738,7 +738,7 @@ public:
     std::unique_ptr<kiss_fft_cpx[]> m_pcpScratch;
 
     std::vector<float> m_pfScratchBufferA;
-    std::vector<float> m_pfScratchBufferB;
+    std::vector<std::vector<float>> m_pfScratchBufferB; // Ying: change from std::vector<float> to std::vector<std::vector<float>> with size 16 for 3D spatial audio
     std::vector<float> m_pfScratchBufferC;
     std::vector<float> m_pfOverlap[2];
 

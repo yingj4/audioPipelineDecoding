@@ -1,0 +1,31 @@
+# AMPLXE_PERF_STAT
+# hostname : grandteton
+# os release : 5.4.0-113-generic
+# arch : x86_64
+# cpuid : GenuineIntel,6,158,10
+# cpudesc : Intel(R) Xeon(R) E-2236 CPU @ 3.40GHz
+# total memory : 32746720 kB
+# nrcpus online : 12
+# nrcpus avail : 12
+# sibling cores : 0-11
+# sibling threads : 0,6
+# sibling threads : 1,7
+# sibling threads : 2,8
+# sibling threads : 3,9
+# sibling threads : 4,10
+# sibling threads : 5,11
+# process id : 28445
+;;17383375019;0
+;;14258105690;1
+;;31651543076;2
+;;100428796;3
+;;95043280;4
+;;2804035255;5
+;;14491272;6
+;;5;7
+;;38236584;8
+;;1011;9
+;;2;10
+;;5877498;11
+;;33384071623;12
+;;39448044578;13
